@@ -1,0 +1,20 @@
+export const APP_API = {
+    login: '/auth/login',
+    loginWithGoogle: '/auth/login-with-google',
+    getMe: '/auth/get-me',
+    movie: "/movie",
+    premyeraMovie: '/movie/active',
+    addNewSerial: "/movie/add-serial",
+    getPremyeraMovie: "/movie/active",
+    getMovie: '/movie/list',
+    deleteImage: '/files/image',
+    deleteVideo: '/files/video',
+    uploadFile: '/files/upload',
+    downloadImage: '/files/image/',
+    downloadVideo: '/files/video/',
+    statistics: '/statistic',
+    newSerial:"/movie/new-serial",
+    deleteSerial:"/movie/serial-delete",
+    editeSerial:"/movie/serial-edite",
+    news:"/news"
+}
