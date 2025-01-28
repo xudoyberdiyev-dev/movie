@@ -15,7 +15,8 @@ export const Complaint = () => {
     const [loading, setLoading] = useState(false)
 
     const [currentPage, setCurrentPage] = useState(1); // boshlang'chi sahifa nechanchida turushi uchun
-    const complaintPerPage = 10; //bu narsa har pagega nechtadan kino chiqishi uchun
+    const complaintPerPage = 10
+    ; //bu narsa har pagega nechtadan kino chiqishi uchun
 
 
     const startIndex = (currentPage - 1) * complaintPerPage;
@@ -55,20 +56,21 @@ export const Complaint = () => {
                 </CardContent>
             </Card>
             {loading.length!==0 ? (
-                <AuthBody name={"Complaint"} data={currentCompaints}/>
+                <>
+                    <AuthBody name={"Complaint"} data={currentCompaints}/>
+                    <Pagination
+                        count={totalPages} // Umumiy sahifalar soni
+                        page={currentPage} // Hozirgi sahifa
+                        onChange={handlePageChange} // Sahifa almashishi
+                        color="primary"
+                        sx={{display: "inline-block"}}
+                        siblingCount={1} // Hozirgi sahifadan oldin/so‘nggi qo‘shni sahifalar soni
+                        boundaryCount={2} // Boshlang'ich va oxirgi sahifalar soni
+                    />
+                </>
             ) : (
                 <Loading/>
             )}
-
-            <Pagination
-                count={totalPages} // Umumiy sahifalar soni
-                page={currentPage} // Hozirgi sahifa
-                onChange={handlePageChange} // Sahifa almashishi
-                color="primary"
-                sx={{display: "inline-block"}}
-                siblingCount={1} // Hozirgi sahifadan oldin/so‘nggi qo‘shni sahifalar soni
-                boundaryCount={2} // Boshlang'ich va oxirgi sahifalar soni
-            />
         </Grid>
 
 

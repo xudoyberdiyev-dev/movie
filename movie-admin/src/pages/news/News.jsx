@@ -6,6 +6,7 @@ import {GetAuto} from "../../connection/service/AppService.js";
 import {APP_API} from "../../connection/AppApi.js";
 import {AuthBody} from "../../companents/AuthBody.jsx";
 import {Pagination} from "@mui/material";
+import {Loading} from "../../companents/Loading.jsx";
 
 export const News = () => {
     const [news, setNews] = useState([])
@@ -39,17 +40,23 @@ export const News = () => {
     return (
         <Grid sx={{width: "100%", margin: "0 auto", padding: "10px"}}>
             <CardHeaders name={"Reklama va Yangliklar ro'yxati"} status={'save'} link={`/${ADMIN_URLS.addNwes}`}/>
-            <AuthBody name={"News"} data={currentNews}/>
+            {news.length !== 0 ? (
+                <>
+                    <AuthBody name={"News"} data={currentNews}/>
 
-            <Pagination
-                count={totalPages} // Umumiy sahifalar soni
-                page={currentPage} // Hozirgi sahifa
-                onChange={handlePageChange} // Sahifa almashishi
-                color="primary"
-                sx={{display: "inline-block"}}
-                siblingCount={1} // Hozirgi sahifadan oldin/so‘nggi qo‘shni sahifalar soni
-                boundaryCount={2} // Boshlang'ich va oxirgi sahifalar soni
-            />
+                    <Pagination
+                        count={totalPages} // Umumiy sahifalar soni
+                        page={currentPage} // Hozirgi sahifa
+                        onChange={handlePageChange} // Sahifa almashishi
+                        color="primary"
+                        sx={{display: "inline-block"}}
+                        siblingCount={1} // Hozirgi sahifadan oldin/so‘nggi qo‘shni sahifalar soni
+                        boundaryCount={2} // Boshlang'ich va oxirgi sahifalar soni
+                    />
+                </>
+            ) : (
+                <Loading/>
+            )}
         </Grid>
     )
 }

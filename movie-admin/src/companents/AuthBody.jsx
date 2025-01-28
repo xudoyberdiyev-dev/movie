@@ -363,57 +363,67 @@ export const GetAllNews = ({data}) => {
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
     return (
-        <TableContainer component={Paper}>
-            <Table sx={{minWidth: 650}} aria-label="simple table">
-                <TableHead>
-                    <TableRow>
-                        <TableCell>T/r</TableCell>
-                        <TableCell align="right">Nomi</TableCell>
-                        <TableCell align="right">sozlamalar</TableCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {data.map((news, i) => (
-                        <TableRow
-                            key={news.id}
-                            sx={{'&:last-child td, &:last-child th': {border: 0}}}
-                        >
-                            <TableCell component="th" scope="item">
-                                {i + 1}
-                            </TableCell>
-                            <TableCell align="right">{news.name}</TableCell>
-                            <TableCell align="right"><Button
-                                onClick={() => handleOpen()}><RemoveRedEyeIcon/></Button></TableCell>
-                            <TableCell align="right"><Button><EditIcon/></Button></TableCell>
-                            <TableCell align="right"><Button><DeleteForeverIcon/></Button></TableCell>
+        <Grid item xs={12}>
+            <TableContainer component={Paper}>
+                <Table sx={{minWidth: 650}} aria-label="simple table">
+                    <TableHead>
+                        <TableRow>
+                            <TableCell>T/r</TableCell>
+                            <TableCell align="right">Nomi</TableCell>
+                            <TableCell align="right">sozlamalar</TableCell>
                         </TableRow>
-                    ))}
-                    <ImageModal open={open} onClose={handleClose}
-                                imageUrl={`${BASE_URL}${APP_API.downloadImage}${data.img}`}
-                                description={"Yangilik rasmi yoki vedyosi"}/>
-                </TableBody>
-            </Table>
-        </TableContainer>
+                    </TableHead>
+                    <TableBody>
+                        {data.map((news, i) => (
+                            <TableRow
+                                key={news.id}
+                                sx={{'&:last-child td, &:last-child th': {border: 0}}}
+                            >
+                                <TableCell component="th" scope="item">
+                                    {i + 1}
+                                </TableCell>
+                                <TableCell align="right">{news.name}</TableCell>
+                                <TableCell align="right"><Button
+                                    onClick={() => handleOpen()}><RemoveRedEyeIcon/></Button></TableCell>
+                                <TableCell align="right"><Button><EditIcon/></Button></TableCell>
+                                <TableCell align="right"><Button><DeleteForeverIcon/></Button></TableCell>
+                            </TableRow>
+                        ))}
+                        <ImageModal open={open} onClose={handleClose}
+                                    imageUrl={`${BASE_URL}${APP_API.downloadImage}${data.img}`}
+                                    description={"Yangilik rasmi yoki vedyosi"}/>
+                    </TableBody>
+                </Table>
+            </TableContainer>
+        </Grid>
     )
 }
 
 export const GetAllComplaint = ({data}) => {
     return (
-        <Grid container sx={{ width: "100%", maxWidth: 900, margin: "0 auto", padding: "10px", display: "flex", flexDirection: "column", gap: "8px" }}>
+        <Grid container sx={{
+            width: "100%",
+            maxWidth: 900,
+            margin: "0 auto",
+            padding: "10px",
+            display: "flex",
+            flexDirection: "column",
+            gap: "8px"
+        }}>
             {data.map((item, i) => (
-                <Card key={i} sx={{ width: "100%", borderRadius: "10px", boxShadow: 2 }}>
+                <Card key={i} sx={{width: "100%", borderRadius: "10px", boxShadow: 2}}>
                     <CardHeader
-                        avatar={<Avatar sx={{ bgcolor: red[600] }}>{item.userName.charAt(0)}</Avatar>}
+                        avatar={<Avatar sx={{bgcolor: red[600]}}>{item.userName.charAt(0)}</Avatar>}
                         action={
                             <IconButton aria-label="delete">
-                                <DeleteForeverIcon />
+                                <DeleteForeverIcon/>
                             </IconButton>
                         }
                         title={`${item.userName} ${item.userSurname}`}
-                        subheader={`${item.createdAt.substring(0,10)}`}
+                        subheader={`${item.createdAt.substring(0, 10)}`}
                     />
                     <CardContent>
-                        <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                        <Typography variant="body2" sx={{color: 'text.secondary'}}>
                             {item.message}
                         </Typography>
                     </CardContent>
