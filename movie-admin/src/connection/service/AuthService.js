@@ -33,7 +33,7 @@ export const LoginHandler = async (data, navigator) => {
         if (us.data.authorities.length > 1) {
             toast.success("Hush kelibsiz ADMIN");
             navigator(ADMIN_URLS.dashboard);
-            // window.location.reload();
+            window.location.reload();
         }
     } catch (err) {
         toast.error("Parol yoki email hato")

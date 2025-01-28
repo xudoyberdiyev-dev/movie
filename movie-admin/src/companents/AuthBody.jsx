@@ -5,13 +5,20 @@ import toast from "react-hot-toast";
 import React, {useEffect, useState} from "react";
 import {ADMIN_URLS} from "../utils/URL.js";
 import {useNavigate} from "react-router-dom";
-import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
-import EditIcon from "@mui/icons-material/Edit";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import {APP_API} from "../connection/AppApi.js";
 import {DeleteAuto, DeleteAutoParam, updatePermyera} from "../connection/service/AppService.js";
-import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import {CardHeaders} from "./CardHeader.jsx";
+import TableContainer from "@mui/material/TableContainer";
+import Paper from "@mui/material/Paper";
+import Table from "@mui/material/Table";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import TableCell from "@mui/material/TableCell";
+import TableBody from "@mui/material/TableBody";
+import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 
 
 export const AuthBody = ({name, data, isSerial, deleteFunction, getAll}) => (
@@ -23,7 +30,9 @@ export const AuthBody = ({name, data, isSerial, deleteFunction, getAll}) => (
             <NewMovieBody data={data}/>
         ) : name === "SeeSerial" ? (
             <SeeSerial data={data} deleteFunction={deleteFunction} movie={true}/>
-        ) : null}
+        ) : name === "News" ? (
+            <GetAllNews data={data}/>
+        ):null}
     </Grid>
 );
 
@@ -254,42 +263,42 @@ export const SeeSerial = ({data, movie, getAll, ids}) => {
     return (
         <Grid container spacing={3}>
             <Grid item xs={12}>
-                <CardHeaders name={"Seriallar Ro'yxati"} status={"back"} />
+                <CardHeaders name={"Seriallar Ro'yxati"} status={"back"}/>
             </Grid>
             {data.map((item) => (
                 <Grid item xs={12} sm={6} md={4} key={item.id}>
-                    <Card sx={{ maxWidth: 345, mt: 4 }}>
+                    <Card sx={{maxWidth: 345, mt: 4}}>
                         <img
                             width="100%"
                             height="200px"
                             src={`${BASE_URL}${APP_API.downloadImage}${movie.img}`}
                             alt={item.title}
-                            style={{ objectFit: "cover" }}
+                            style={{objectFit: "cover"}}
                         />
                         <CardContent>
                             <Typography gutterBottom variant="h5" component="div">
                                 {item.title}
                             </Typography>
                         </CardContent>
-                        <CardActions sx={{ display: "flex", alignItems: "center", justifyContent: "space-around" }}>
+                        <CardActions sx={{display: "flex", alignItems: "center", justifyContent: "space-around"}}>
                             <Button
-                                sx={{ width: "29%" }}
+                                sx={{width: "29%"}}
                                 variant="outlined"
                                 color="primary"
                                 onClick={handleOpen}
                             >
-                                <RemoveRedEyeIcon />
+                                <RemoveRedEyeIcon/>
                             </Button>
-                            <Button sx={{ width: "29%" }} variant="outlined" color="primary">
-                                <EditIcon />
+                            <Button sx={{width: "29%"}} variant="outlined" color="primary">
+                                <EditIcon/>
                             </Button>
                             <Button
-                                sx={{ width: "29%" }}
+                                sx={{width: "29%"}}
                                 variant="outlined"
                                 color="primary"
                                 onClick={() => deleteFunction(item.id)}
                             >
-                                <DeleteForeverIcon />
+                                <DeleteForeverIcon/>
                             </Button>
                         </CardActions>
                     </Card>
@@ -339,6 +348,38 @@ export const SeeSerial = ({data, movie, getAll, ids}) => {
                 </Grid>
             ))}
         </Grid>
+    )
+}
+
+export const GetAllNews =  ({data}) => {
+    return (
+        <TableContainer component={Paper}>
+            <Table sx={{minWidth: 650}} aria-label="simple table">
+                <TableHead>
+                    <TableRow>
+                        <TableCell>T/r</TableCell>
+                        <TableCell align="right">Nomi</TableCell>
+                        <TableCell align="right" colSpan={2}>sozlamalar</TableCell>
+                    </TableRow>
+                </TableHead>
+                <TableBody>
+                    {data.map((news, i) => (
+                        <TableRow
+                            key={news.name}
+                            sx={{'&:last-child td, &:last-child th': {border: 0}}}
+                        >
+                            <TableCell component="th" scope="item">
+                                {i + 1}
+                            </TableCell>
+                            <TableCell align="right">{news.name}</TableCell>
+                            <TableCell align="right"><Button><RemoveRedEyeIcon/></Button></TableCell>
+                            <TableCell align="right"><Button><EditIcon/></Button></TableCell>
+                            <TableCell align="right"><Button><DeleteForeverIcon/></Button></TableCell>
+                        </TableRow>
+                    ))}
+                </TableBody>
+            </Table>
+        </TableContainer>
 
     )
 }
