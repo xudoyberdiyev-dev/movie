@@ -19,6 +19,7 @@ import TableBody from "@mui/material/TableBody";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import {ImageModal} from "./ImageModal.jsx";
 
 
 export const AuthBody = ({name, data, isSerial, deleteFunction, getAll}) => (
@@ -32,7 +33,7 @@ export const AuthBody = ({name, data, isSerial, deleteFunction, getAll}) => (
             <SeeSerial data={data} deleteFunction={deleteFunction} movie={true}/>
         ) : name === "News" ? (
             <GetAllNews data={data}/>
-        ):null}
+        ) : null}
     </Grid>
 );
 
@@ -351,7 +352,10 @@ export const SeeSerial = ({data, movie, getAll, ids}) => {
     )
 }
 
-export const GetAllNews =  ({data}) => {
+export const GetAllNews = ({data}) => {
+    const [open, setOpen] = useState(false);
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
     return (
         <TableContainer component={Paper}>
             <Table sx={{minWidth: 650}} aria-label="simple table">
@@ -359,24 +363,28 @@ export const GetAllNews =  ({data}) => {
                     <TableRow>
                         <TableCell>T/r</TableCell>
                         <TableCell align="right">Nomi</TableCell>
-                        <TableCell align="right" colSpan={2}>sozlamalar</TableCell>
+                        <TableCell align="right" >sozlamalar</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
                     {data.map((news, i) => (
                         <TableRow
-                            key={news.name}
+                            key={news.id}
                             sx={{'&:last-child td, &:last-child th': {border: 0}}}
                         >
                             <TableCell component="th" scope="item">
                                 {i + 1}
                             </TableCell>
                             <TableCell align="right">{news.name}</TableCell>
-                            <TableCell align="right"><Button><RemoveRedEyeIcon/></Button></TableCell>
+                            <TableCell align="right"><Button
+                                onClick={() => handleOpen()}><RemoveRedEyeIcon/></Button></TableCell>
                             <TableCell align="right"><Button><EditIcon/></Button></TableCell>
                             <TableCell align="right"><Button><DeleteForeverIcon/></Button></TableCell>
                         </TableRow>
                     ))}
+                    <ImageModal open={open} onClose={handleClose}
+                                imageUrl={`${BASE_URL}${APP_API.downloadImage}${data.img}`}
+                                description={"Yangilik rasmi yoki vedyosi"}/>
                 </TableBody>
             </Table>
         </TableContainer>
