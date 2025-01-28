@@ -3,8 +3,8 @@ import {Card, CardContent, Typography} from "@mui/material";
 import {useEffect, useState} from "react";
 import {GetAuto} from "../connection/service/AppService.js";
 import {APP_API} from "../connection/AppApi.js";
-import { Chart as ChartJS, Title, Tooltip, Legend, ArcElement, CategoryScale } from 'chart.js';
-import { Pie } from 'react-chartjs-2';
+import {Chart as ChartJS, Title, Tooltip, Legend, ArcElement, CategoryScale} from 'chart.js';
+import {Pie} from 'react-chartjs-2';
 
 
 ChartJS.register(Title, Tooltip, Legend, ArcElement, CategoryScale);
@@ -15,13 +15,13 @@ export const Dashboard = () => {
         moviesCount: 0
     });
     const statistikalar = {
-        labels: [ 'Ro\'yxatdan O\'tganlar','Kinolar',"botdan royxatdan otganlar"],
+        labels: ['Ro\'yxatdan O\'tganlar', 'Kinolar', "botdan royxatdan otganlar"],
         datasets: [
             {
                 label: 'Statistikalar',
-                data: [statistics.usersCount, statistics.moviesCount,statistics.usersCount], // Bu yerga haqiqiy ma'lumotlaringizni kiriting (masalan, jami kinolar, ro'yxatdan o'tganlar)
-                backgroundColor: ['green', 'red','blue'],
-                borderColor: ['green', 'red','blue'],
+                data: [statistics.usersCount, statistics.moviesCount, statistics.usersCount], // Bu yerga haqiqiy ma'lumotlaringizni kiriting (masalan, jami kinolar, ro'yxatdan o'tganlar)
+                backgroundColor: ['green', 'red', 'blue'],
+                borderColor: ['green', 'red', 'blue'],
                 borderWidth: 5,
             },
         ],
@@ -51,10 +51,7 @@ export const Dashboard = () => {
                     </Typography>
                 </CardContent>
             </Card>
-            <div style={{width:"300px",height:"300px"}}>
-                <Pie data={statistikalar}  />
 
-            </div>
             <Grid style={{width: 1260, display: 'flex', justifyContent: 'space-around', marginTop: '20px'}}>
                 <Card style={{width: 400}}>
                     <CardContent>
@@ -74,8 +71,11 @@ export const Dashboard = () => {
                         <Typography variant="h5" sx={{textAlign: "center"}}>{statistics.moviesCount}</Typography>
                     </CardContent>
                 </Card>
-
             </Grid>
+            <div style={{width: "300px", height: "300px"}}>
+                <Pie data={statistikalar}/>
+
+            </div>
         </Grid>
 
     )

@@ -1,12 +1,9 @@
-import {PaginationItem} from "@mui/material";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import ArrowForwardIcon from "@mui/icons-material/ArrowBack";
 import React, {useState} from "react";
 
-export const Pagination = ({totalPages,handlePageChange,currentPage}) => {
+export const Pagination = ({page, handlePageChange, currentPage}) => {
     return (
         <Pagination
-            count={totalPages} // Umumiy sahifalar soni
+            count={page} // Umumiy sahifalar soni
             page={currentPage} // Hozirgi sahifa
             onChange={handlePageChange} // Sahifa almashishi
             color="primary"
