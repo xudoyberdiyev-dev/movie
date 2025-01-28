@@ -58,6 +58,7 @@ public class ComplaintService implements ComplaintServiceImpl {
         List<ResComplaintDto> resComplaintDtos = new ArrayList<>();
         for (Complaint complaint : complaintRepository.findAll()) {
             resComplaintDtos.add(new ResComplaintDto(
+                    complaint.getId(),
                     complaint.getMessage(),
                     complaint.getUserName(),
                     complaint.getUserSurname(),

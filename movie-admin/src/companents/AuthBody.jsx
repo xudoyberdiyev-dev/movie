@@ -38,7 +38,7 @@ export const AuthBody = ({name, data, isSerial, deleteFunction, getAll}) => (
         ) : name === "News" ? (
             <GetAllNews data={data} getAll={getAll}/>
         ) : name === "Complaint" ? (
-            <GetAllComplaint data={data}/>
+            <GetAllComplaint data={data} getAll={getAll}/>
         ) : null}
     </Grid>
 );
@@ -359,6 +359,7 @@ export const SeeSerial = ({data, movie, getAll, ids}) => {
 }
 
 export const GetAllNews = ({data, getAll}) => {
+    const navigate = useNavigate();
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
@@ -393,7 +394,8 @@ export const GetAllNews = ({data, getAll}) => {
                                 <TableCell align="center" colSpan={3}>
                                     <div style={{display: "flex", justifyContent: "center", gap: "30px"}}>
                                         <Button onClick={() => handleOpen()}><RemoveRedEyeIcon/></Button>
-                                        <Button><EditIcon/></Button>
+                                        <Button
+                                            onClick={() => navigate(`/${ADMIN_URLS.addNwes}/${news.id}`)}><EditIcon/></Button>
                                         <Button onClick={() => deleteFunction(news.id)}><DeleteForeverIcon/></Button>
                                     </div>
                                 </TableCell>
@@ -407,13 +409,24 @@ export const GetAllNews = ({data, getAll}) => {
     )
 }
 
-export const GetAllComplaint = ({data}) => {
-
+export const GetAllComplaint = ({data, getAll}) => {
+    const deleteFunction = async (id) => {
+        try {
+            const confirm = window.confirm("O'chirishni hohlaysizmi?")
+            if (confirm) {
+                await DeleteAuto(APP_API.complaint, id, 'data', getAll)
+                console.log(id)
+            }
+        } catch (err) {
+            console.log(err)
+        }
+    }
     return (
         <Grid container sx={{
             width: "100%",
-            maxWidth: 900,
+            maxWidth: 1310,
             margin: "0 auto",
+            marginLeft:"22px",
             padding: "10px",
             display: "flex",
             flexDirection: "column",
@@ -425,7 +438,7 @@ export const GetAllComplaint = ({data}) => {
                         avatar={<Avatar sx={{bgcolor: red[600]}}>{item.userName.charAt(0)}</Avatar>}
                         action={
                             <IconButton aria-label="delete">
-                                <DeleteForeverIcon/>
+                                <DeleteForeverIcon onClick={() => deleteFunction(item.id)}/>
                             </IconButton>
                         }
                         title={`${item.userName} ${item.userSurname}`}

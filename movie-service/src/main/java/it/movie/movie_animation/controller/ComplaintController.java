@@ -40,7 +40,7 @@ public class ComplaintController implements ComplaintControllerImpl {
     }
 
     @Override
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     public HttpEntity<?> deleteComplaint(@PathVariable UUID id) {
         ApiResponse apiResponse = complaintService.deleteComplaint(id);
         return ResponseEntity.status(apiResponse.success() ? HttpStatus.CREATED : HttpStatus.CONFLICT).body(apiResponse);

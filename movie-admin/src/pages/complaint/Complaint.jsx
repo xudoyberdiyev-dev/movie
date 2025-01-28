@@ -32,7 +32,7 @@ export const Complaint = () => {
 
     const getAll = async () => {
         try {
-            const res = await GetAuto(APP_API.complaint, 'data')
+            const res = await GetAuto(APP_API.complaintAllMessage, 'data')
             setComplaint(res.data.reverse())
             setLoading(true)
         } catch (err) {
@@ -55,9 +55,9 @@ export const Complaint = () => {
                     </Typography>
                 </CardContent>
             </Card>
-            {loading.length!==0 ? (
+            {loading.length !== 0 ? (
                 <>
-                    <AuthBody name={"Complaint"} data={currentCompaints}/>
+                    <AuthBody name={"Complaint"} data={currentCompaints} getAll={getAll} deleteFunction={true}/>
                     <Pagination
                         count={totalPages} // Umumiy sahifalar soni
                         page={currentPage} // Hozirgi sahifa

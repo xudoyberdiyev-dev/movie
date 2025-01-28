@@ -17,5 +17,6 @@ export const APP_API = {
     deleteSerial:"/movie/serial-delete",
     editeSerial:"/movie/serial-edite",
     news:"/news",
-    complaint:'/complaint/all-message'
+    complaintAllMessage:'/complaint/all-message',
+    complaint:'/complaint/delete'
 }
