@@ -48,14 +48,19 @@ export const Complaint = () => {
                 <CardContent>
                     <Typography
                         variant="h5"
-                        color={'primary'}
+                        color={complaint.length === 0 ? 'red' : 'primary'}
                         textAlign="center"
                     >
-                        Foydalanuvchilardan kelgan murojat va shikoyatlar
+                        {loading
+                            ? (complaint.length === 0
+                                ? "HOZIRDA SIKOYATLAR VA MUROJATLAR MAVJUD EMAS!!!"
+                                : " FOYDALANUVCHILARDAN KELGAN MUROJAT VA SHIKOYATLAR")
+                            : <Loading/>
+                        }
                     </Typography>
                 </CardContent>
             </Card>
-            {loading.length !== 0 ? (
+            {complaint.length !== 0 ? (
                 <>
                     <AuthBody name={"Complaint"} data={currentCompaints} getAll={getAll} deleteFunction={true}/>
                     <Pagination

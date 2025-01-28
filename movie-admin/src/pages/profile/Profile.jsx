@@ -1,7 +1,7 @@
-export const Profile=()=>{
-    return(
-        <div>
-            salom mol
-        </div>
+
+export const Profile = () => {
+
+    return (
+       <div>profile</div>
     )
 }
