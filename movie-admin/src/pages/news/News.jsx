@@ -42,7 +42,7 @@ export const News = () => {
             <CardHeaders name={"Reklama va Yangliklar ro'yxati"} status={'save'} link={`/${ADMIN_URLS.addNwes}`}/>
             {news.length !== 0 ? (
                 <>
-                    <AuthBody name={"News"} data={currentNews}/>
+                    <AuthBody name={"News"} data={currentNews} deleteFunction={true} getAll={getAll}/>
 
                     <Pagination
                         count={totalPages} // Umumiy sahifalar soni

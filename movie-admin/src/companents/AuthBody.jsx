@@ -36,7 +36,7 @@ export const AuthBody = ({name, data, isSerial, deleteFunction, getAll}) => (
         ) : name === "SeeSerial" ? (
             <SeeSerial data={data} deleteFunction={deleteFunction} movie={true}/>
         ) : name === "News" ? (
-            <GetAllNews data={data}/>
+            <GetAllNews data={data} getAll={getAll}/>
         ) : name === "Complaint" ? (
             <GetAllComplaint data={data}/>
         ) : null}
@@ -358,10 +358,21 @@ export const SeeSerial = ({data, movie, getAll, ids}) => {
     )
 }
 
-export const GetAllNews = ({data}) => {
+export const GetAllNews = ({data, getAll}) => {
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
+
+    const deleteFunction = async (id) => {
+        try {
+            const confirm = window.confirm("O'chirishni hohlaysizmi?")
+            if (confirm) {
+                await DeleteAuto(APP_API.news, id, 'data', getAll)
+            }
+        } catch (err) {
+            console.log(err)
+        }
+    }
     return (
         <Grid item xs={12}>
             <TableContainer component={Paper}>
@@ -369,29 +380,26 @@ export const GetAllNews = ({data}) => {
                     <TableHead>
                         <TableRow>
                             <TableCell>T/r</TableCell>
-                            <TableCell align="right">Nomi</TableCell>
-                            <TableCell align="right">sozlamalar</TableCell>
+                            <TableCell align="left">Nomi</TableCell>
+                            <TableCell align="center"
+                                       colSpan={3}>Sozlamalar</TableCell> {/* Ikonlar uchun joy ochamiz */}
                         </TableRow>
                     </TableHead>
                     <TableBody>
                         {data.map((news, i) => (
-                            <TableRow
-                                key={news.id}
-                                sx={{'&:last-child td, &:last-child th': {border: 0}}}
-                            >
-                                <TableCell component="th" scope="item">
-                                    {i + 1}
+                            <TableRow key={news.id} sx={{"&:last-child td, &:last-child th": {border: 0}}}>
+                                <TableCell>{i + 1}</TableCell>
+                                <TableCell align="left">{news.name}</TableCell>
+                                <TableCell align="center" colSpan={3}>
+                                    <div style={{display: "flex", justifyContent: "center", gap: "30px"}}>
+                                        <Button onClick={() => handleOpen()}><RemoveRedEyeIcon/></Button>
+                                        <Button><EditIcon/></Button>
+                                        <Button onClick={() => deleteFunction(news.id)}><DeleteForeverIcon/></Button>
+                                    </div>
                                 </TableCell>
-                                <TableCell align="right">{news.name}</TableCell>
-                                <TableCell align="right"><Button
-                                    onClick={() => handleOpen()}><RemoveRedEyeIcon/></Button></TableCell>
-                                <TableCell align="right"><Button><EditIcon/></Button></TableCell>
-                                <TableCell align="right"><Button><DeleteForeverIcon/></Button></TableCell>
                             </TableRow>
                         ))}
-                        <ImageModal open={open} onClose={handleClose}
-                                    imageUrl={`${BASE_URL}${APP_API.downloadImage}${data.img}`}
-                                    description={"Yangilik rasmi yoki vedyosi"}/>
+                        <ImageModal open={open} onClose={handleClose} description={"Bu reklamani rasmi yoki videosi"}/>
                     </TableBody>
                 </Table>
             </TableContainer>
@@ -400,6 +408,7 @@ export const GetAllNews = ({data}) => {
 }
 
 export const GetAllComplaint = ({data}) => {
+
     return (
         <Grid container sx={{
             width: "100%",
