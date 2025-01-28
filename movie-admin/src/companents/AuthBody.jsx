@@ -20,6 +20,10 @@ import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import {ImageModal} from "./ImageModal.jsx";
+import CardHeader from "@mui/material/CardHeader";
+import Avatar from "@mui/material/Avatar";
+import {red} from "@mui/material/colors";
+import IconButton from "@mui/material/IconButton";
 
 
 export const AuthBody = ({name, data, isSerial, deleteFunction, getAll}) => (
@@ -33,6 +37,8 @@ export const AuthBody = ({name, data, isSerial, deleteFunction, getAll}) => (
             <SeeSerial data={data} deleteFunction={deleteFunction} movie={true}/>
         ) : name === "News" ? (
             <GetAllNews data={data}/>
+        ) : name === "Complaint" ? (
+            <GetAllComplaint data={data}/>
         ) : null}
     </Grid>
 );
@@ -363,7 +369,7 @@ export const GetAllNews = ({data}) => {
                     <TableRow>
                         <TableCell>T/r</TableCell>
                         <TableCell align="right">Nomi</TableCell>
-                        <TableCell align="right" >sozlamalar</TableCell>
+                        <TableCell align="right">sozlamalar</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -388,6 +394,31 @@ export const GetAllNews = ({data}) => {
                 </TableBody>
             </Table>
         </TableContainer>
+    )
+}
 
+export const GetAllComplaint = ({data}) => {
+    return (
+        <Grid container sx={{ width: "100%", maxWidth: 900, margin: "0 auto", padding: "10px", display: "flex", flexDirection: "column", gap: "8px" }}>
+            {data.map((item, i) => (
+                <Card key={i} sx={{ width: "100%", borderRadius: "10px", boxShadow: 2 }}>
+                    <CardHeader
+                        avatar={<Avatar sx={{ bgcolor: red[600] }}>{item.userName.charAt(0)}</Avatar>}
+                        action={
+                            <IconButton aria-label="delete">
+                                <DeleteForeverIcon />
+                            </IconButton>
+                        }
+                        title={`${item.userName} ${item.userSurname}`}
+                        subheader={`${item.createdAt.substring(0,10)}`}
+                    />
+                    <CardContent>
+                        <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                            {item.message}
+                        </Typography>
+                    </CardContent>
+                </Card>
+            ))}
+        </Grid>
     )
 }

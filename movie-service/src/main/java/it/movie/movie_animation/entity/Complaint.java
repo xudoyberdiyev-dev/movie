@@ -19,7 +19,6 @@ public class Complaint extends AbsEntity {
 
     private String userName;
     private String userSurname;
-
     @ManyToOne
     @JoinColumn(name = "user_id")
     private Users users;

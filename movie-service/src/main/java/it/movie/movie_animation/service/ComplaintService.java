@@ -60,7 +60,8 @@ public class ComplaintService implements ComplaintServiceImpl {
             resComplaintDtos.add(new ResComplaintDto(
                     complaint.getMessage(),
                     complaint.getUserName(),
-                    complaint.getUserSurname()
+                    complaint.getUserSurname(),
+                    complaint.getCreatedAt()
             ));
         }
         return resComplaintDtos;
