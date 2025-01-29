@@ -55,16 +55,19 @@ public class MovieController implements MovieControllerImpl {
     @GetMapping("/{id}")
     public HttpEntity<?> getOneMovie(@PathVariable UUID id, Authentication authentication) {
         Movie movie = movieRepository.findById(id).orElseThrow(() -> new RuntimeException("Movie not found"));
-        boolean isAdmin = authentication.getAuthorities().stream()
+
+        boolean isAdmin = authentication != null && authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .anyMatch(role -> role.equals("ADMIN"));
 
         if (!isAdmin) {
-            movie.setSeeSize(movie.getSeeSize() + 1);
+            movie.setSeeSize(movie.getSeeSize() + 0.5);
             movieRepository.save(movie);
         }
+
         return ResponseEntity.ok(movie);
     }
+
 
     @Override
     @GetMapping("/by-genre")//genre boyicha kino chiqadi

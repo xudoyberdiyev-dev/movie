@@ -18,6 +18,7 @@ export const MovieItem = () => {
         try {
             const res = await GetOneMovie(id)
             setMovie(res)
+            console.log(res.data)
             setLoading(true)
         } catch (err) {
             console.log(err)
@@ -147,7 +148,7 @@ export const MovieItem = () => {
                             </div>
 
                             <div className="title-wrapper">
-                                <h3 className="title-large">Kino va Seriallar</h3>
+                                <h3 className="title-large">Kino va Seriallar {Math.ceil(movie.seeSize)}</h3>
                             </div>
 
                             <div className="slider-list">
@@ -189,18 +190,13 @@ export const MovieItem = () => {
                                         </>
                                     ) : null}
 
-
                                 </div>
-
                             </div>
-
                         </div>
                     </div>
-
                 ) : (<Loading/>)}
                 <RandomMovie/>
             </article>
-
             <div className="search-model"></div>
         </main>
     </div>)

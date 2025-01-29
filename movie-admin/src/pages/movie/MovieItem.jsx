@@ -2,7 +2,6 @@ import React, {useEffect, useState} from "react";
 import {useNavigate, useParams} from "react-router-dom";
 import {
     Button,
-    TextField,
     Typography,
     Box,
     Modal,
@@ -12,24 +11,13 @@ import {
     CardMedia,
     CardActionArea
 } from "@mui/material";
-import toast from "react-hot-toast";
-import {UploadFile, AutoSaveAndUpdate, GetOneMovie} from "../../connection/service/AppService";
+import {GetOneMovie} from "../../connection/service/AppService";
 import {APP_API} from "../../connection/AppApi";
 import {BASE_URL} from "../../connection/BaseUrl";
 import {ADMIN_URLS} from "../../utils/URL.js";
+import {VideoModal} from "../../companents/ImageModal.jsx";
 
 
-const modalStyleVideo = {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    width: 500,
-    bgcolor: "background.paper",
-    border: "2px solid #000",
-    boxShadow: 24,
-    p: 2.5,
-};
 export const MovieItem = () => {
     const [openVideo, setOpenVideo] = useState(false);
     const [movies, setMovie] = useState({});
@@ -107,34 +95,8 @@ export const MovieItem = () => {
                     </CardContent>
                 </Card>
             </Grid>
-
-
-            <Modal
-                keepMounted
-                open={openVideo}
-                onClose={toggleModalVideo}
-                aria-labelledby="modal-title"
-                aria-describedby="modal-description"
-            >
-                <Box sx={modalStyleVideo}>
-                    <Typography id="modal-title" variant="h6">
-                        <video frameBorder="0"
-                               allowFullScreen="1" title="Billion with a B"
-                               className="img-cover" loading="lazy"
-                               width="100%" height="294" controls>
-                            <source src={`${BASE_URL}${APP_API.downloadVideo}${movies.video}`}
-                                    type="video/mp4"/>
-                            <source src={`${BASE_URL}${APP_API.downloadVideo}${movies.video}`}
-                                    type="video/webm"/>
-                            <source src={`${BASE_URL}${APP_API.downloadVideo}${movies.video}`}
-                                    type="video/ogg"/>
-                        </video>
-                        <Button color="error" onClick={toggleModalVideo} fullWidth>
-                            Bekor qilish
-                        </Button>
-                    </Typography>
-                </Box>
-            </Modal>
+            <VideoModal description={"Kino Videosi"} videoUrl={`${BASE_URL}${APP_API.downloadVideo}${movies.video}`}
+                        open={openVideo} onClose={toggleModalVideo}/>
         </Box>
     );
 };

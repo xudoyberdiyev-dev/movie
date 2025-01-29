@@ -10,19 +10,15 @@ import {
     Card,
     CardContent,
     CardMedia,
-    CardActionArea, Grid2, CardActions, Pagination
+    CardActionArea, Pagination
 } from "@mui/material";
 import toast from "react-hot-toast";
 import {UploadFile, AutoSaveAndUpdate, GetOneMovie, GetAuto} from "../../connection/service/AppService";
 import {APP_API} from "../../connection/AppApi";
 import {BASE_URL} from "../../connection/BaseUrl";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
-import {ADMIN_URLS} from "../../utils/URL.js";
-import {CardHeaders} from "../../companents/CardHeader.jsx";
-import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
-import {AuthBody, SeeSerial} from "../../companents/AuthBody.jsx";
+import {SeeSerial} from "../../companents/AuthBody.jsx";
+import {VideoModal} from "../../companents/ImageModal.jsx";
 
 
 const modalStyle = {
@@ -35,17 +31,6 @@ const modalStyle = {
     border: "2px solid #000",
     boxShadow: 24,
     p: 4,
-};
-const modalStyleVideo = {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    width: 500,
-    bgcolor: "background.paper",
-    border: "2px solid #000",
-    boxShadow: 24,
-    p: 2.5,
 };
 export const SerialAdd = () => {
     const [currentPage, setCurrentPage] = useState(1); // boshlang'chi sahifa nechanchida turushi uchun
@@ -259,32 +244,8 @@ export const SerialAdd = () => {
                     </Typography>
                 </Box>
             </Modal>
-            <Modal
-                keepMounted
-                open={openVideo}
-                onClose={toggleModalVideo}
-                aria-labelledby="modal-title"
-                aria-describedby="modal-description"
-            >
-                <Box sx={modalStyleVideo}>
-                    <Typography id="modal-title" variant="h6">
-                        <video frameBorder="0"
-                               allowFullScreen="1" title="Billion with a B"
-                               className="img-cover" loading="lazy"
-                               width="100%" height="294" controls>
-                            <source src={`${BASE_URL}${APP_API.downloadVideo}${movies.video}`}
-                                    type="video/mp4"/>
-                            <source src={`${BASE_URL}${APP_API.downloadVideo}${movies.video}`}
-                                    type="video/webm"/>
-                            <source src={`${BASE_URL}${APP_API.downloadVideo}${movies.video}`}
-                                    type="video/ogg"/>
-                        </video>
-                        <Button color="error" onClick={toggleModalVideo} fullWidth>
-                            Bekor qilish
-                        </Button>
-                    </Typography>
-                </Box>
-            </Modal>
+            <VideoModal videoUrl={`${BASE_URL}${APP_API.downloadVideo}${movies.video}`} description={"Serial videosi"}
+                        open={openVideo} onClose={toggleModalVideo}/>
         </>
     )
         ;

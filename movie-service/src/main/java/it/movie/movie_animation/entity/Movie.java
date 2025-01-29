@@ -63,7 +63,7 @@ public class Movie extends AbsEntity {
     private List<Genre> genres;
 
 
-    private int seeSize =0; // nechi kishi kurganini pasmotr
+    private double seeSize =0; // nechi kishi kurganini pasmotr
 
     private int likeSize  =0; // film yoqti bosganda buton soni 1 taga oshadi
 
