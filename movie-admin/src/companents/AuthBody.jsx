@@ -359,7 +359,6 @@ export const SeeSerial = ({data, movie, getAll, ids}) => {
 }
 
 export const GetAllNews = ({data, getAll}) => {
-    const navigate = useNavigate();
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
@@ -387,19 +386,21 @@ export const GetAllNews = ({data, getAll}) => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {data.map((news, i) => (
-                            <TableRow key={news.id} sx={{"&:last-child td, &:last-child th": {border: 0}}}>
+                        {data.map((item, i) => (
+                            <TableRow key={item.id} sx={{"&:last-child td, &:last-child th": {border: 0}}}>
                                 <TableCell>{i + 1}</TableCell>
-                                <TableCell align="left">{news.name}</TableCell>
+                                <TableCell align="left">{item.name}</TableCell>
                                 <TableCell align="center" colSpan={3}>
                                     <div style={{display: "flex", justifyContent: "center", gap: "30px"}}>
                                         <Button onClick={() => handleOpen()}><RemoveRedEyeIcon/></Button>
-                                        <Button onClick={() => deleteFunction(news.id)}><DeleteForeverIcon/></Button>
+                                        <Button onClick={() => deleteFunction(item.id)}><DeleteForeverIcon/></Button>
                                     </div>
                                 </TableCell>
+                                <ImageModal open={open} onClose={handleClose}
+                                            imageUrl={`${BASE_URL}${APP_API.downloadImage}${item.img}`}
+                                            description={"Bu reklamani rasmi yoki videosi"}/>
                             </TableRow>
                         ))}
-                        <ImageModal open={open} onClose={handleClose} description={"Bu reklamani rasmi yoki videosi"}/>
                     </TableBody>
                 </Table>
             </TableContainer>

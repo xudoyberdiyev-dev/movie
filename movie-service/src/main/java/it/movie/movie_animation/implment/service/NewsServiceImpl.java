@@ -7,6 +7,8 @@ import java.util.UUID;
 
 public interface NewsServiceImpl {
     ApiResponse addNews(ReqNewsDto reqNewsDto);
+
     ApiResponse deleteNews(UUID id);
+
     void archiveExpiredNews();
 }
