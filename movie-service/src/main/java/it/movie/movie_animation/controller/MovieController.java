@@ -76,7 +76,7 @@ public class MovieController implements MovieControllerImpl {
         return ResponseEntity.ok(movies);
     }
 
-    @PostMapping("/search")
+    @GetMapping("/search")
     private HttpEntity<?> searchMovie(@RequestParam String query) {
         List<Movie> movies = movieRepository.findByNameContainingIgnoreCase(query);
         return ResponseEntity.ok(movies);
