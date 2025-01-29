@@ -54,7 +54,7 @@ const MovieList = ({data, category, isMovie}) => {
 
                     <div className="meta-list">
                         <div className="meta-item">
-                            Yil: <span className="span">{item.movieYear}</span>
+                            <i></i> <span className="span">{item.seeSize}</span>
                         </div>
                         <div className="card-badge">{item.age.substring(1, 3)}+</div>
                     </div>

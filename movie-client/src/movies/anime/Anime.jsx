@@ -9,7 +9,6 @@ export const Anime = () => {
                 <div className="title-wrapper">
                     <h3 className="title-large">Animelar...</h3>
                 </div>
-
                 <div className="slider-list">
                     <div className="slider-inner">
                         <SortBySubCategoryMovie name={"ANIME"} data={movie} isMovie={true}/>

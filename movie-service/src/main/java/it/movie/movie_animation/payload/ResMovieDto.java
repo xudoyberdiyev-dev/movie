@@ -18,6 +18,7 @@ public record ResMovieDto(
         boolean active,
         java.util.List<it.movie.movie_animation.entity.enums.Genre> genres,
         it.movie.movie_animation.entity.enums.SubCategoryType subCategoryType,
-        Age age
+        Age age,
+        double seeSize
 ) {
 }

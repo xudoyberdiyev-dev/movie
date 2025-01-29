@@ -1,6 +1,7 @@
 export const APP_API={
     genreAll:'/genre',
     getMovie:'/movie/list',
+    
     movie:"/movie",
     getGenreByMovie:"/movie/by-genre",
     downloadImage: '/files/image/',

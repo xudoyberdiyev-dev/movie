@@ -52,7 +52,8 @@ public class MovieService implements MovieServiceImpl {
                     movie.isActive(),
                     movie.getGenres(),
                     movie.getSubCategoryType(),
-                    movie.getAge()
+                    movie.getAge(),
+                    movie.getSeeSize()
             ));
         }
         return resMovieDtos;
