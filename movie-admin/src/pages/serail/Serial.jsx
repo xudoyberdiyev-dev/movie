@@ -41,7 +41,8 @@ export const Serial = () => {
                 </CardContent>
             </Card>
 
-            <AuthBody name={'Movie'} data={movie} update={null} getAll={getAll} autoDelete={true} item={null} isSerial={true}/>
+            <AuthBody name={'Movie'} data={movie} update={null} getAll={getAll} autoDelete={true} item={null}
+                      isSerial={true}/>
         </Grid>
     )
 }

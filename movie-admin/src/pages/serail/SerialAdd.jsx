@@ -198,7 +198,8 @@ export const SerialAdd = () => {
                 <>
                     {videos.length === 0 ? <h1>Hozirda Serial qismlari mavjud emas</h1> :
                         <>
-                            <SeeSerial data={currentMovies} movie={movies} deleteFunction={true} ids={id} getAll={getVedos}/>
+                            <SeeSerial data={currentMovies} movie={movies} deleteFunction={true} ids={id}
+                                       getAll={getVedos}/>
                             <Pagination
                                 count={totalPages} // Umumiy sahifalar soni
                                 page={currentPage} // Hozirgi sahifa

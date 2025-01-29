@@ -139,7 +139,8 @@ export const AddNews = () => {
     return (
         <Grid sx={{width: '100%', margin: '0 auto', padding: '10px'}}>
             <CardHeaders name={"Reklama qos'hish"} status={'back'} link={`/${ADMIN_URLS.news}`}/>
-            <AutoForm formArr={formArr} backLink={`/${ADMIN_URLS.news}`} handleChange={handleChange} handleSubmit={handleSubmit}/>
+            <AutoForm formArr={formArr} backLink={`/${ADMIN_URLS.news}`} handleChange={handleChange}
+                      handleSubmit={handleSubmit}/>
         </Grid>
     )
 }

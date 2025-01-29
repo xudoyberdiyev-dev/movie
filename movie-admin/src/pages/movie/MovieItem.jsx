@@ -49,7 +49,7 @@ export const MovieItem = () => {
         }
     };
 
-    const backMovie =async () => {
+    const backMovie = async () => {
         navigate(`/${ADMIN_URLS.movie}`)
     }
 
@@ -101,7 +101,8 @@ export const MovieItem = () => {
                             <Button sx={{margin: "2px"}} onClick={toggleModalVideo}>
                                 Kinoni korish
                             </Button>
-                            <Button color={"error"} onClick={()=>backMovie()} sx={{margin: "7px"}}>Orqaga Qaytish</Button>
+                            <Button color={"error"} onClick={() => backMovie()} sx={{margin: "7px"}}>Orqaga
+                                Qaytish</Button>
                         </Grid>
                     </CardContent>
                 </Card>

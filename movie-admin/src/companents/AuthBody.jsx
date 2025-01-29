@@ -426,7 +426,7 @@ export const GetAllComplaint = ({data, getAll}) => {
             width: "100%",
             maxWidth: 1310,
             margin: "0 auto",
-            marginLeft:"22px",
+            marginLeft: "22px",
             padding: "10px",
             display: "flex",
             flexDirection: "column",

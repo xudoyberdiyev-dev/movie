@@ -3,7 +3,7 @@ import {Box, Button, Card, CardContent, Typography} from '@mui/material';
 import DataSaverOnIcon from '@mui/icons-material/DataSaverOn';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import {useNavigate} from "react-router-dom";
-import {Add,AddCircle,AddCircleOutline} from "@mui/icons-material";
+import {Add, AddCircle, AddCircleOutline} from "@mui/icons-material";
 
 export const CardHeaders = ({status, link, name}) => {
     const navigate = useNavigate()

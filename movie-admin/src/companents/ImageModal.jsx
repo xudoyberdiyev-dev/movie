@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, IconButton, Modal, Typography } from '@mui/material';
+import {Box, IconButton, Modal, Typography} from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 
 const modalStyle = {
@@ -15,14 +15,14 @@ const modalStyle = {
     borderRadius: 2, // Modal burchaklarini yumaloqlash
 };
 
-export const ImageModal = ({ open, onClose, imageUrl, description }) => {
+export const ImageModal = ({open, onClose, imageUrl, description}) => {
     return (
         <Modal open={open} onClose={onClose} aria-labelledby="image-modal-title">
             <Box sx={modalStyle}>
                 {/* Yopish tugmasi */}
-                <Box sx={{ display: 'flex', justifyContent: 'flex-end', width: '100%' }}>
+                <Box sx={{display: 'flex', justifyContent: 'flex-end', width: '100%'}}>
                     <IconButton onClick={onClose} aria-label="close">
-                        <CloseIcon />
+                        <CloseIcon/>
                     </IconButton>
                 </Box>
 
@@ -30,7 +30,7 @@ export const ImageModal = ({ open, onClose, imageUrl, description }) => {
                 <img
                     src={imageUrl}
                     alt="Modal"
-                    style={{ maxWidth: '100%', height: 'auto', borderRadius: 8 }}
+                    style={{maxWidth: '100%', height: 'auto', borderRadius: 8}}
                 />
 
                 {/* Matn */}

@@ -28,7 +28,7 @@ export const BASE_CONFIG = {
     doDelete: (api, id) => axios.delete(`${BASE_URL}${api}/${id}`, config),
     doDeleteSerial: (api, id) => axios.delete(`${BASE_URL}${api}${id}`, config),
     doPremyera: (api) => axios.put(`${BASE_URL}${api}`, {}, config),
-    doGetOne: (url, id) => axios.get(`${BASE_URL}${url}/${id}`,config)
+    doGetOne: (url, id) => axios.get(`${BASE_URL}${url}/${id}`, config)
 }
 
 

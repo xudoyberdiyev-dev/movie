@@ -13,10 +13,10 @@ export const APP_API = {
     downloadImage: '/files/image/',
     downloadVideo: '/files/video/',
     statistics: '/statistic',
-    newSerial:"/movie/new-serial",
-    deleteSerial:"/movie/serial-delete",
-    editeSerial:"/movie/serial-edite",
-    news:"/news",
-    complaintAllMessage:'/complaint/all-message',
-    complaint:'/complaint/delete'
+    newSerial: "/movie/new-serial",
+    deleteSerial: "/movie/serial-delete",
+    editeSerial: "/movie/serial-edite",
+    news: "/news",
+    complaintAllMessage: '/complaint/all-message',
+    complaint: '/complaint/delete'
 }
