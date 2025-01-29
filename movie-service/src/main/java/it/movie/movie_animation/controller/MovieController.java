@@ -76,6 +76,12 @@ public class MovieController implements MovieControllerImpl {
         return ResponseEntity.ok(movies);
     }
 
+    @PostMapping("/search")
+    private HttpEntity<?> searchMovie(@RequestParam String query) {
+        List<Movie> movies = movieRepository.findByNameContainingIgnoreCase(query);
+        return ResponseEntity.ok(movies);
+    }
+
 //    @GetMapping("/latest-by-subcategory")  eng ohirgi qoshilgan kinolar 100 ta boladigan bosa oshandan eng ohirgi 20 matasini get qiladi
 //    public HttpEntity<?> getBySubCategory(@RequestParam SubCategoryType subCategoryType) {
 //        List<Movie> movieList = movieRepository.findTop20BySubCategoryTypeOrderByCreatedAtDesc(subCategoryType);

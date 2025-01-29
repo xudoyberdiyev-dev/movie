@@ -8,7 +8,7 @@ export const getAllMovie = () => {
     const getAll = async () => {
         try {
             const res = await GetAuto(APP_API.getMovie, 'data');
-            setMovie(res.data.reverse().slice(0, 20));
+            setMovie(res.data.reverse().slice(0, 10));
         } catch (err) {
             console.log(err);
         }

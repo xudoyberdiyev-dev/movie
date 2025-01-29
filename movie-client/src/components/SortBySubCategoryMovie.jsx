@@ -3,6 +3,8 @@ import {APP_API} from "../service/AppApi.js";
 import {useNavigate} from "react-router-dom";
 
 export const SortBySubCategoryMovie = ({name, data, isMovie}) => {
+
+
     const renderMovies = (category) => {
         return (
             <MovieList data={data} category={category} isMovie={isMovie}/>
@@ -27,6 +29,14 @@ export const SortBySubCategoryMovie = ({name, data, isMovie}) => {
 
 }
 const MovieList = ({data, category, isMovie}) => {
+    const formatNumber = (num) => { // prasmotr uchun 1000 dan oshib ketsa k yoki M da chiqaradi 1.5k
+        if (num >= 1000000) {
+            return (num / 1000000).toFixed(1) + "M"; // 1.5M
+        } else if (num >= 1000) {
+            return (num / 1000).toFixed(1) + "k"; // 1.5k
+        }
+        return num; // Agar 1000 dan kam bo‘lsa, oddiy holatda qaytariladi
+    };
     const navigate = useNavigate();
     const oneMovie = (id) => {
         navigate("/movie-item/" + id);
@@ -54,7 +64,7 @@ const MovieList = ({data, category, isMovie}) => {
 
                     <div className="meta-list">
                         <div className="meta-item">
-                            <i></i> <span className="span">{item.seeSize}</span>
+                            <span className="span">{formatNumber(item.seeSize)}</span>
                         </div>
                         <div className="card-badge">{item.age.substring(1, 3)}+</div>
                     </div>
