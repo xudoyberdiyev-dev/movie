@@ -394,8 +394,6 @@ export const GetAllNews = ({data, getAll}) => {
                                 <TableCell align="center" colSpan={3}>
                                     <div style={{display: "flex", justifyContent: "center", gap: "30px"}}>
                                         <Button onClick={() => handleOpen()}><RemoveRedEyeIcon/></Button>
-                                        <Button
-                                            onClick={() => navigate(`/${ADMIN_URLS.addNwes}/${news.id}`)}><EditIcon/></Button>
                                         <Button onClick={() => deleteFunction(news.id)}><DeleteForeverIcon/></Button>
                                     </div>
                                 </TableCell>

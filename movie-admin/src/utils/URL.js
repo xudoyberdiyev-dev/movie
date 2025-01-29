@@ -8,7 +8,7 @@ export const ADMIN_URLS = {
     serialItem: `${ADMIN_URL}/serial-item`,
     settings: `${ADMIN_URL}/settings`,
     news: `${ADMIN_URL}/news`,
-    addNwes: `${ADMIN_URL}/news/add-news`,
+    addNews: `${ADMIN_URL}/news/add-news`,
     complaint: `${ADMIN_URL}/complaint`,
     profile: `${ADMIN_URL}/profile`
     // login:`/`,

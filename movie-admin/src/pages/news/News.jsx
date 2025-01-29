@@ -39,7 +39,7 @@ export const News = () => {
 
     return (
         <Grid sx={{width: "100%", margin: "0 auto", padding: "10px"}}>
-            <CardHeaders name={"Reklama va Yangliklar ro'yxati"} status={'save'} link={`/${ADMIN_URLS.addNwes}`}/>
+            <CardHeaders name={"Reklama va Yangliklar ro'yxati"} status={'save'} link={`/${ADMIN_URLS.addNews}`}/>
             {news.length !== 0 ? (
                 <>
                     <AuthBody name={"News"} data={currentNews} deleteFunction={true} getAll={getAll}/>

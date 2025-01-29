@@ -12,7 +12,6 @@ public interface NewsControllerImpl {
 
     HttpEntity<?> addNews(ReqNewsDto reqNewsDto);
 
-    HttpEntity<?>editeNews(ReqNewsDto reqNewsDto, UUID id);
 
     HttpEntity<?>deleteNews(UUID id);
 }

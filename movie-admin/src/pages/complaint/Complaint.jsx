@@ -53,7 +53,7 @@ export const Complaint = () => {
                     >
                         {loading
                             ? (complaint.length === 0
-                                ? "HOZIRDA SIKOYATLAR VA MUROJATLAR MAVJUD EMAS!!!"
+                                ? "HOZIRDA SHIKOYATLAR VA MUROJATLAR MAVJUD EMAS!!!"
                                 : " FOYDALANUVCHILARDAN KELGAN MUROJAT VA SHIKOYATLAR")
                             : <Loading/>
                         }

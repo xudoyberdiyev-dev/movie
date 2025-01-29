@@ -33,7 +33,7 @@ function App() {
                 <Route path={`/${ADMIN_URLS.addMovie}`} element={<AddMovie/>}/>
                 <Route path={`/${ADMIN_URLS.newMovie}`} element={<NewMovie/>}/>
                 <Route path={`/${ADMIN_URLS.news}`} element={<News/>}/>
-                <Route path={`/${ADMIN_URLS.addNwes}/:id`} element={<AddNews/>}/>
+                <Route path={`/${ADMIN_URLS.addNews}`} element={<AddNews/>}/>
                 <Route path={`/${ADMIN_URLS.complaint}`} element={<Complaint/>}/>
                 <Route path={`/${ADMIN_URLS.profile}`} element={<Profile/>}/>
                 <Route path={`/${ADMIN_URLS.settings}`} element={<Settings/>}/>

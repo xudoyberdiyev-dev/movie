@@ -46,12 +46,7 @@ public class NewsController implements NewsControllerImpl {
         return ResponseEntity.status(apiResponse.success() ? HttpStatus.CREATED : HttpStatus.CONFLICT).body(apiResponse);
     }
 
-    @Override
-    @PutMapping("/{id}")
-    public HttpEntity<?> editeNews(@RequestBody ReqNewsDto reqNewsDto, @PathVariable UUID id) {
-        ApiResponse apiResponse = newsService.editeNews(reqNewsDto, id);
-        return ResponseEntity.status(apiResponse.success() ? HttpStatus.OK : HttpStatus.CONFLICT).body(apiResponse);
-    }
+
 
     @Override
     @DeleteMapping("/{id}")

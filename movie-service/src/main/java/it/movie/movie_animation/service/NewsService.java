@@ -52,18 +52,6 @@ public class NewsService implements NewsServiceImpl {
 
     }
 
-    @Override
-    public ApiResponse editeNews(ReqNewsDto reqNewsDto, UUID id) {
-        try {
-            News news = newsRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("getNews"));
-            news.setName(reqNewsDto.name());
-            news.setImg(reqNewsDto.img());
-            newsRepository.save(news);
-            return new ApiResponse("News Taxrirlandi", true);
-        } catch (Exception e) {
-            return new ApiResponse("news taxrirlashda xatolik", false);
-        }
-    }
     // Har kuni soat 00:00 da ishga tushadi
     @Override
     @Scheduled(cron = "0 0 0 * * *")  // cron: Har kuni soat 00:00 da
