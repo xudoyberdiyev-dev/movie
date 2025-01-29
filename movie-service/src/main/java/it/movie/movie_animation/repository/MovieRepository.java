@@ -22,5 +22,7 @@ public interface MovieRepository extends JpaRepository<Movie, UUID> {
     List<Movie> findByGenresContaining(Genre genre);
 
     boolean existsByNameAndIdNot(String name, UUID id);
+
+    List<Movie> findTop20BySubCategoryTypeOrderByCreatedAtDesc(SubCategoryType subCategoryType);
 }
 

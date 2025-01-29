@@ -2,6 +2,7 @@ package it.movie.movie_animation.controller;
 
 import it.movie.movie_animation.entity.Movie;
 import it.movie.movie_animation.entity.enums.Genre;
+import it.movie.movie_animation.entity.enums.SubCategoryType;
 import it.movie.movie_animation.implment.controller.MovieControllerImpl;
 import it.movie.movie_animation.payload.ApiResponse;
 import it.movie.movie_animation.payload.ReqMovieDto;
@@ -70,6 +71,12 @@ public class MovieController implements MovieControllerImpl {
     public ResponseEntity<List<Movie>> getMoviesByGenre(@RequestParam Genre genre) {
         List<Movie> movies = movieService.getMoviesByGenre(genre);
         return ResponseEntity.ok(movies);
+    }
+
+    @GetMapping("/latest-by-subcategory")
+    public HttpEntity<?> getBySubCategory(@RequestParam SubCategoryType subCategoryType) {
+        List<Movie> movieList = movieRepository.findTop20BySubCategoryTypeOrderByCreatedAtDesc(subCategoryType);
+        return ResponseEntity.ok(movieList);
     }
 
     @Override
