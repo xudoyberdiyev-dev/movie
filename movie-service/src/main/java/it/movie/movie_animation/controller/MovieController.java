@@ -56,7 +56,7 @@ public class MovieController implements MovieControllerImpl {
     public HttpEntity<?> getOneMovie(@PathVariable UUID id, Authentication authentication) {
         Movie movie = movieRepository.findById(id).orElseThrow(() -> new RuntimeException("Movie not found"));
 
-        boolean isAdmin = authentication != null && authentication.getAuthorities().stream()
+        boolean isAdmin = authentication != null && authentication.getAuthorities().stream()//admin rolidagi odam got one qilsa admin panel dan seeSizega +1 bolmaydi
                 .map(GrantedAuthority::getAuthority)
                 .anyMatch(role -> role.equals("ADMIN"));
 
@@ -76,7 +76,7 @@ public class MovieController implements MovieControllerImpl {
         return ResponseEntity.ok(movies);
     }
 
-    @GetMapping("/search")
+    @GetMapping("/search") //bu kino nomi boyicha qidirganda kinolarni chiqarib beradi
     private HttpEntity<?> searchMovie(@RequestParam String query) {
         List<Movie> movies = movieRepository.findByNameContainingIgnoreCase(query);
         return ResponseEntity.ok(movies);

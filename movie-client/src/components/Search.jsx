@@ -70,50 +70,34 @@ export const Search = () => {
     };
 
     return (
-        <div className="search-box">
-            <div className="search-wrapper">
-                <input
-                    value={searchQuery}
-                    onChange={handleSearchChange}
-                    type="text"
-                    name="search"
-                    aria-label="search movies"
-                    className="search-field"
-                    placeholder="Search any movies..."
-                    autoComplete="off"
-                />
-                <img
-                    src={searchIcon}
-                    alt="search"
-                    width="24"
-                    height="24"
-                    className="loading-icon"
-                />
-            </div>
-            <button onClick={() => performSearch(searchQuery)}>Qidirish</button>
-            <button onClick={startVoiceSearch}>Ovoz bn</button>
-            <button className="search-btn">
-                <img src={closeIcon} width="24" height="24" alt="close search box"/>
-            </button>
-
-            {/* Modal */}
-            {isModalOpen && (
-                <div className="modal">
-                    <div className="modal-content">
-                        <button className="close-button" onClick={closeModal}>X</button>
-                        <h2>Natijalar:</h2>
-                        {movies.length > 0 ? (
-                            <ul>
-                                {movies.map((movie) => (
-                                    <li key={movie.id}>{movie.title}</li>
-                                ))}
-                            </ul>
-                        ) : (
-                            <p>Natijalar topilmadi.</p>
-                        )}
-                    </div>
+        <div>
+            <div className="search-box">
+                <div className="search-wrapper">
+                    <input
+                        value={searchQuery}
+                        onChange={handleSearchChange}
+                        type="text"
+                        name="search"
+                        aria-label="search movies"
+                        className="search-field"
+                        placeholder="Search any movies..."
+                        autoComplete="off"
+                    />
+                    <img
+                        src={searchIcon}
+                        alt="search"
+                        width="24"
+                        height="24"
+                        className="loading-icon"
+                    />
                 </div>
-            )}
+                {/*<button onClick={() => performSearch(searchQuery)}>Qidirish</button>*/}
+                {/*<button onClick={startVoiceSearch}>Ovoz bn</button>*/}
+                {/*<button onClick={() => setIsModalOpen(true)}>d</button>*/}
+                <button className="search-btn">
+                    <img src={closeIcon} width="24" height="24" alt="close search box"/>
+                </button>
+            </div>
         </div>
     );
 };

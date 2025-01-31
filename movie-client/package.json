@@ -13,13 +13,12 @@
     "axios": "^1.7.7",
     "fetch": "^1.1.0",
     "jwt-decode": "^4.0.0",
-    "mdb-ui-kit": "^8.1.0",
-    "react": "^18.3.1",
-    "react-hot-toast": "^2.4.1",
     "mdb-ui-kit": "^7.3.2",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-router-dom": "^6.26.1"
+    "react-hot-toast": "^2.4.1",
+    "react-router-dom": "^6.26.1",
+    "swiper": "^11.2.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.9.0",

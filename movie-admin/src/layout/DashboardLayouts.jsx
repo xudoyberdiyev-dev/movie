@@ -182,7 +182,7 @@ export const Layout = (props) => {
     const getMe = async () => {
         try {
             const res = await GetMe(navigate)
-            if (res.data.authorities.length < 5) {
+            if (res.data.authorities.length === 2) {
                 navigate("/dashboard")
             } else {
                 setRoles(res.data.authorities)
