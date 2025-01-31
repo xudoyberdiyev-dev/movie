@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
 import {APP_API} from "../service/AppApi.js";
-import {GetAuto, GetOneMovie} from "../service/userService/AppService.js";
+import {GetAuto} from "../service/userService/AppService.js";
 import {BASE_URL} from "../service/BaseUrl.js";
 import {Loading} from "../components/Loading.jsx";
 import buttonLogo from '../assets/images/play_circle.png'
@@ -46,9 +46,10 @@ export const Slider = () => {
                 {movie.length !== 0 ? (
                     <>
                         {movie.map((item, i) => (
-                            <div
-                                key={i}
-                                className={`slider-item ${currentIndex === i ? 'active' : ''}`}
+                            <div onClick={() => oneMovie(item.id)}
+                                 style={{cursor: "pointer"}}
+                                 key={i}
+                                 className={`slider-item ${currentIndex === i ? 'active' : ''}`}
                             >
                                 <img
                                     src={`${BASE_URL}${APP_API.downloadImage}${item.img}`}
@@ -67,8 +68,7 @@ export const Slider = () => {
                                     <p className="genre">
                                         {item.genres.slice(0, 8).join(' ')}
                                     </p>
-                                    <p className="banner-text">{item.description}</p>
-                                    <button className="btn">
+                                    <button className="btn" onClick={() => oneMovie(item.id)}>
                                         <img
                                             src={buttonLogo}
                                             width="24"
