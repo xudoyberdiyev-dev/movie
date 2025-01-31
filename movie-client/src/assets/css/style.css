@@ -573,7 +573,7 @@ body {
 
 .copyright a:is(:hover, :focus-visible){
   color: var(--primary);
-} 
+}
 
 .overlay {
   position: fixed;

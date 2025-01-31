@@ -41,7 +41,7 @@ input {
     color: #fff;
 }
 
-button {
+.button {
     background: #e50914;
     color: #fff;
     border: none;
@@ -51,8 +51,8 @@ button {
     cursor: pointer;
 }
 
-button:hover {
-    background: #f6121d;
+.button:hover {
+    /*background: #f6121d;*/
 }
 
 .options {

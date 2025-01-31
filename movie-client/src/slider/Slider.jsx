@@ -101,7 +101,7 @@ export const Slider = () => {
                         <button
                             key={i}
                             onClick={() => setCurrentIndex(i)}
-                            className="poster-box slider-item"
+                            className={`poster-box slider-item ${currentIndex === i ? 'active' : ''}`}
                         >
                             <img
                                 src={`${BASE_URL}${APP_API.downloadImage}${item.img}`}
