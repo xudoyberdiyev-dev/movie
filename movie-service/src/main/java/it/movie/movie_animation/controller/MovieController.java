@@ -12,6 +12,7 @@ import it.movie.movie_animation.repository.MovieRepository;
 import it.movie.movie_animation.service.MovieService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,6 +29,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class MovieController implements MovieControllerImpl {
     private final MovieService movieService;
+
     private final MovieRepository movieRepository;
 
     @Override
@@ -76,11 +78,12 @@ public class MovieController implements MovieControllerImpl {
         return ResponseEntity.ok(movies);
     }
 
-    @GetMapping("/search") //bu kino nomi boyicha qidirganda kinolarni chiqarib beradi
-    private HttpEntity<?> searchMovie(@RequestParam String query) {
-        List<Movie> movies = movieRepository.findByNameContainingIgnoreCase(query);
+    @GetMapping("/search")
+    private HttpEntity<?> searchMovie(@RequestParam(required = false) String search) {
+        List<Movie> movies = movieService.searchMovies(search);
         return ResponseEntity.ok(movies);
     }
+
 
 //    @GetMapping("/latest-by-subcategory")  eng ohirgi qoshilgan kinolar 100 ta boladigan bosa oshandan eng ohirgi 20 matasini get qiladi
 //    public HttpEntity<?> getBySubCategory(@RequestParam SubCategoryType subCategoryType) {

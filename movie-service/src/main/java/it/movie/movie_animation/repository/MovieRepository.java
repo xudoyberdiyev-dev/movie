@@ -7,10 +7,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.UUID;
-
+@Repository
 public interface MovieRepository extends JpaRepository<Movie, UUID> {
     boolean existsMovieByNameEqualsIgnoreCase(String name);
 
@@ -23,9 +24,9 @@ public interface MovieRepository extends JpaRepository<Movie, UUID> {
 
     boolean existsByNameAndIdNot(String name, UUID id);
 
-    List<Movie> findTop20BySubCategoryTypeOrderByCreatedAtDesc(SubCategoryType subCategoryType);
 
-    List<Movie> findByNameContainingIgnoreCase(String name); // Kino nomi bo‘yicha qidiruv
+    @Query("SELECT m FROM Movie m WHERE LOWER(m.name) LIKE LOWER(CONCAT('%', :name, '%'))")
+    List<Movie> searchByNameIgnoreCase(@Param("name") String name); // Kino nom
 
 
 }

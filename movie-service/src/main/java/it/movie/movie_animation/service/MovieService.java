@@ -34,6 +34,14 @@ public class MovieService implements MovieServiceImpl {
         return movieRepository.findByGenresContaining(genre);
     }
 
+    public List<Movie> searchMovies(String searchQuery) {
+        if (searchQuery == null || searchQuery.trim().isEmpty()) {
+            throw new IllegalArgumentException("Search query cannot be empty");
+        }
+
+        return movieRepository.searchByNameIgnoreCase(searchQuery);
+    }
+
     @Override
     public List<ResMovieDto> getMovie() {
         List<ResMovieDto> resMovieDtos = new ArrayList<>();

@@ -2,7 +2,7 @@ import {useEffect, useState} from "react";
 import axios from "axios";
 import {Link} from "react-router-dom";
 
-export const Genre = ({setMovies, setSelectedGenre}) => {
+export const Genre = () => {
     const [genres, setGenres] = useState([]);
     const getGenres = async () => {
         try {
