@@ -147,15 +147,15 @@ public class MovieController implements MovieControllerImpl {
         return ResponseEntity.status(apiResponse.success() ? HttpStatus.CREATED : HttpStatus.CONFLICT).body(apiResponse);
     }
 
-    @PostMapping("/{movieId}")
-    private HttpEntity<?> sendLike(@PathVariable UUID movieId, Authentication authentication) {
-        ApiResponse apiResponse = movieService.sendLike(movieId, authentication);
+    @PostMapping("/send-like/{id}")
+    public ResponseEntity<ApiResponse> sendLike(@PathVariable UUID id, Authentication authentication) {
+        ApiResponse apiResponse = movieService.sendLike(id, authentication);
         return ResponseEntity.status(apiResponse.success() ? HttpStatus.OK : HttpStatus.CONFLICT).body(apiResponse);
     }
 
-    @GetMapping("/{id}/like")
-    private HttpEntity<?> getLike(@PathVariable UUID id, Authentication authentication) {
-        ApiResponse like = movieService.getLike(id, authentication);
-        return ResponseEntity.status(like.success() ? HttpStatus.OK : HttpStatus.CONFLICT).body(like);
-    }
+//    @GetMapping("/like/{id}")
+//    private HttpEntity<?> getLike(@PathVariable UUID id, Authentication authentication) {
+//        ApiResponse like = movieService.getLike(id, authentication);
+//        return ResponseEntity.ok(like);
+//    }
 }

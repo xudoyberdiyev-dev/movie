@@ -7,18 +7,21 @@ import {BASE_URL} from "../../service/BaseUrl.js";
 import {APP_API} from "../../service/AppApi.js";
 import {Loading} from "../../components/Loading.jsx";
 import {RandomMovie} from "../randomMovie/RandomMovie.jsx";
-import yurak from '../../assets/images/yurakcha.png'
+import {BASE_CONFIG, BASE_CONFIG_CLIENT} from "../../service/BaseConfig.js";
+import toast from "react-hot-toast";
 
 export const MovieItem = () => {
+    const [liked, setLiked] = useState(false);
+    const [likeCount, setLikeCount] = useState(0);
     const [loading, setLoading] = useState(false)
     const [movie, setMovie] = useState({})
     const [videos, setVideos] = useState([])
     const id = useParams().id
+    const videoRef = useRef(null);
     const getOneMovie = async () => {
         try {
             const res = await GetOneMovie(id)
             setMovie(res)
-            console.log(res.data)
             setLoading(true)
         } catch (err) {
             console.log(err)
@@ -32,8 +35,25 @@ export const MovieItem = () => {
             console.log(err)
         }
     }
-    const videoRef = useRef(null);
-
+    const sendLike = async () => {
+        try {
+            const token = localStorage.getItem("token");
+            const res = await BASE_CONFIG_CLIENT.doPost(
+                `${APP_API.sendLike}/${id}`,
+                {}, // Yuborilishi kerak bo'lgan body (agar kerak bo'lsa)
+            );
+            // Agar `ApiResponse`ga yangi o'zgarish kiritgan bo'lsangiz, bu yerda qo'shimcha logika
+            setLiked(res.data.liked); // Like holatini yangilash (Agar siz `liked`ni qaytarsangiz)
+            setLikeCount(res.data.likeSize); // Like sonini yangilash (Agar siz `likeSize`ni qaytarsangiz)
+        } catch (error) {
+            console.error(error);
+            if (error.response && error.response.status === 403) {
+                toast.error("Ruxsat yo'q. Iltimos, tizimga kirganingizni tekshirib ko'ring.");
+            } else if (error.response && error.response.data.message === "Siz ro'yxatdan o'tmagansiz") {
+                toast.error("Siz ro'yxatdan o'tmagansiz");
+            }
+        }
+    };
     useEffect(() => {
         getOneMovie()
         getVideo()
@@ -74,10 +94,24 @@ export const MovieItem = () => {
 
                                 <div className="meta-list">
                                     <div className="meta-item">
-                                        <img src={yurak} width="35" height="35"
-                                             alt="rating"/>
-
-                                        <span className="span">7.8</span>
+                                        {/*<button*/}
+                                        {/*    onClick={()=>sendLike()}*/}
+                                        {/*    style={{color: liked ? 'red' : 'gray'}}*/}
+                                        {/*    disabled={!liked} // Like faqat royxatdan o'tgan foydalanuvchi uchun*/}
+                                        {/*>*/}
+                                        {/*    Like ({likeCount})*/}
+                                        {/*</button>*/}
+                                        <div>
+                                            <p>Likes: {likeCount}</p>
+                                            <button onClick={sendLike}>
+                                                {liked ? "Unlike" : "Like"}
+                                            </button>
+                                        </div>
+                                        {/*<button onClick={() => sendLike()}>*/}
+                                        {/*    <i className="fa-solid fa-heart fa-xl"*/}
+                                        {/*       style={{color: "#ff0000"}}></i>*/}
+                                        {/*</button>*/}
+                                        {/*<span className="span">1.1</span>*/}
                                     </div>
 
                                     <div className="separator"></div>
@@ -88,12 +122,10 @@ export const MovieItem = () => {
 
                                     <div className="separator"></div>
 
-                                    <div className="meta-item">{movie.movieYear}</div>
+                                    <div className="meta-item"><i
+                                        className={'fa-solid fa-calendar-days'}></i>{movie.movieYear}</div>
 
                                     <div className="separator"></div>
-
-                                    <div className="meta-item"><i className="fa-solid fa-stamp"></i></div>
-
                                     <div className="meta-item card-badge">{movie.age.substring(1, 3)}+</div>
 
                                 </div>

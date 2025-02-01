@@ -217,19 +217,21 @@ public class MovieService implements MovieServiceImpl {
         }
 
         String email = authentication.getName();
-
         UserDetails userDetails = authRepository.findByEmail(email);
 
-        Movie movie = movieRepository.findById(movieId).orElseThrow(() -> new ResourceNotFoundException("get movie"));
+        Movie movie = movieRepository.findById(movieId)
+                .orElseThrow(() -> new ResourceNotFoundException("Movie not found"));
 
         Optional<Like> existingLike = likeRepository.findByMovieAndUsers(movie, (Users) userDetails);
         boolean liked;
 
         if (existingLike.isPresent()) {
+            // Remove like
             likeRepository.delete(existingLike.get());
             movie.setLikeSize(movie.getLikeSize() - 1);
             liked = false;
         } else {
+            // Add new like
             Like like = new Like();
             like.setMovie(movie);
             like.setUsers((Users) userDetails);
@@ -238,26 +240,35 @@ public class MovieService implements MovieServiceImpl {
             movie.setLikeSize(movie.getLikeSize() + 1);
             liked = true;
         }
-        movieRepository.save(movie);
-        new LikeDto(movieId, liked, movie.getLikeSize());
-        return new ApiResponse("Like bosildi ", true);
+
+        movieRepository.save(movie); // Update the movie
+
+        // Faqat message va success qaytaring
+        return new ApiResponse("Like bosildi", true);
     }
 
-    public ApiResponse getLike(@PathVariable UUID id, Authentication authentication) {
-        Movie movie = movieRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("get movie"));
-        boolean liked = false;
-        if (authentication != null && authentication.isAuthenticated()) {
-            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-            String email = userDetails.getUsername(); // `username` email sifatida ishlatilmoqda
-            UserDetails byEmail = authRepository.findByEmail(email);
-            Optional<Like> byMovieAndUsers = likeRepository.findByMovieAndUsers(movie, (Users) byEmail);
+//    public ApiResponse getLike(UUID movieId, Authentication authentication) {
+//        // Movie olish
+//        Movie movie = movieRepository.findById(movieId).orElseThrow(() -> new ResourceNotFoundException("get movie"));
+//        boolean liked = false;
+//
+//        // Agar foydalanuvchi autentifikatsiya qilgan bo'lsa, like holatini tekshiramiz
+//        if (authentication != null && authentication.isAuthenticated()) {
+//            String email = authentication.getName();
+//            UserDetails userDetails = authRepository.findByEmail(email);
+//
+//            // Foydalanuvchi va film o'rtasidagi "like" tekshirish
+//            Optional<Like> existingLike = likeRepository.findByMovieAndUsers(movie, (Users) userDetails);
+//            liked = existingLike.isPresent();
+//        }
+//
+//        // "Like" soni va holatini olish
+//        LikeDto likeDto = new LikeDto(movieId, liked, movie.getLikeSize());
+//
+//        // Javobni qaytarish
+//        return new ApiResponse("Like holati tekshirildi", true);
+//    }
 
-            liked = byMovieAndUsers.isPresent(); // Agar lik
-        }
-        LikeDto likeDto = new LikeDto(id, liked, movie.getLikeSize());
-        return new ApiResponse("like holati tekshirildi", true);
-
-    }
 
 }
 
