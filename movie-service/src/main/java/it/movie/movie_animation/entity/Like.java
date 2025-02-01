@@ -16,11 +16,11 @@ import lombok.*;
 public class Like extends AbsEntity {
 
     @ManyToOne
-    @JoinColumn(name = "movie_id")
-    private Movie movie;
+    @JoinColumn(name = "user_id", nullable = false)
+    private Users users; // Like qilgan foydalanuvchi
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
-    private Users users;
+    @JoinColumn(name = "movie_id", nullable = false)
+    private Movie movie; // Like qilingan kino
 
 }

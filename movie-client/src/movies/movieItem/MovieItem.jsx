@@ -8,33 +8,18 @@ import {APP_API} from "../../service/AppApi.js";
 import {Loading} from "../../components/Loading.jsx";
 import {RandomMovie} from "../randomMovie/RandomMovie.jsx";
 import yurak from '../../assets/images/yurakcha.png'
-import {BASE_CONFIG, BASE_CONFIG_CLIENT} from "../../service/BaseConfig.js";
-import toast from "react-hot-toast";
 
 export const MovieItem = () => {
-    const [liked, setLiked] = useState(false);
-    const [likeCount, setLikeCount] = useState(0);
     const [loading, setLoading] = useState(false)
     const [movie, setMovie] = useState({})
     const [videos, setVideos] = useState([])
     const id = useParams().id
-    const videoRef = useRef(null);
-
-
     const getOneMovie = async () => {
         try {
             const res = await GetOneMovie(id)
             setMovie(res)
+            console.log(res.data)
             setLoading(true)
-        } catch (err) {
-            console.log(err)
-        }
-    }
-    const getLike = async () => {
-        try {
-            const res = await GetAuto(`${APP_API.getLike}/${id}`)
-            setLiked(res.data.data.liked)
-            setLiked(res.data.data.likeSize)
         } catch (err) {
             console.log(err)
         }
@@ -47,28 +32,11 @@ export const MovieItem = () => {
             console.log(err)
         }
     }
-
-    const sendLike = async () => {
-        try {
-            const res = await BASE_CONFIG_CLIENT.doPost(`${APP_API.sendLike}/${id}`)
-            if (res.status === 200 || res.status === 201 || res.status === 204) {
-                setLiked(!liked);
-                setLikeCount(liked ? likeCount - 1 : likeCount + 1);
-                toast.success(liked ? "Like olib tashlandi" : "Like bosildi");
-            } else {
-                toast.error(res.data.message);
-            }
-        } catch (e) {
-            console.log(e)
-            toast.error("Siz royxatdan otmagansz");
-        }
-    }
-
+    const videoRef = useRef(null);
 
     useEffect(() => {
         getOneMovie()
         getVideo()
-        getLike()
     }, []);
     return (<div>
         <Header/>
@@ -106,15 +74,10 @@ export const MovieItem = () => {
 
                                 <div className="meta-list">
                                     <div className="meta-item">
-                                        <button onClick={sendLike} className={`like-button ${liked ? 'liked' : ''}`}>
-                                            {liked ? 'Liked' : 'Like'}
-                                        </button>
-                                        <p>{likeCount} likes</p>
-                                        {/*<button onClick={() => sendLike()}>*/}
-                                        {/*    <i onClick={() => sendLike()} className="fa-solid fa-heart fa-xl"*/}
-                                        {/*       style={{color: "#ff0000"}}></i>*/}
-                                        {/*</button>*/}
-                                        {/*<span className="span">{likeCount}</span>*/}
+                                        <img src={yurak} width="35" height="35"
+                                             alt="rating"/>
+
+                                        <span className="span">7.8</span>
                                     </div>
 
                                     <div className="separator"></div>
@@ -125,12 +88,11 @@ export const MovieItem = () => {
 
                                     <div className="separator"></div>
 
-                                    <div className="meta-item"><i
-                                        className={'fa-solid fa-calendar-days'}></i>{movie.movieYear}</div>
+                                    <div className="meta-item">{movie.movieYear}</div>
 
                                     <div className="separator"></div>
 
-                                    {/*<div className="meta-item"><i className="fa-solid fa-stamp"></i></div>*/}
+                                    <div className="meta-item"><i className="fa-solid fa-stamp"></i></div>
 
                                     <div className="meta-item card-badge">{movie.age.substring(1, 3)}+</div>
 

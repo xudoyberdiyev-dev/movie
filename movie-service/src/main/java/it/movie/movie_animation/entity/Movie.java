@@ -56,17 +56,16 @@ public class Movie extends AbsEntity {
     @Enumerated(EnumType.STRING)
     private Age age; //yosh chegarasi
 
+
     @ElementCollection
     @CollectionTable(name = "movie_genres", joinColumns = @JoinColumn(name = "movie_id"))
     @Enumerated(EnumType.STRING)
     private List<Genre> genres;
 
-    @OneToMany
-    private Set<Like> likes;
 
-    private double seeSize = 0; // nechi kishi kurganini pasmotr
+    private double seeSize =0; // nechi kishi kurganini pasmotr
 
-    private int likeSize = 0; // film yoqti bosganda buton soni 1 taga oshadi
+    private int likeSize  =0; // film yoqti bosganda buton soni 1 taga oshadi
 
 
     private boolean active; // bu kino yangimi va premyeralar oynasiga chiqsinmi
