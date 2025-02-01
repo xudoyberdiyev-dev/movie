@@ -12,4 +12,6 @@ export const APP_API = {
     register: "/auth/register",
     login: '/auth/login',
     getMe: '/auth/get-me',
+    getLike: '/movie/like',
+    sendLike: '/movie/send-like'
 }

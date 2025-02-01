@@ -64,7 +64,7 @@ const MovieList = ({data, category, isMovie}) => {
 
                     <div className="meta-list">
                         <div className="meta-item">
-                            <span className="span">{formatNumber(item.seeSize)}</span>
+                            <span className="span">{formatNumber(Math.ceil(item.seeSize))}</span>
                         </div>
                         <div className="card-badge">{item.age.substring(1, 3)}+</div>
                     </div>
