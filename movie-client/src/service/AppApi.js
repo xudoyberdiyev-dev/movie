@@ -12,6 +12,7 @@ export const APP_API = {
     register: "/auth/register",
     login: '/auth/login',
     getMe: '/auth/get-me',
-    likeSendMovie:'/movie/like-send'
+    likeSendMovie:'/movie/like-send',
+    likeStatus:'/movie/likeStatus'
 
 }

@@ -46,22 +46,23 @@ export const LoginHandler = async (data, navigate) => {
     }
     try {
         const res = await BASE_CONFIG.doPost(APP_API.login, data);
-        if (res.data && res.data.success) {
+        if (res.data && res.data.accessToken) {
+            // Tokenni localStorage-ga saqlash
             localStorage.setItem("token", res.data.accessToken);
             localStorage.setItem("id", res.data.id); // ID ni saqlash
             toast.success("Hush kelibsiz");
 
-            // GetMe funksiyasini chaqirib foydalanuvchi ma'lumotlarini tekshirish
-            await GetMe(navigate);
-            navigate("/cabinet");
+            // Foydalanuvchi ma'lumotlarini olish
+            const user = await GetMe(navigate);
+            if (user) {
+                navigate("/cabinet");
+            }
         }
     } catch (err) {
         console.error("LoginHandler xatosi:", err);
         toast.error("Hisob mavjud emas");
     }
 };
-
-
 export const GetMe = async (navigate) => {
     const token = localStorage.getItem("token");
     if (!token) {
@@ -75,6 +76,8 @@ export const GetMe = async (navigate) => {
         if (!email) {
             throw new Error("Tokenda email mavjud emas");
         }
+
+        // Serverga so'rov yuborish
         const user = await BASE_CONFIG.doGet(APP_API.getMe + "/" + email);
         if (user && user.id) {
             localStorage.setItem("id", user.id); // Foydalanuvchi ID sini saqlash

@@ -253,6 +253,10 @@ public class MovieService implements MovieServiceImpl {
         return new ApiResponse("Like send", true, movie.getLikeSize());
     }
 
+//    public boolean isMovieLikedByUser(UUID movieId, UUID userId) {
+//        // Foydalanuvchi va filmga oid like holatini tekshirish
+//        return likeRepository.existsByMovieIdAndUserId(movieId, userId);
+//    }
 
 }
 

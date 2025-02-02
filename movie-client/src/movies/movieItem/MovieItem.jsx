@@ -34,9 +34,17 @@ export const MovieItem = ({userId}) => {
         setLiked(isLiked === "true");
     };
 
+    const getVideo = async () => {
+        try {
+            const res = await GetAuto(`${APP_API.newSerial}/${id}`)
+            setVideos(res.data)
+        } catch (err) {
+            console.log(err)
+        }
+    }
     const sendLike = async (action) => {
         try {
-            await BASE_CONFIG_CLIENT.doPost(`${APP_API.likeSendMovie}/${id}/${action}?userId=${userId}`, '');  // API chaqiruvi
+            await BASE_CONFIG_CLIENT.doPost(`${APP_API.likeSendMovie}/${id}/${action}?userId=${userId}`, '');
             localStorage.setItem(`!__liked__!${movie.id}`, action === "like" ? "true" : "false");
             setLiked(action === "like");
             await getOneMovie()
@@ -55,19 +63,12 @@ export const MovieItem = ({userId}) => {
             console.error("Error updating seeSize", err);
         }
     };
-    const getVideo = async () => {
-        try {
-            const res = await GetAuto(`${APP_API.newSerial}/${id}`)
-            setVideos(res.data)
-        } catch (err) {
-            console.log(err)
-        }
-    }
+
     useEffect(() => {
-        getOneMovie()
-        getVideo()
-        getLikeMovieUser()
-    }, []);
+        getOneMovie();
+        getVideo();
+        getLikeMovieUser(); // Like holatini localStorage'dan oling
+    }, [movie.id]); // movie.id ga asoslanib yana ishlashi
     return (<div>
         <Header/>
         <main>
@@ -105,8 +106,7 @@ export const MovieItem = ({userId}) => {
                                 <div className="meta-list">
                                     <div className="meta-item">
                                         <button onClick={() => sendLike(liked ? "unlike" : "like")}>
-                                            <i
-                                                className={`${liked ? 'fa-solid' : 'fa-regular'} fa-heart fa-xl`}
+                                            <i className={`${liked ? 'fa-solid' : 'fa-regular'} fa-heart fa-xl`}
                                                 style={{color: liked ? '#ff0000' : '#fff'}}
                                             ></i>
                                         </button>

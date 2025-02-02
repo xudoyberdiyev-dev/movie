@@ -4,10 +4,7 @@ import it.movie.movie_animation.entity.Movie;
 import it.movie.movie_animation.entity.enums.Genre;
 import it.movie.movie_animation.entity.enums.SubCategoryType;
 import it.movie.movie_animation.implment.controller.MovieControllerImpl;
-import it.movie.movie_animation.payload.ApiResponse;
-import it.movie.movie_animation.payload.ReqMovieDto;
-import it.movie.movie_animation.payload.ReqVideoDto;
-import it.movie.movie_animation.payload.ResVideoDto;
+import it.movie.movie_animation.payload.*;
 import it.movie.movie_animation.repository.MovieRepository;
 import it.movie.movie_animation.service.MovieService;
 import jakarta.transaction.Transactional;
@@ -142,4 +139,11 @@ public class MovieController implements MovieControllerImpl {
         ApiResponse apiResponse = movieService.sendLike(id, userId, action);
         return ResponseEntity.status(apiResponse.isSuccess() ? HttpStatus.OK : HttpStatus.CONFLICT).body(apiResponse);
     }
+
+//    @GetMapping("/likeStatus/{movieId}")
+//    public ResponseEntity<?> getLikeStatus(@PathVariable UUID movieId, @RequestParam UUID userId) {
+//        // Serverda like holatini tekshirib qaytarish
+//        boolean isLiked = movieService.isMovieLikedByUser(movieId, userId);
+//        return ResponseEntity.ok(new LikeDto(isLiked));
+//    }
 }
