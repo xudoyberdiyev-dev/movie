@@ -10,6 +10,8 @@ public class ApiResponse {
     private boolean success;
     private UUID id;
 
+    private int likeSize;
+
     public ApiResponse(String message, boolean success) {
         this.message = message;
         this.success = success;
@@ -19,5 +21,11 @@ public class ApiResponse {
         this.message = message;
         this.success = success;
         this.id = id;
+    }
+
+    public ApiResponse(String message, boolean success, int likeSize) {
+        this.message = message;
+        this.success = success;
+        this.likeSize = likeSize;
     }
 }

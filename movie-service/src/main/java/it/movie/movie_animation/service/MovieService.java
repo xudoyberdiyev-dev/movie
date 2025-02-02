@@ -1,6 +1,6 @@
 package it.movie.movie_animation.service;
 
-import it.movie.movie_animation.entity.Like;
+import it.movie.movie_animation.entity.LikeMovie;
 import it.movie.movie_animation.entity.Movie;
 import it.movie.movie_animation.entity.Users;
 import it.movie.movie_animation.entity.Video;
@@ -212,43 +212,41 @@ public class MovieService implements MovieServiceImpl {
     }
 
     public ApiResponse sendLike(UUID movieId, UUID userId, String action) {
-        // Foydalanuvchini topish
+        // Foydalanuvchi va kino topish
         Users user = authRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        // Kinoni topish
         Movie movie = movieRepository.findById(movieId)
                 .orElseThrow(() -> new RuntimeException("Movie not found"));
 
-        // Foydalanuvchi kinoga like qo'yganligini tekshirish
-        Optional<Like> existingLike = likeRepository.findByUserAndMovie(user, movie);
+        Optional<LikeMovie> existingLike = likeRepository.findByUserAndMovie(user, movie);
 
+        // Like qo'shish yoki olib tashlash
         if ("like".equalsIgnoreCase(action)) {
-            if (existingLike.isPresent()) {
-                // Agar like mavjud bo'lsa, like o'chiriladi
-                likeRepository.delete(existingLike.get());
-                movie.setLikeSize(movie.getLikeSize() - 1);  // Like sonini kamaytirish
-                movie.setActive(false);  // Kino rangini qaytarish (like bo'lmagan)
-            } else {
-                // Agar like mavjud bo'lmasa, like qo'shiladi
-                Like newLike = new Like();
-                newLike.setUser(user);
-                newLike.setMovie(movie);
-                likeRepository.save(newLike);
-                movie.setLikeSize(movie.getLikeSize() + 1);  // Like sonini oshirish
-                movie.setActive(true);  // Kino rangini o'zgartirish (like bo'ldi)
-            }
-        } else if ("unlike".equalsIgnoreCase(action)) {
-            // Agar like olib tashlansa
             if (existingLike.isPresent()) {
                 likeRepository.delete(existingLike.get());
                 movie.setLikeSize(movie.getLikeSize() - 1);
-                movie.setActive(false);
+                movie.setActiveLike(false);
+            } else {
+                LikeMovie newLike = new LikeMovie();
+                newLike.setUser(user);
+                newLike.setMovie(movie);
+                likeRepository.save(newLike);
+                movie.setLikeSize(movie.getLikeSize() + 1);
+                movie.setActiveLike(true);
+            }
+        } else if ("unlike".equalsIgnoreCase(action)) {
+            if (existingLike.isPresent()) {
+                likeRepository.delete(existingLike.get());
+                movie.setLikeSize(movie.getLikeSize() - 1);
+                movie.setActiveLike(false);
             }
         }
 
         movieRepository.save(movie);
-        return new ApiResponse("Like bosildi", true);
+
+        // To'g'ri formatda ApiResponse qaytarish
+        return new ApiResponse("Like send", true, movie.getLikeSize());
     }
 
 }

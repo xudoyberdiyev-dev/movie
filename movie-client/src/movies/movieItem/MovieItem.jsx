@@ -11,9 +11,6 @@ import {BASE_CONFIG, BASE_CONFIG_CLIENT} from "../../service/BaseConfig.js";
 import toast from "react-hot-toast";
 
 export const MovieItem = ({userId}) => {
-    const [liked, setLiked] = useState(false); // Like holatini boshqarish
-    const [likesCount, setLikesCount] = useState(0); // Like sonini boshqarish
-
     const [loading, setLoading] = useState(false)
     const [movie, setMovie] = useState({})
     const [videos, setVideos] = useState([])
@@ -28,16 +25,23 @@ export const MovieItem = ({userId}) => {
             console.log(err)
         }
     }
-    const sendLike = async () => {
+    const sendLike = async (action) => {
         try {
-            const url = `${APP_API.movie}/${movieId}/${liked ? 'unlike' : 'like'}?userId=${userId}`;
-            await BASE_CONFIG.doPost(url, '');  // API chaqiruvi
+            const url = `${APP_API.movie}/${id}/${action}?userId=${userId}`;
+            const response = await BASE_CONFIG.doPost(url, '');  // API chaqiruvi
 
-            // Like holatini va like sonini yangilash
-            setLiked(prev => !prev);
-            setLikesCount(prev => (liked ? prev - 1 : prev + 1));
+            console.log(response);  // response ni tekshirib chiqing
+
+            if (response.success) {
+                // Agar like bo'lsa
+                if (action === "like") {
+                    setActiveLike(true);
+                } else {
+                    setActiveLike(false);
+                }
+            }
         } catch (err) {
-            console.log("Error updating like", err);
+            console.error("Error updating like", err);
         }
     };
 
@@ -90,7 +94,13 @@ export const MovieItem = ({userId}) => {
 
                                 <div className="meta-list">
                                     <div className="meta-item">
-
+                                        <button
+                                            onClick={() => sendLike(movie.activeLike ? "unlike" : "like")}
+                                            className={`like-btn ${movie.activeLike ? "liked" : ""}`}
+                                        >
+                                            {movie.activeLike ? "Unlike" : "Like"}
+                                        </button>
+                                        <div>{movie.likeSize}</div>
                                         {/*<button*/}
                                         {/*    onClick={()=>sendLike()}*/}
                                         {/*    style={{color: liked ? 'red' : 'gray'}}*/}

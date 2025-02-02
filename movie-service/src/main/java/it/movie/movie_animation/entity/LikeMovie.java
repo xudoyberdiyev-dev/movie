@@ -13,7 +13,7 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 @Entity
-public class Like extends AbsEntity {
+public class LikeMovie extends AbsEntity {
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
