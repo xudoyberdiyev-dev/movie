@@ -211,46 +211,7 @@ public class MovieService implements MovieServiceImpl {
         }
     }
 
-    public void likeMovie(UUID movieId, UUID userId) {
-        Users user = authRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
-        Movie movie = movieRepository.findById(movieId).orElseThrow(() -> new RuntimeException("Movie not found"));
 
-        // Like mavjudligini tekshirish
-        if (likeRepository.findByUserAndMovie(user, movie).isPresent()) {
-            throw new RuntimeException("User already liked this movie");
-        }
-
-        // Like qo'shish
-        Like like = new Like();
-        like.setUser(user);
-        like.setMovie(movie);
-        likeRepository.save(like);
-
-        // Likelar sonini yangilash
-        movie.setLikes(movie.getLikes() + 1);
-        movieRepository.save(movie);
-    }
-
-    public void unlikeMovie(UUID movieId, UUID userId) {
-        Users user = authRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
-        Movie movie = movieRepository.findById(movieId).orElseThrow(() -> new RuntimeException("Movie not found"));
-
-        // Like ni topish
-        Like like = likeRepository.findByUserAndMovie(user, movie)
-                .orElseThrow(() -> new RuntimeException("Like not found"));
-
-        // Like ni o'chirish
-        likeRepository.delete(like);
-
-        // Likelar sonini yangilash
-        movie.setLikes(movie.getLikes() - 1);
-        movieRepository.save(movie);
-    }
-
-    public int getLikesCount(UUID movieId) {
-        Movie movie = movieRepository.findById(movieId).orElseThrow(() -> new RuntimeException("Movie not found"));
-        return movie.getLikes();
-    }
 
 
 }

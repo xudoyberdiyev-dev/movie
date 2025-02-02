@@ -27,27 +27,31 @@ export const MovieItem = ({userId}) => {
             console.log(err)
         }
     }
-    const getLike = async () => {
+    const getLikeData = async () => {
         try {
-            const res = await BASE_CONFIG.doGet(`${APP_API.movie}/${id}/likes`)
-            setLikesCount(res.data)
-            const resp = await BASE_CONFIG.doGet(`${APP_API.movie}/${id}/check-like?userId=${userId}`)
-            setLiked(resp.data)
+            // Likelar sonini olish
+            const res = await BASE_CONFIG.doGet(`${APP_API.movie}/${id}/likes`);
+            setLikesCount(res.data);
+
+            // Foydalanuvchi like bosganmi yoki yo‘q?
+            const resp = await BASE_CONFIG.doGet(`${APP_API.movie}/${id}/check-like?userId=${userId}`);
+            setLiked(resp.data);
         } catch (err) {
-            console.log(err)
+            console.log("Error fetching like data", err);
         }
-    }
+    };
+
     const sendLike = async () => {
-        if (liked) {
-            await BASE_CONFIG_CLIENT.doPost(`${APP_API.movie}/${id}/unlike?userId=${userId}`, '')
-            setLiked(false)
-            setLikesCount(likesCount - 1)
-        } else {
-            await BASE_CONFIG_CLIENT.doPost(`${APP_API.movie}/${id}/like?userId=${userId}`, '')
-            setLiked(true)
-            setLikesCount(likesCount + 1)
+        try {
+            const url = `${APP_API.movie}/${id}/${liked ? 'unlike' : 'like'}?userId=${userId}`;
+            await BASE_CONFIG.doPost(url, '');
+
+            setLiked(prev => !prev);
+            setLikesCount(prev => (liked ? prev - 1 : prev + 1));
+        } catch (err) {
+            console.log("Error updating like", err);
         }
-    }
+    };
     const getVideo = async () => {
         try {
             const res = await GetAuto(`${APP_API.newSerial}/${id}`)
@@ -59,7 +63,7 @@ export const MovieItem = ({userId}) => {
     useEffect(() => {
         getOneMovie()
         getVideo()
-        getLike()
+        getLikeData()
     }, []);
     return (<div>
         <Header/>

@@ -30,10 +30,10 @@ public class SecurityConfig {
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers(HttpMethod.POST, "/api/v1/auth/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/v1/auth/**","/api/v1/movie/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/v1/auth/get-me/**", "/api/v1/genre", "/api/v1/movie/**", "/api/v1/movie/list", "/api/v1/movie/random", "/api/v1/genres", "/api/v1/files/**", "/api/v1/movie/active/**", "/api/v1/movie/by-genre/**", "/api/v1/movie/new-serial/**", "/api/v1/movie/like/**").permitAll()
                         .requestMatchers("/api/v1/movie/**", "/api/v1/files/upload", "/api/v1/statistic", "/api/v1/news", "/api/v1/news/archive", "/api/v1/complaint/all-message", "/api/v1/complaint/delete/**").hasAuthority(RoleName.ADMIN.name())
-                        .requestMatchers("/api/v1/news/active", "/api/v1/complaint/send", "/api/v1/movie/**", "/api/v1/comment/**", "/api/v1/movie/send-like/**").hasAuthority(RoleName.USER.name())
+                        .requestMatchers("/api/v1/news/active", "/api/v1/complaint/send", "/api/v1/movie/**", "/api/v1/comment/**").hasAuthority(RoleName.USER.name())
                         .anyRequest().authenticated())
                 .build();
     }

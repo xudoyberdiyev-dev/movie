@@ -28,7 +28,7 @@ export const RegisterHandler = async (data, navigate) => {
 
             // Login qilish
             const loginData = {email: data.email, password: data.password};
-            await LoginHandler(loginData, navigate); // Ro'yxatdan so'ng login qilish
+            await LoginHandler(loginData, navigate); // Ro'yxatdan  so'ng login qilish
         } else {
             toast.error(res.data.message || "Ro'yxatdan o'tishda xatolik yuz berdi");
         }
