@@ -56,7 +56,7 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<ApiResponse> signUp(@RequestBody @Valid SignUpDto data) {
-        ApiResponse response = service.signUp(data);
-        return ResponseEntity.status(response.isSuccess() ? HttpStatus.OK : HttpStatus.BAD_REQUEST).body(response);
+        ResponseEntity<ApiResponse> apiResponseResponseEntity = service.signUp(data);
+        return ResponseEntity.ok(apiResponseResponseEntity).getBody();
     }
 }

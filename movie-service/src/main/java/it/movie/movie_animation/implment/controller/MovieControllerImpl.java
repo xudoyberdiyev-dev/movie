@@ -27,7 +27,7 @@ public interface MovieControllerImpl {
 
     HttpEntity<?> getRandomMovies(int count);
 
-    HttpEntity<?> getOneMovie(UUID id, Authentication authentication);
+    HttpEntity<?> getOneMovie(UUID id);
 
     ResponseEntity<List<Movie>> getMoviesByGenre(Genre genre);
 

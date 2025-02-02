@@ -18,34 +18,36 @@ export const MovieItem = ({userId}) => {
     const videoRef = useRef(null);
     const getOneMovie = async () => {
         try {
-            const res = await GetOneMovie(id)
-            setMovie(res)
-            setLoading(true)
+            const res = await GetOneMovie(id);
+            setMovie(prevMovie => ({
+                ...res,
+                seeSize: prevMovie.seeSize // Eski ko‘rishlar sonini saqlab qolish
+            }));
+            setLoading(true);
         } catch (err) {
-            console.log(err)
-        }
-    }
-    const sendLike = async (action) => {
-        try {
-            const url = `${APP_API.movie}/${id}/${action}?userId=${userId}`;
-            const response = await BASE_CONFIG.doPost(url, '');  // API chaqiruvi
-
-            console.log(response);  // response ni tekshirib chiqing
-
-            if (response.success) {
-                // Agar like bo'lsa
-                if (action === "like") {
-                    setActiveLike(true);
-                } else {
-                    setActiveLike(false);
-                }
-            }
-        } catch (err) {
-            console.error("Error updating like", err);
+            console.log(err);
         }
     };
-
-
+    const sendLike = async (action) => {
+        try {
+            const url = `${APP_API.likeSendMovie}/${id}/${action}?userId=${userId}`;
+            await BASE_CONFIG_CLIENT.doPost(url, '');  // API chaqiruvi
+            await getOneMovie()
+        } catch (err) {
+            toast.error('Like bosish uchun royxatdan oting')
+        }
+    };
+    const handleVideoPlay = async () => {
+        try {
+            await BASE_CONFIG.doPost(`${APP_API.movie}/${id}/see-size`);
+            setMovie(prevMovie => ({
+                ...prevMovie,
+                seeSize: prevMovie.seeSize + 0.5 // UI da ham real-time yangilab turish
+            }));
+        } catch (err) {
+            console.error("Error updating seeSize", err);
+        }
+    };
     const getVideo = async () => {
         try {
             const res = await GetAuto(`${APP_API.newSerial}/${id}`)
@@ -94,26 +96,16 @@ export const MovieItem = ({userId}) => {
 
                                 <div className="meta-list">
                                     <div className="meta-item">
-                                        <button
-                                            onClick={() => sendLike(movie.activeLike ? "unlike" : "like")}
-                                            className={`like-btn ${movie.activeLike ? "liked" : ""}`}
-                                        >
-                                            {movie.activeLike ? "Unlike" : "Like"}
+                                        <button onClick={() => sendLike(movie.activeLike ? "unlike" : "like")}>
+                                            <i
+                                                className={`${movie.activeLike ? 'fa-solid' : 'fa-regular'} fa-heart fa-xl`}
+                                                style={{color: movie.activeLike ? '#ff0000' : '#fff'}}
+                                            ></i>
+                                            {/*<i className=" fa-heart fa-xl" style={{color: "#fff"}}></i>*/}
                                         </button>
-                                        <div>{movie.likeSize}</div>
-                                        {/*<button*/}
-                                        {/*    onClick={()=>sendLike()}*/}
-                                        {/*    style={{color: liked ? 'red' : 'gray'}}*/}
-                                        {/*    disabled={!liked} // Like faqat royxatdan o'tgan foydalanuvchi uchun*/}
-                                        {/*>*/}
-                                        {/*    Like ({likeCount})*/}
-                                        {/*</button>*/}
-
-                                        {/*<button onClick={() => sendLike()}>*/}
-                                        {/*    <i className="fa-solid fa-heart fa-xl"*/}
-                                        {/*       style={{color: "#ff0000"}}></i>*/}
-                                        {/*</button>*/}
-                                        {/*<span className="span">1.1</span>*/}
+                                        <div></div>
+                                        <div></div>
+                                        <span className="span">{movie.likeSize}</span>
                                     </div>
 
                                     <div className="separator"></div>
@@ -189,7 +181,7 @@ export const MovieItem = ({userId}) => {
                                 <div className="slider-inner">
                                     <div className="video-card">
 
-                                        <video frameBorder="0" ref={videoRef}
+                                        <video onPlay={handleVideoPlay} frameBorder="0" ref={videoRef}
                                                allowFullScreen="1" title="Billion with a B" className="img-cover"
                                                loading="lazy" width="500" height="294" controls>
                                             <source src={`${BASE_URL}${APP_API.downloadVideo}${movie.video}`}
@@ -207,7 +199,7 @@ export const MovieItem = ({userId}) => {
                                                 <div className="video-card" style={{position: 'relative'}}>
                                                     <div
                                                         style={{position: 'absolute', margin: '8px'}}>{item.title}</div>
-                                                    <video frameBorder="0" ref={videoRef}
+                                                    <video onPlay={handleVideoPlay} frameBorder="0" ref={videoRef}
                                                            allowFullScreen="1" title="Billion with a B"
                                                            className="img-cover" loading="lazy"
                                                            width="294" height="294" controls>

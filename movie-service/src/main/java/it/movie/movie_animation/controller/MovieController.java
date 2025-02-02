@@ -13,6 +13,7 @@ import it.movie.movie_animation.service.MovieService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -53,23 +54,11 @@ public class MovieController implements MovieControllerImpl {
     }
 
     @Override
-    @Transactional
     @GetMapping("/{id}")
-    public HttpEntity<?> getOneMovie(@PathVariable UUID id, Authentication authentication) {
+    public HttpEntity<?> getOneMovie(@PathVariable UUID id) {
         Movie movie = movieRepository.findById(id).orElseThrow(() -> new RuntimeException("Movie not found"));
-
-        boolean isAdmin = authentication != null && authentication.getAuthorities().stream()//admin rolidagi odam got one qilsa admin panel dan seeSizega +1 bolmaydi
-                .map(GrantedAuthority::getAuthority)
-                .anyMatch(role -> role.equals("ADMIN"));
-
-        if (!isAdmin) {
-            movie.setSeeSize(movie.getSeeSize() + 0.5);
-            movieRepository.save(movie);
-        }
-
         return ResponseEntity.ok(movie);
     }
-
 
     @Override
     @GetMapping("/by-genre")//genre boyicha kino chiqadi
@@ -84,12 +73,13 @@ public class MovieController implements MovieControllerImpl {
         return ResponseEntity.ok(movies);
     }
 
-
-//    @GetMapping("/latest-by-subcategory")  eng ohirgi qoshilgan kinolar 100 ta boladigan bosa oshandan eng ohirgi 20 matasini get qiladi
-//    public HttpEntity<?> getBySubCategory(@RequestParam SubCategoryType subCategoryType) {
-//        List<Movie> movieList = movieRepository.findTop20BySubCategoryTypeOrderByCreatedAtDesc(subCategoryType);
-//        return ResponseEntity.ok(movieList);
-//    }
+    @PostMapping("/{id}/see-size") //faqat kinoni ichiga kirib kinoni ustiga bosib kora see size oshadi
+    private HttpEntity<?> playSeeSize(@PathVariable UUID id) {
+        Movie movie = movieRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("get movie"));
+        movie.setSeeSize(movie.getSeeSize() + 0.5);
+        movieRepository.save(movie);
+        return ResponseEntity.ok(movie);
+    }
 
     @Override
     @PostMapping
@@ -147,7 +137,7 @@ public class MovieController implements MovieControllerImpl {
         return ResponseEntity.status(apiResponse.isSuccess() ? HttpStatus.CREATED : HttpStatus.CONFLICT).body(apiResponse);
     }
 
-    @PostMapping("/{id}/{action}")
+    @PostMapping("like-send/{id}/{action}")
     public HttpEntity<?> toggleLike(@PathVariable UUID id, @PathVariable String action, @RequestParam UUID userId) {
         ApiResponse apiResponse = movieService.sendLike(id, userId, action);
         return ResponseEntity.status(apiResponse.isSuccess() ? HttpStatus.OK : HttpStatus.CONFLICT).body(apiResponse);

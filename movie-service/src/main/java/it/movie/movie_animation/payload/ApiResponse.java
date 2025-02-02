@@ -6,10 +6,10 @@ import java.util.UUID;
 
 @Data
 public class ApiResponse {
+    private String accessToken;
     private String message;
     private boolean success;
     private UUID id;
-
     private int likeSize;
 
     public ApiResponse(String message, boolean success) {
@@ -17,8 +17,8 @@ public class ApiResponse {
         this.success = success;
     }
 
-    public ApiResponse(String message, boolean success, UUID id) {
-        this.message = message;
+    public ApiResponse(String accessToken, boolean success, UUID id) {
+        this.accessToken = accessToken;
         this.success = success;
         this.id = id;
     }

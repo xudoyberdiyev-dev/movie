@@ -8,6 +8,7 @@ import it.movie.movie_animation.repository.RoleRepository;
 import it.movie.movie_animation.security.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -28,13 +29,14 @@ public class AuthService implements UserDetailsService {
     @Autowired
     JwtTokenProvider jwtTokenProvider;
 
+
     @Override
     public UserDetails loadUserByUsername(String email) {
         var user = repository.findByEmail(email);
         return user;
     }
 
-    public ApiResponse signUp(SignUpDto signUpDto) {
+    public ResponseEntity<ApiResponse> signUp(SignUpDto signUpDto) {
         boolean exist = repository.existsUsersByEmail(signUpDto.email());
         if (!exist) {
             Users user = Users.builder()
@@ -56,10 +58,12 @@ public class AuthService implements UserDetailsService {
             String accessToken = jwtTokenProvider.generateAccessToken(savedUser);
 
             // ApiResponse ga id ni qo'shish
-            return new ApiResponse(accessToken, true, savedUser.getId());
+            ApiResponse apiResponse = new ApiResponse(accessToken, true, savedUser.getId());
+            return ResponseEntity.ok(apiResponse);
         }
-        return new ApiResponse("Bu email allaqachon mavjud", false, null);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ApiResponse("Bu email allaqachon mavjud", false, null));
     }
+
 
 }
 
