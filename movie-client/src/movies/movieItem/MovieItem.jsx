@@ -11,6 +11,7 @@ import {BASE_CONFIG, BASE_CONFIG_CLIENT} from "../../service/BaseConfig.js";
 import toast from "react-hot-toast";
 
 export const MovieItem = ({userId}) => {
+    const [liked, setLiked] = useState(false);
     const [loading, setLoading] = useState(false)
     const [movie, setMovie] = useState({})
     const [videos, setVideos] = useState([])
@@ -28,13 +29,19 @@ export const MovieItem = ({userId}) => {
             console.log(err);
         }
     };
+    const getLikeMovieUser = () => {
+        const isLiked = localStorage.getItem(`!__liked__!${movie.id}`);
+        setLiked(isLiked === "true");
+    };
+
     const sendLike = async (action) => {
         try {
-            const url = `${APP_API.likeSendMovie}/${id}/${action}?userId=${userId}`;
-            await BASE_CONFIG_CLIENT.doPost(url, '');  // API chaqiruvi
+            await BASE_CONFIG_CLIENT.doPost(`${APP_API.likeSendMovie}/${id}/${action}?userId=${userId}`, '');  // API chaqiruvi
+            localStorage.setItem(`!__liked__!${movie.id}`, action === "like" ? "true" : "false");
+            setLiked(action === "like");
             await getOneMovie()
         } catch (err) {
-            toast.error('Like bosish uchun royxatdan oting')
+            toast.error('Like bosish uchun royxatdan oting');
         }
     };
     const handleVideoPlay = async () => {
@@ -42,7 +49,7 @@ export const MovieItem = ({userId}) => {
             await BASE_CONFIG.doPost(`${APP_API.movie}/${id}/see-size`);
             setMovie(prevMovie => ({
                 ...prevMovie,
-                seeSize: prevMovie.seeSize + 0.5 // UI da ham real-time yangilab turish
+                seeSize: prevMovie.seeSize + 0.5
             }));
         } catch (err) {
             console.error("Error updating seeSize", err);
@@ -59,6 +66,7 @@ export const MovieItem = ({userId}) => {
     useEffect(() => {
         getOneMovie()
         getVideo()
+        getLikeMovieUser()
     }, []);
     return (<div>
         <Header/>
@@ -96,12 +104,11 @@ export const MovieItem = ({userId}) => {
 
                                 <div className="meta-list">
                                     <div className="meta-item">
-                                        <button onClick={() => sendLike(movie.activeLike ? "unlike" : "like")}>
+                                        <button onClick={() => sendLike(liked ? "unlike" : "like")}>
                                             <i
-                                                className={`${movie.activeLike ? 'fa-solid' : 'fa-regular'} fa-heart fa-xl`}
-                                                style={{color: movie.activeLike ? '#ff0000' : '#fff'}}
+                                                className={`${liked ? 'fa-solid' : 'fa-regular'} fa-heart fa-xl`}
+                                                style={{color: liked ? '#ff0000' : '#fff'}}
                                             ></i>
-                                            {/*<i className=" fa-heart fa-xl" style={{color: "#fff"}}></i>*/}
                                         </button>
                                         <div></div>
                                         <div></div>
@@ -174,7 +181,7 @@ export const MovieItem = ({userId}) => {
                             </div>
 
                             <div className="title-wrapper">
-                                <h3 className="title-large">Kino va Seriallar {Math.ceil(movie.seeSize)}</h3>
+                                <h3 className="title-large">Kino va Seriallar</h3>
                             </div>
 
                             <div className="slider-list">

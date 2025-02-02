@@ -219,15 +219,17 @@ public class MovieService implements MovieServiceImpl {
         Movie movie = movieRepository.findById(movieId)
                 .orElseThrow(() -> new RuntimeException("Movie not found"));
 
+        // Foydalanuvchi va kino o'rtasidagi like topish
         Optional<LikeMovie> existingLike = likeRepository.findByUserAndMovie(user, movie);
 
-        // Like qo'shish yoki olib tashlash
         if ("like".equalsIgnoreCase(action)) {
             if (existingLike.isPresent()) {
+                // Agar like allaqachon mavjud bo'lsa, uni olib tashlash
                 likeRepository.delete(existingLike.get());
                 movie.setLikeSize(movie.getLikeSize() - 1);
                 movie.setActiveLike(false);
             } else {
+                // Yangi like qo'shish
                 LikeMovie newLike = new LikeMovie();
                 newLike.setUser(user);
                 newLike.setMovie(movie);
@@ -237,17 +239,20 @@ public class MovieService implements MovieServiceImpl {
             }
         } else if ("unlike".equalsIgnoreCase(action)) {
             if (existingLike.isPresent()) {
+                // Like olib tashlash
                 likeRepository.delete(existingLike.get());
                 movie.setLikeSize(movie.getLikeSize() - 1);
                 movie.setActiveLike(false);
             }
         }
 
+        // Kinoni saqlash
         movieRepository.save(movie);
 
         // To'g'ri formatda ApiResponse qaytarish
         return new ApiResponse("Like send", true, movie.getLikeSize());
     }
+
 
 }
 
