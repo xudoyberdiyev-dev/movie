@@ -211,63 +211,46 @@ public class MovieService implements MovieServiceImpl {
         }
     }
 
-    public ApiResponse sendLike(UUID movieId, Authentication authentication) {
-        if (authentication == null || !authentication.isAuthenticated()) {
-            return new ApiResponse("Siz ro'yxatdan o'tmagansiz", false);
+    public void likeMovie(UUID movieId, UUID userId) {
+        Users user = authRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+        Movie movie = movieRepository.findById(movieId).orElseThrow(() -> new RuntimeException("Movie not found"));
+
+        // Like mavjudligini tekshirish
+        if (likeRepository.findByUserAndMovie(user, movie).isPresent()) {
+            throw new RuntimeException("User already liked this movie");
         }
 
-        String email = authentication.getName();
-        UserDetails userDetails = authRepository.findByEmail(email);
+        // Like qo'shish
+        Like like = new Like();
+        like.setUser(user);
+        like.setMovie(movie);
+        likeRepository.save(like);
 
-        Movie movie = movieRepository.findById(movieId)
-                .orElseThrow(() -> new ResourceNotFoundException("Movie not found"));
-
-        Optional<Like> existingLike = likeRepository.findByMovieAndUsers(movie, (Users) userDetails);
-        boolean liked;
-
-        if (existingLike.isPresent()) {
-            // Remove like
-            likeRepository.delete(existingLike.get());
-            movie.setLikeSize(movie.getLikeSize() - 1);
-            liked = false;
-        } else {
-            // Add new like
-            Like like = new Like();
-            like.setMovie(movie);
-            like.setUsers((Users) userDetails);
-            likeRepository.save(like);
-
-            movie.setLikeSize(movie.getLikeSize() + 1);
-            liked = true;
-        }
-
-        movieRepository.save(movie); // Update the movie
-
-        // Faqat message va success qaytaring
-        return new ApiResponse("Like bosildi", true);
+        // Likelar sonini yangilash
+        movie.setLikes(movie.getLikes() + 1);
+        movieRepository.save(movie);
     }
 
-//    public ApiResponse getLike(UUID movieId, Authentication authentication) {
-//        // Movie olish
-//        Movie movie = movieRepository.findById(movieId).orElseThrow(() -> new ResourceNotFoundException("get movie"));
-//        boolean liked = false;
-//
-//        // Agar foydalanuvchi autentifikatsiya qilgan bo'lsa, like holatini tekshiramiz
-//        if (authentication != null && authentication.isAuthenticated()) {
-//            String email = authentication.getName();
-//            UserDetails userDetails = authRepository.findByEmail(email);
-//
-//            // Foydalanuvchi va film o'rtasidagi "like" tekshirish
-//            Optional<Like> existingLike = likeRepository.findByMovieAndUsers(movie, (Users) userDetails);
-//            liked = existingLike.isPresent();
-//        }
-//
-//        // "Like" soni va holatini olish
-//        LikeDto likeDto = new LikeDto(movieId, liked, movie.getLikeSize());
-//
-//        // Javobni qaytarish
-//        return new ApiResponse("Like holati tekshirildi", true);
-//    }
+    public void unlikeMovie(UUID movieId, UUID userId) {
+        Users user = authRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+        Movie movie = movieRepository.findById(movieId).orElseThrow(() -> new RuntimeException("Movie not found"));
+
+        // Like ni topish
+        Like like = likeRepository.findByUserAndMovie(user, movie)
+                .orElseThrow(() -> new RuntimeException("Like not found"));
+
+        // Like ni o'chirish
+        likeRepository.delete(like);
+
+        // Likelar sonini yangilash
+        movie.setLikes(movie.getLikes() - 1);
+        movieRepository.save(movie);
+    }
+
+    public int getLikesCount(UUID movieId) {
+        Movie movie = movieRepository.findById(movieId).orElseThrow(() -> new RuntimeException("Movie not found"));
+        return movie.getLikes();
+    }
 
 
 }

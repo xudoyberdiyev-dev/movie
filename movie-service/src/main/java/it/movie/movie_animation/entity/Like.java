@@ -16,9 +16,9 @@ import lombok.*;
 public class Like extends AbsEntity {
 
     @ManyToOne
-    private Movie movie;
+    private Users user;
 
     @ManyToOne
-    private Users users;
+    private Movie movie;
 
 }

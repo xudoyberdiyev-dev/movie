@@ -66,7 +66,7 @@ public class Movie extends AbsEntity {
     private double seeSize = 0; // nechi kishi kurganini pasmotr
 
 
-    private int likeSize = 0;
+    private int likes;
 
 
     private boolean active; // bu kino yangimi va premyeralar oynasiga chiqsinmi
