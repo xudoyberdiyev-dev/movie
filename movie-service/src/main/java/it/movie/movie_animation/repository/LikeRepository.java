@@ -12,9 +12,6 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface LikeRepository extends JpaRepository<Like,UUID> {
-
-
-
-
+    Optional<Like> findByUserAndMovie(Users user, Movie movie);
 
 }

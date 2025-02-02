@@ -63,10 +63,15 @@ public class Movie extends AbsEntity {
     private List<Genre> genres;
 
 
+    @OneToMany(mappedBy = "movie")
+    private List<Like> likes = new ArrayList<>();
+
+
     private double seeSize = 0; // nechi kishi kurganini pasmotr
 
 
-    private int likes;
+    private int likeSize = 0;
+    private boolean activeLike;  // Kino like bo'lsa, qizil rangga kiradi
 
 
     private boolean active; // bu kino yangimi va premyeralar oynasiga chiqsinmi

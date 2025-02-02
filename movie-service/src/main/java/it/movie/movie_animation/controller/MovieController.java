@@ -147,5 +147,9 @@ public class MovieController implements MovieControllerImpl {
         return ResponseEntity.status(apiResponse.isSuccess() ? HttpStatus.CREATED : HttpStatus.CONFLICT).body(apiResponse);
     }
 
-
+    @PostMapping("/{id}/{action}")
+    public HttpEntity<?> toggleLike(@PathVariable UUID id, @PathVariable String action, @RequestParam UUID userId) {
+        ApiResponse apiResponse = movieService.sendLike(id, userId, action);
+        return ResponseEntity.status(apiResponse.isSuccess() ? HttpStatus.OK : HttpStatus.CONFLICT).body(apiResponse);
+    }
 }

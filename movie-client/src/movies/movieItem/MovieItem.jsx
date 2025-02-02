@@ -11,8 +11,9 @@ import {BASE_CONFIG, BASE_CONFIG_CLIENT} from "../../service/BaseConfig.js";
 import toast from "react-hot-toast";
 
 export const MovieItem = ({userId}) => {
-    const [liked, setLiked] = useState(false);
-    const [likesCount, setLikesCount] = useState(0);
+    const [liked, setLiked] = useState(false); // Like holatini boshqarish
+    const [likesCount, setLikesCount] = useState(0); // Like sonini boshqarish
+
     const [loading, setLoading] = useState(false)
     const [movie, setMovie] = useState({})
     const [videos, setVideos] = useState([])
@@ -27,31 +28,20 @@ export const MovieItem = ({userId}) => {
             console.log(err)
         }
     }
-    const getLikeData = async () => {
-        try {
-            // Likelar sonini olish
-            const res = await BASE_CONFIG.doGet(`${APP_API.movie}/${id}/likes`);
-            setLikesCount(res.data);
-
-            // Foydalanuvchi like bosganmi yoki yo‘q?
-            const resp = await BASE_CONFIG.doGet(`${APP_API.movie}/${id}/check-like?userId=${userId}`);
-            setLiked(resp.data);
-        } catch (err) {
-            console.log("Error fetching like data", err);
-        }
-    };
-
     const sendLike = async () => {
         try {
-            const url = `${APP_API.movie}/${id}/${liked ? 'unlike' : 'like'}?userId=${userId}`;
-            await BASE_CONFIG.doPost(url, '');
+            const url = `${APP_API.movie}/${movieId}/${liked ? 'unlike' : 'like'}?userId=${userId}`;
+            await BASE_CONFIG.doPost(url, '');  // API chaqiruvi
 
+            // Like holatini va like sonini yangilash
             setLiked(prev => !prev);
             setLikesCount(prev => (liked ? prev - 1 : prev + 1));
         } catch (err) {
             console.log("Error updating like", err);
         }
     };
+
+
     const getVideo = async () => {
         try {
             const res = await GetAuto(`${APP_API.newSerial}/${id}`)
@@ -63,7 +53,6 @@ export const MovieItem = ({userId}) => {
     useEffect(() => {
         getOneMovie()
         getVideo()
-        getLikeData()
     }, []);
     return (<div>
         <Header/>
@@ -101,13 +90,7 @@ export const MovieItem = ({userId}) => {
 
                                 <div className="meta-list">
                                     <div className="meta-item">
-                                        <button
-                                            onClick={sendLike}
-                                            style={{color: liked ? 'red' : 'black'}}
-                                        >
-                                            {liked ? 'Unlike' : 'Like'}
-                                        </button>
-                                        <span>{likesCount} Likes</span>
+
                                         {/*<button*/}
                                         {/*    onClick={()=>sendLike()}*/}
                                         {/*    style={{color: liked ? 'red' : 'gray'}}*/}
