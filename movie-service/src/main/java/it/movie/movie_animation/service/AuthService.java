@@ -55,9 +55,10 @@ public class AuthService implements UserDetailsService {
             // JWT tokenni yaratish
             String accessToken = jwtTokenProvider.generateAccessToken(savedUser);
 
-            return new ApiResponse(accessToken, true);
+            // ApiResponse ga id ni qo'shish
+            return new ApiResponse(accessToken, true, savedUser.getId());
         }
-        return new ApiResponse("Bu email allaqachon mavjud", false);
+        return new ApiResponse("Bu email allaqachon mavjud", false, null);
     }
 
 }

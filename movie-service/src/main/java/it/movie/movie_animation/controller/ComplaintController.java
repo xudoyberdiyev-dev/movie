@@ -36,14 +36,14 @@ public class ComplaintController implements ComplaintControllerImpl {
             return ResponseEntity.status(401).body("Foydalanuvchi topilmadi.");
         }
         ApiResponse apiResponse = complaintService.addComplaint(reqComplaintDto, users);
-        return ResponseEntity.status(apiResponse.success() ? HttpStatus.CREATED : HttpStatus.CONFLICT).body(apiResponse);
+        return ResponseEntity.status(apiResponse.isSuccess() ? HttpStatus.CREATED : HttpStatus.CONFLICT).body(apiResponse);
     }
 
     @Override
     @DeleteMapping("/delete/{id}")
     public HttpEntity<?> deleteComplaint(@PathVariable UUID id) {
         ApiResponse apiResponse = complaintService.deleteComplaint(id);
-        return ResponseEntity.status(apiResponse.success() ? HttpStatus.CREATED : HttpStatus.CONFLICT).body(apiResponse);
+        return ResponseEntity.status(apiResponse.isSuccess() ? HttpStatus.CREATED : HttpStatus.CONFLICT).body(apiResponse);
 
     }
 

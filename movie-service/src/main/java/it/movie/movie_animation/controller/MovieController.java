@@ -95,35 +95,35 @@ public class MovieController implements MovieControllerImpl {
     @PostMapping
     public HttpEntity<?> createMovie(@RequestBody ReqMovieDto reqMovieDto) {
         ApiResponse apiResponse = movieService.createMovie(reqMovieDto);
-        return ResponseEntity.status(apiResponse.success() ? HttpStatus.CREATED : HttpStatus.CONFLICT).body(apiResponse);
+        return ResponseEntity.status(apiResponse.isSuccess() ? HttpStatus.CREATED : HttpStatus.CONFLICT).body(apiResponse);
     }
 
     @Override
     @PutMapping("/{id}")
     public HttpEntity<?> updateMovie(@RequestBody ReqMovieDto movieDto, @PathVariable UUID id) {
         ApiResponse apiResponse = movieService.updateMovie(movieDto, id);
-        return ResponseEntity.status(apiResponse.success() ? HttpStatus.CREATED : HttpStatus.CONFLICT).body(apiResponse);
+        return ResponseEntity.status(apiResponse.isSuccess() ? HttpStatus.CREATED : HttpStatus.CONFLICT).body(apiResponse);
     }
 
     @Override
     @DeleteMapping("/{id}")
     public HttpEntity<?> deleteMovie(@PathVariable UUID id) {
         ApiResponse apiResponse = movieService.deleteMovie(id);
-        return ResponseEntity.status(apiResponse.success() ? HttpStatus.CREATED : HttpStatus.CONFLICT).body(apiResponse);
+        return ResponseEntity.status(apiResponse.isSuccess() ? HttpStatus.CREATED : HttpStatus.CONFLICT).body(apiResponse);
     }
 
     @Override
     @PutMapping("/active/{id}")//kino activeni almashtrish true bolsa premyera oynasiga chiqadi false bolsa yoqoladi
     public HttpEntity<?> updateActive(@PathVariable UUID id, @RequestParam boolean active) {
         ApiResponse apiResponse = movieService.updateActive(id, active);
-        return ResponseEntity.status(apiResponse.success() ? HttpStatus.CREATED : HttpStatus.CONFLICT).body(apiResponse);
+        return ResponseEntity.status(apiResponse.isSuccess() ? HttpStatus.CREATED : HttpStatus.CONFLICT).body(apiResponse);
     }
 
     @Override
     @PostMapping("/add-serial/{id}")//serial qolgan qismlarni qoshish
     public HttpEntity<?> createSerial(@PathVariable UUID id, @RequestBody ReqVideoDto reqVideoDto) {
         ApiResponse apiResponse = movieService.createSerial(id, reqVideoDto);
-        return ResponseEntity.status(apiResponse.success() ? HttpStatus.CREATED : HttpStatus.CONFLICT).body(apiResponse);
+        return ResponseEntity.status(apiResponse.isSuccess() ? HttpStatus.CREATED : HttpStatus.CONFLICT).body(apiResponse);
     }
 
     @Override
@@ -137,14 +137,14 @@ public class MovieController implements MovieControllerImpl {
     @DeleteMapping("/serial-delete/{id}")
     public HttpEntity<?> deleteSerial(@PathVariable UUID id, @RequestParam UUID videoId) {
         ApiResponse apiResponse = movieService.deleteSerial(id, videoId);
-        return ResponseEntity.status(apiResponse.success() ? HttpStatus.OK : HttpStatus.CONFLICT).body(apiResponse);
+        return ResponseEntity.status(apiResponse.isSuccess() ? HttpStatus.OK : HttpStatus.CONFLICT).body(apiResponse);
     }
 
     @Override
     @PutMapping("/serial-edite/{id}")
     public HttpEntity<?> updateSerial(@PathVariable UUID id, @RequestParam UUID videoId, @RequestBody ReqVideoDto reqVideoDto) {
         ApiResponse apiResponse = movieService.updateSerial(id, videoId, reqVideoDto);
-        return ResponseEntity.status(apiResponse.success() ? HttpStatus.CREATED : HttpStatus.CONFLICT).body(apiResponse);
+        return ResponseEntity.status(apiResponse.isSuccess() ? HttpStatus.CREATED : HttpStatus.CONFLICT).body(apiResponse);
     }
 
     @PostMapping("/{movieId}/like")

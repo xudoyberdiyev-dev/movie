@@ -25,7 +25,7 @@ public class CommentController {
     @PostMapping("/{id}")
     public HttpEntity<?> sendComment(@PathVariable UUID id, @RequestBody ReqCommentDto reqCommentDto, Authentication authentication) {
         ApiResponse apiResponse = commentService.addComment(id, reqCommentDto, authentication);
-        return ResponseEntity.status(apiResponse.success() ? HttpStatus.OK : HttpStatus.CONFLICT).body(apiResponse);
+        return ResponseEntity.status(apiResponse.isSuccess() ? HttpStatus.OK : HttpStatus.CONFLICT).body(apiResponse);
     }
 
     @GetMapping("/{id}")

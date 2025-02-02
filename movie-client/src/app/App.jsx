@@ -7,11 +7,12 @@ import {Register} from "../auth/Register.jsx";
 import {Cabinet} from "../auth/cabinet/Cabinet.jsx";
 
 function App() {
+    const id = localStorage.getItem("id")
     return (<BrowserRouter>
         <Routes>
             <Route path="/" element={<Primary/>}/>
             <Route path="/movies/:genre" element={<GenreByMovie/>}/>
-            <Route path={"/movie-item/:id"} element={<MovieItem/>}/>
+            <Route path={"/movie-item/:id"} element={<MovieItem userId={id}/>}/>
             <Route path={"/login"} element={<Login/>}/>
             <Route path={"/register"} element={<Register/>}/>
             <Route path={"/cabinet"} element={<Cabinet/>}/>

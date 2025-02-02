@@ -10,9 +10,9 @@ import {RandomMovie} from "../randomMovie/RandomMovie.jsx";
 import {BASE_CONFIG, BASE_CONFIG_CLIENT} from "../../service/BaseConfig.js";
 import toast from "react-hot-toast";
 
-export const MovieItem = () => {
+export const MovieItem = ({userId}) => {
     const [liked, setLiked] = useState(false);
-    const [likeCount, setLikeCount] = useState(0);
+    const [likesCount, setLikesCount] = useState(0);
     const [loading, setLoading] = useState(false)
     const [movie, setMovie] = useState({})
     const [videos, setVideos] = useState([])
@@ -27,6 +27,27 @@ export const MovieItem = () => {
             console.log(err)
         }
     }
+    const getLike = async () => {
+        try {
+            const res = await BASE_CONFIG.doGet(`${APP_API.movie}/${id}/likes`)
+            setLikesCount(res.data)
+            const resp = await BASE_CONFIG.doGet(`${APP_API.movie}/${id}/check-like?userId=${userId}`)
+            setLiked(resp.data)
+        } catch (err) {
+            console.log(err)
+        }
+    }
+    const sendLike = async () => {
+        if (liked) {
+            await BASE_CONFIG_CLIENT.doPost(`${APP_API.movie}/${id}/unlike?userId=${userId}`, '')
+            setLiked(false)
+            setLikesCount(likesCount - 1)
+        } else {
+            await BASE_CONFIG_CLIENT.doPost(`${APP_API.movie}/${id}/like?userId=${userId}`, '')
+            setLiked(true)
+            setLikesCount(likesCount + 1)
+        }
+    }
     const getVideo = async () => {
         try {
             const res = await GetAuto(`${APP_API.newSerial}/${id}`)
@@ -35,28 +56,10 @@ export const MovieItem = () => {
             console.log(err)
         }
     }
-    const sendLike = async () => {
-        try {
-            const token = localStorage.getItem("token");
-            const res = await BASE_CONFIG_CLIENT.doPost(
-                `${APP_API.sendLike}/${id}`,
-                {}, // Yuborilishi kerak bo'lgan body (agar kerak bo'lsa)
-            );
-            // Agar `ApiResponse`ga yangi o'zgarish kiritgan bo'lsangiz, bu yerda qo'shimcha logika
-            setLiked(res.data.liked); // Like holatini yangilash (Agar siz `liked`ni qaytarsangiz)
-            setLikeCount(res.data.likeSize); // Like sonini yangilash (Agar siz `likeSize`ni qaytarsangiz)
-        } catch (error) {
-            console.error(error);
-            if (error.response && error.response.status === 403) {
-                toast.error("Ruxsat yo'q. Iltimos, tizimga kirganingizni tekshirib ko'ring.");
-            } else if (error.response && error.response.data.message === "Siz ro'yxatdan o'tmagansiz") {
-                toast.error("Siz ro'yxatdan o'tmagansiz");
-            }
-        }
-    };
     useEffect(() => {
         getOneMovie()
         getVideo()
+        getLike()
     }, []);
     return (<div>
         <Header/>
@@ -94,6 +97,13 @@ export const MovieItem = () => {
 
                                 <div className="meta-list">
                                     <div className="meta-item">
+                                        <button
+                                            onClick={sendLike}
+                                            style={{color: liked ? 'red' : 'black'}}
+                                        >
+                                            {liked ? 'Unlike' : 'Like'}
+                                        </button>
+                                        <span>{likesCount} Likes</span>
                                         {/*<button*/}
                                         {/*    onClick={()=>sendLike()}*/}
                                         {/*    style={{color: liked ? 'red' : 'gray'}}*/}
@@ -101,12 +111,7 @@ export const MovieItem = () => {
                                         {/*>*/}
                                         {/*    Like ({likeCount})*/}
                                         {/*</button>*/}
-                                        <div>
-                                            <p>Likes: {likeCount}</p>
-                                            <button onClick={sendLike}>
-                                                {liked ? "Unlike" : "Like"}
-                                            </button>
-                                        </div>
+
                                         {/*<button onClick={() => sendLike()}>*/}
                                         {/*    <i className="fa-solid fa-heart fa-xl"*/}
                                         {/*       style={{color: "#ff0000"}}></i>*/}

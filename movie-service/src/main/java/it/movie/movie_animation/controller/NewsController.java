@@ -43,7 +43,7 @@ public class NewsController implements NewsControllerImpl {
     @PostMapping
     public HttpEntity<?> addNews(@RequestBody ReqNewsDto reqNewsDto) {
         ApiResponse apiResponse = newsService.addNews(reqNewsDto);
-        return ResponseEntity.status(apiResponse.success() ? HttpStatus.CREATED : HttpStatus.CONFLICT).body(apiResponse);
+        return ResponseEntity.status(apiResponse.isSuccess() ? HttpStatus.CREATED : HttpStatus.CONFLICT).body(apiResponse);
     }
 
 
@@ -52,6 +52,6 @@ public class NewsController implements NewsControllerImpl {
     @DeleteMapping("/{id}")
     public HttpEntity<?> deleteNews(@PathVariable UUID id) {
         ApiResponse apiResponse = newsService.deleteNews(id);
-        return ResponseEntity.status(apiResponse.success() ? HttpStatus.OK : HttpStatus.CONFLICT).body(apiResponse);
+        return ResponseEntity.status(apiResponse.isSuccess() ? HttpStatus.OK : HttpStatus.CONFLICT).body(apiResponse);
     }
 }
