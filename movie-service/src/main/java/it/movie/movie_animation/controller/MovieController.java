@@ -139,11 +139,9 @@ public class MovieController implements MovieControllerImpl {
         ApiResponse apiResponse = movieService.sendLike(id, userId, action);
         return ResponseEntity.status(apiResponse.isSuccess() ? HttpStatus.OK : HttpStatus.CONFLICT).body(apiResponse);
     }
+    @GetMapping("/liked/{userId}")
+    public List<Movie> getLikedMovies(@PathVariable UUID userId) {
+        return movieService.getLikedMovies(userId);  // Foydalanuvchining like qilgan kinolarini olish
+    }
 
-//    @GetMapping("/likeStatus/{movieId}")
-//    public ResponseEntity<?> getLikeStatus(@PathVariable UUID movieId, @RequestParam UUID userId) {
-//        // Serverda like holatini tekshirib qaytarish
-//        boolean isLiked = movieService.isMovieLikedByUser(movieId, userId);
-//        return ResponseEntity.ok(new LikeDto(isLiked));
-//    }
 }

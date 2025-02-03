@@ -22,4 +22,9 @@ public class LikeMovie extends AbsEntity {
     @ManyToOne
     @JoinColumn(name = "movie_id", nullable = false)
     private Movie movie;
+
+    private boolean activeLike;  // Foydalanuvchi va kino o'rtasidagi like holati
+
 }
+
+

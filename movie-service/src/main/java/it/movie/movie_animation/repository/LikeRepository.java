@@ -8,11 +8,14 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 public interface LikeRepository extends JpaRepository<LikeMovie,UUID> {
     Optional<LikeMovie> findByUserAndMovie(Users user, Movie movie);
     boolean existsByMovieIdAndUserId(UUID movieId, UUID userId);
+    List<LikeMovie> findByUser(Users user);
+
 
 }

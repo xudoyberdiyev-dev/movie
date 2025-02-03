@@ -15,6 +15,7 @@ export const MovieItem = ({userId}) => {
     const [loading, setLoading] = useState(false)
     const [movie, setMovie] = useState({})
     const [videos, setVideos] = useState([])
+    const [likedMovies, setLikedMovies] = useState([]);
     const id = useParams().id
     const videoRef = useRef(null);
     const getOneMovie = async () => {
@@ -29,19 +30,29 @@ export const MovieItem = ({userId}) => {
             console.log(err);
         }
     };
-    const getLikeMovieUser = () => {
-        const isLiked = localStorage.getItem(`!__liked__!${movie.id}`);
-        setLiked(isLiked === "true");
-    };
 
+    const getLikeMovie = async () => {
+        try {
+            const res = await GetAuto(`${APP_API.likeStatus}/${userId}`)
+            setLiked(res.data)
+            setLoading(true)
+        } catch (err) {
+            console.log(err)
+        }
+    }
     const getVideo = async () => {
         try {
-            const res = await GetAuto(`${APP_API.newSerial}/${id}`)
+            const res = await GetAuto(`${APP_API.newSerial} /${id}`)
             setVideos(res.data)
         } catch (err) {
             console.log(err)
         }
     }
+    const getLikeMovieUser = () => {
+        const isLiked = localStorage.getItem(`!__liked__!${movie.id}`
+        );
+        setLiked(isLiked === "true");
+    };
     const sendLike = async (action) => {
         try {
             await BASE_CONFIG_CLIENT.doPost(`${APP_API.likeSendMovie}/${id}/${action}?userId=${userId}`, '');
@@ -54,7 +65,7 @@ export const MovieItem = ({userId}) => {
     };
     const handleVideoPlay = async () => {
         try {
-            await BASE_CONFIG.doPost(`${APP_API.movie}/${id}/see-size`);
+            await BASE_CONFIG.doPost(`${APP_API.movie} /${id}/see-size`);
             setMovie(prevMovie => ({
                 ...prevMovie,
                 seeSize: prevMovie.seeSize + 0.5
@@ -68,6 +79,7 @@ export const MovieItem = ({userId}) => {
         getOneMovie();
         getVideo();
         getLikeMovieUser(); // Like holatini localStorage'dan oling
+        getLikeMovie()
     }, [movie.id]); // movie.id ga asoslanib yana ishlashi
     return (<div>
         <Header/>
@@ -107,7 +119,7 @@ export const MovieItem = ({userId}) => {
                                     <div className="meta-item">
                                         <button onClick={() => sendLike(liked ? "unlike" : "like")}>
                                             <i className={`${liked ? 'fa-solid' : 'fa-regular'} fa-heart fa-xl`}
-                                                style={{color: liked ? '#ff0000' : '#fff'}}
+                                               style={{color: liked ? '#ff0000' : '#fff'}}
                                             ></i>
                                         </button>
                                         <div></div>
