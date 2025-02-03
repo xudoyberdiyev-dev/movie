@@ -12,10 +12,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface LikeRepository extends JpaRepository<LikeMovie,UUID> {
+public interface LikeRepository extends JpaRepository<LikeMovie, UUID> {
     Optional<LikeMovie> findByUserAndMovie(Users user, Movie movie);
-    boolean existsByMovieIdAndUserId(UUID movieId, UUID userId);
-    List<LikeMovie> findByUser(Users user);
+    @Query("SELECT lm.movie FROM LikeMovie lm WHERE lm.user = :user AND lm.activeLike = true")
+    List<Movie> findLikedMoviesByUser(@Param("user") Users user);
 
 
 }

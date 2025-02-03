@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -212,71 +213,56 @@ public class MovieService implements MovieServiceImpl {
     }
 
     public ApiResponse sendLike(UUID movieId, UUID userId, String action) {
-        // Foydalanuvchi va kino topish
+        // Foydalanuvchi va kinoni topish
         Users user = authRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         Movie movie = movieRepository.findById(movieId)
                 .orElseThrow(() -> new RuntimeException("Movie not found"));
 
-        // Foydalanuvchi va kino o'rtasidagi like topish
+        // Like mavjudligini tekshiramiz
         Optional<LikeMovie> existingLike = likeRepository.findByUserAndMovie(user, movie);
 
         if ("like".equalsIgnoreCase(action)) {
             if (existingLike.isPresent()) {
-                // Agar like allaqachon mavjud bo'lsa, uni olib tashlash
                 LikeMovie likeMovie = existingLike.get();
-                likeMovie.setActiveLike(true);  // Like holatini faollashtiramiz
-                likeRepository.save(likeMovie);
-                movie.setLikeSize(movie.getLikeSize() + 1);  // Kinoning umumiy like sonini oshiramiz
+                if (!likeMovie.isActiveLike()) {
+                    likeMovie.setActiveLike(true);
+                    movie.setLikeSize(movie.getLikeSize() + 1);
+                    likeRepository.save(likeMovie);
+                }
             } else {
-                // Yangi like qo'shish
-                LikeMovie newLike = new LikeMovie();
-                newLike.setUser(user);
-                newLike.setMovie(movie);
-                newLike.setActiveLike(true);  // Like holatini faollashtiramiz
+                // Yangi like yaratish
+                LikeMovie newLike = new LikeMovie(user, movie, true);
                 likeRepository.save(newLike);
-                movie.setLikeSize(movie.getLikeSize() + 1);  // Kinoning umumiy like sonini oshiramiz
+                movie.setLikeSize(movie.getLikeSize() + 1);
             }
-        } else if ("unlike".equalsIgnoreCase(action)) {
-            if (existingLike.isPresent()) {
-                // Like olib tashlash
-                LikeMovie likeMovie = existingLike.get();
-                likeMovie.setActiveLike(false);  // Like holatini o'zgartiramiz
+        } else if ("unlike".equalsIgnoreCase(action) && existingLike.isPresent()) {
+            LikeMovie likeMovie = existingLike.get();
+            if (likeMovie.isActiveLike()) {
+                likeMovie.setActiveLike(false);
+                movie.setLikeSize(Math.max(0, movie.getLikeSize() - 1)); // Manfiy bo‘lib ketish oldini olish
                 likeRepository.save(likeMovie);
-                movie.setLikeSize(movie.getLikeSize() - 1);  // Kinoning umumiy like sonini kamaytirish
             }
         }
 
-        // Kinoni saqlash
-        movieRepository.save(movie);
+        // Faqat o‘zgarish bo‘lsa saqlash
+        if (existingLike.isPresent() || "like".equalsIgnoreCase(action)) {
+            movieRepository.save(movie);
+        }
 
-        // To'g'ri formatda ApiResponse qaytarish
-        return new ApiResponse("Like send", true, movie.getLikeSize());
+        return new ApiResponse("Like action processed", true, movie.getLikeSize());
     }
 
+
     public List<Movie> getLikedMovies(UUID userId) {
-        // Foydalanuvchi topish
+        // Foydalanuvchini topish
         Users user = authRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        // Foydalanuvchi tomonidan like qilingan kinolarni olish
-        List<LikeMovie> userLikes = likeRepository.findByUser(user);
-
-        // Kinolarni va like holatini olish
-        List<Movie> moviesWithLikes = new ArrayList<>();
-        for (LikeMovie likeMovie : userLikes) {
-            Movie movie = likeMovie.getMovie();
-            // Like holatini Movie obyektiga qo'shish
-            movie.setActiveLike(likeMovie.isActiveLike());  // Kinoga like holatini qo‘shamiz
-            moviesWithLikes.add(movie);
-        }
-
-        return moviesWithLikes;  // Kinolar ro‘yxatini qaytaramiz
+        // To‘g‘ridan-to‘g‘ri like bosilgan filmlarni olish uchun repository metodidan foydalanamiz
+        return likeRepository.findLikedMoviesByUser(user);
     }
-
-
-
 
 
 

@@ -67,7 +67,6 @@ public class Movie extends AbsEntity {
 
 
     private int likeSize = 0;
-    private boolean activeLike;  // Kino like bo'lsa, qizil rangga kiradi
 
 
     private boolean active; // bu kino yangimi va premyeralar oynasiga chiqsinmi
