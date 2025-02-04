@@ -1,8 +1,8 @@
 import toast from "react-hot-toast";
-import { BASE_CONFIG } from "../BaseConfig.js";
-import { APP_API } from "../AppApi.js";
+import {BASE_CONFIG} from "../BaseConfig.js";
+import {APP_API} from "../AppApi.js";
 
-// 🔹 Foydalanuvchini ro‘yxatdan o‘tkazish
+// 🔹 Ro'yxatdan o'tish
 export const RegisterHandler = async (data, navigate) => {
     const validations = [
         {check: data.name.trim().length === 0, message: "Ismni kiriting"},
@@ -12,6 +12,7 @@ export const RegisterHandler = async (data, navigate) => {
         {check: data.password.trim().length < 8, message: "Parol 8ta belgidan iborat bo'lishi shart"}
     ];
 
+    // Validatsiya tekshiruvlari
     for (const validation of validations) {
         if (validation.check) {
             return toast.error(validation.message);
@@ -30,17 +31,20 @@ export const RegisterHandler = async (data, navigate) => {
 
             toast.success(`Xush kelibsiz, ${res.data.name}!`);
             navigate("/cabinet");
+
+            // Login qilish uchun LoginHandler'ni chaqirish
+            const loginData = {login: data.email, password: data.password};
+            await LoginHandler(loginData, navigate);
         } else {
-            toast.error("Ro‘yxatdan o‘tishda xatolik yuz berdi");
+            toast.error("Ro'yxatdan o'tishda xatolik yuz berdi");
         }
     } catch (err) {
         console.error("RegisterHandler xatosi:", err);
-        toast.error("Ro‘yxatdan o‘tishda xatolik yuz berdi");
+        toast.error("Ro'yxatdan o'tishda xatolik yuz berdi");
     }
 };
 
-
-// 🔹 Login qilish
+// 🔹 Kirish
 export const LoginHandler = async (data, navigate) => {
     if (data.login.trim().length === 0) {
         return toast.error("Iltimos emailingizni kiriting");
@@ -54,12 +58,11 @@ export const LoginHandler = async (data, navigate) => {
         if (res.data && res.data.accessToken) {
             // Token va foydalanuvchi ma'lumotlarini saqlash
             localStorage.setItem("token", res.data.accessToken);
-            localStorage.setItem("id", res.data.userId);
-            localStorage.setItem("name", res.data.name);
-            localStorage.setItem("surname", res.data.surname);
-            localStorage.setItem("email", res.data.email);
 
-            toast.success(`Xush kelibsiz, ${res.data.name}!`);
+            // getUserInfo orqali foydalanuvchi ma'lumotlarini olish
+            getUserInfo(data.login, navigate);  // Foydalanuvchi ma'lumotlarini olish
+
+            toast.success(`Xush kelibsiz, ${res.data.userDto.name}!`);
             navigate("/cabinet");
         }
     } catch (err) {
@@ -68,3 +71,22 @@ export const LoginHandler = async (data, navigate) => {
     }
 };
 
+// 🔹 Foydalanuvchi ma'lumotlarini olish
+export const getUserInfo = async (email, navigate) => {
+    try {
+        const res = await BASE_CONFIG.doGet(`${APP_API.getMe}/${email}`);
+        if (res.data) {
+            localStorage.setItem("id", res.data.id);
+            localStorage.setItem("name", res.data.name);
+            localStorage.setItem("surname", res.data.surname);
+            localStorage.setItem("email", res.data.email);
+            toast.success(`Xush kelibsiz, ${res.data.name}!`);
+            navigate("/cabinet");
+        } else {
+            toast.error("Foydalanuvchi ma'lumotlari topilmadi");
+        }
+    } catch (err) {
+        console.error("getUserInfo xatosi:", err);
+        toast.error("Foydalanuvchi ma'lumotlarini olishda xatolik yuz berdi");
+    }
+};
