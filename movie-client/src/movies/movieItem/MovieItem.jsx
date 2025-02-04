@@ -15,7 +15,6 @@ export const MovieItem = ({userId}) => {
     const [loading, setLoading] = useState(false)
     const [movie, setMovie] = useState({})
     const [videos, setVideos] = useState([])
-    const [likedMovies, setLikedMovies] = useState([]);
     const id = useParams().id
     const videoRef = useRef(null);
     const getOneMovie = async () => {
@@ -80,7 +79,7 @@ export const MovieItem = ({userId}) => {
         getVideo();
         getLikeMovieUser(); // Like holatini localStorage'dan oling
         getLikeMovie()
-    }, [movie.id]); // movie.id ga asoslanib yana ishlashi
+    }, [id]); // movie.id ga asoslanib yana ishlashi
     return (<div>
         <Header/>
         <main>

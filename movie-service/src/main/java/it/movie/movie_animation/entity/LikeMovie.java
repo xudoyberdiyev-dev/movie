@@ -1,6 +1,7 @@
 package it.movie.movie_animation.entity;
 
 import it.movie.movie_animation.entity.templates.AbsEntity;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;

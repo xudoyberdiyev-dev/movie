@@ -19,6 +19,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 
 @RestController
 @RequestMapping("/api/v1/auth")
@@ -50,8 +52,16 @@ public class AuthController {
     public ResponseEntity<JwtDto> signIn(@RequestBody @Valid SignInDto data) {
         var usernamePassword = new UsernamePasswordAuthenticationToken(data.login(), data.password());
         var authUser = authenticationManager.authenticate(usernamePassword);
-        var accessToken = tokenService.generateAccessToken((Users) authUser.getPrincipal());
-        return ResponseEntity.ok(new JwtDto(accessToken));
+
+        // Foydalanuvchi ma'lumotlarini olish
+        Users user = (Users) authUser.getPrincipal();
+        UUID id = user.getId();  // Foydalanuvchining ID sini olish
+
+        // Token yaratish
+        var accessToken = tokenService.generateAccessToken(user);
+
+        // Token va foydalanuvchi ID bilan javob qaytarish
+        return ResponseEntity.ok(new JwtDto(accessToken, id));
     }
 
     @PostMapping("/register")

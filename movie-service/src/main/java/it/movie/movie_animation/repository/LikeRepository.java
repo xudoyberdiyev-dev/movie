@@ -18,4 +18,6 @@ public interface LikeRepository extends JpaRepository<LikeMovie, UUID> {
     List<Movie> findLikedMoviesByUser(@Param("user") Users user);
 
 
+    @Query("SELECT CASE WHEN COUNT(l) > 0 THEN TRUE ELSE FALSE END FROM LikeMovie l WHERE l.user = :user AND l.movie = :movie AND l.activeLike = :activeLike")
+    boolean existsByUserAndMovieAndActiveLike(@Param("user") Users user, @Param("movie") Movie movie, @Param("activeLike") Boolean activeLike);
 }
