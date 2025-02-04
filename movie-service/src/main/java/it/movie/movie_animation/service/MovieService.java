@@ -226,29 +226,30 @@ public class MovieService implements MovieServiceImpl {
             if (existingLike.isPresent()) {
                 LikeMovie likeMovie = existingLike.get();
                 if (!likeMovie.isActiveLike()) {
-                    likeMovie.setActiveLike(true);
-                    movie.setLikeSize(movie.getLikeSize() + 1);
+                    likeMovie.setActiveLike(true); // Like holatini yangilash
+                    movie.setLikeSize(movie.getLikeSize() + 1); // Kinoning like miqdorini oshirish
                     likeRepository.save(likeMovie);
                 }
             } else {
                 LikeMovie newLike = new LikeMovie(user, movie, true);
-                likeRepository.save(newLike);
-                movie.setLikeSize(movie.getLikeSize() + 1);
+                likeRepository.save(newLike); // Yangi like qo'shish
+                movie.setLikeSize(movie.getLikeSize() + 1); // Kinoning like miqdorini oshirish
             }
         } else if ("unlike".equalsIgnoreCase(action)) {
             if (existingLike.isPresent()) {
                 LikeMovie likeMovie = existingLike.get();
                 if (likeMovie.isActiveLike()) {
-                    likeRepository.delete(likeMovie); // LikeMovie obyektini o‘chirib tashlaymiz
-                    movie.setLikeSize(Math.max(0, movie.getLikeSize() - 1));
+                    likeMovie.setActiveLike(false); // Like holatini o'zgartirish
+                    movie.setLikeSize(Math.max(0, movie.getLikeSize() - 1)); // Kinoning like miqdorini kamaytirish
+                    likeRepository.save(likeMovie); // Yangi like holatini saqlash
                 }
             }
         }
 
-        // Kino obyektini saqlaymiz
+        // Kino obyektini saqlash
         movieRepository.save(movie);
 
-        return new ApiResponse("Like action processed", true, movie.getLikeSize());
+        return new ApiResponse("Like action processed", true, movie.getLikeSize()); // Return likeSize bilan
     }
 
     // Ushbu metod frontendda userning like bosgan filmlarini olish uchun ishlatiladi
