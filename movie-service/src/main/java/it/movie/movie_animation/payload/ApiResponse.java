@@ -9,18 +9,18 @@ public class ApiResponse {
     private String accessToken;
     private String message;
     private boolean success;
-    private UUID id;
     private int likeSize;
+    private UserDto userDto;
 
     public ApiResponse(String message, boolean success) {
         this.message = message;
         this.success = success;
     }
 
-    public ApiResponse(String accessToken, boolean success, UUID id) {
+    public ApiResponse(String accessToken, boolean success, UserDto userDto) {
         this.accessToken = accessToken;
         this.success = success;
-        this.id = id;
+        this.userDto = userDto;
     }
 
     public ApiResponse(String message, boolean success, int likeSize) {

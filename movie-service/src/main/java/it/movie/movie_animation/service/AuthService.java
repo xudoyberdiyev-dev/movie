@@ -3,6 +3,7 @@ package it.movie.movie_animation.service;
 import it.movie.movie_animation.entity.Users;
 import it.movie.movie_animation.payload.ApiResponse;
 import it.movie.movie_animation.payload.SignUpDto;
+import it.movie.movie_animation.payload.UserDto;
 import it.movie.movie_animation.repository.AuthRepository;
 import it.movie.movie_animation.repository.RoleRepository;
 import it.movie.movie_animation.security.JwtTokenProvider;
@@ -56,9 +57,10 @@ public class AuthService implements UserDetailsService {
 
             // JWT tokenni yaratish
             String accessToken = jwtTokenProvider.generateAccessToken(savedUser);
+            UserDto userDto = new UserDto(user.getId(), user.getName(), user.getSurname(), user.getEmail());
 
             // ApiResponse ga id ni qo'shish
-            ApiResponse apiResponse = new ApiResponse(accessToken, true, savedUser.getId());
+            ApiResponse apiResponse = new ApiResponse(accessToken, true, userDto);
             return ResponseEntity.ok(apiResponse);
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ApiResponse("Bu email allaqachon mavjud", false, null));

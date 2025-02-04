@@ -1,10 +1,7 @@
 package it.movie.movie_animation.controller;
 
 import it.movie.movie_animation.entity.Users;
-import it.movie.movie_animation.payload.ApiResponse;
-import it.movie.movie_animation.payload.JwtDto;
-import it.movie.movie_animation.payload.SignInDto;
-import it.movie.movie_animation.payload.SignUpDto;
+import it.movie.movie_animation.payload.*;
 import it.movie.movie_animation.repository.AuthRepository;
 import it.movie.movie_animation.security.JwtTokenProvider;
 import it.movie.movie_animation.service.AuthService;
@@ -52,16 +49,13 @@ public class AuthController {
     public ResponseEntity<JwtDto> signIn(@RequestBody @Valid SignInDto data) {
         var usernamePassword = new UsernamePasswordAuthenticationToken(data.login(), data.password());
         var authUser = authenticationManager.authenticate(usernamePassword);
-
         // Foydalanuvchi ma'lumotlarini olish
         Users user = (Users) authUser.getPrincipal();
-        UUID id = user.getId();  // Foydalanuvchining ID sini olish
-
         // Token yaratish
         var accessToken = tokenService.generateAccessToken(user);
-
+        UserDto userDto = new UserDto(user.getId(), user.getName(), user.getSurname(), user.getEmail());
         // Token va foydalanuvchi ID bilan javob qaytarish
-        return ResponseEntity.ok(new JwtDto(accessToken, id));
+        return ResponseEntity.ok(new JwtDto(accessToken, userDto));
     }
 
     @PostMapping("/register")
