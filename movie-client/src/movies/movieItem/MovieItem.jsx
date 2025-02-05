@@ -238,7 +238,9 @@ export const MovieItem = ({userId}) => {
                             </div>
                         </div>
                     </div>
-                ) : (<Loading/>)}
+                ) : (
+                    <Loading/>
+                )}
                 <RandomMovie/>
             </article>
             <div className="search-model"></div>

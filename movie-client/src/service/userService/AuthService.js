@@ -29,7 +29,7 @@ export const RegisterHandler = async (data, navigate) => {
             localStorage.setItem("surname", res.data.surname);
             localStorage.setItem("email", res.data.email);
 
-            toast.success(`Xush kelibsiz, ${res.data.name}!`);
+            toast.success(`Xush kelibsiz, ${res.data.userDto.name}!`);
             navigate("/cabinet");
 
             // Login qilish uchun LoginHandler'ni chaqirish
@@ -62,7 +62,7 @@ export const LoginHandler = async (data, navigate) => {
             // getUserInfo orqali foydalanuvchi ma'lumotlarini olish
             getUserInfo(data.login, navigate);  // Foydalanuvchi ma'lumotlarini olish
 
-            toast.success(`Xush kelibsiz, ${res.data.userDto.name}!`);
+            // toast.success(`Xush kelibsiz, ${res.data.userDto.name}!`);
             navigate("/cabinet");
         }
     } catch (err) {
@@ -80,7 +80,7 @@ export const getUserInfo = async (email, navigate) => {
             localStorage.setItem("name", res.data.name);
             localStorage.setItem("surname", res.data.surname);
             localStorage.setItem("email", res.data.email);
-            toast.success(`Xush kelibsiz, ${res.data.name}!`);
+            // toast.success(`Xush kelibsiz, ${res.data.name}!`);
             navigate("/cabinet");
         } else {
             toast.error("Foydalanuvchi ma'lumotlari topilmadi");
