@@ -245,9 +245,10 @@ public class MovieService implements MovieServiceImpl {
             }
         }
 
-        movieRepository.save(movie);
+        movieRepository.save(movie); // like holatini yangilash
         return new ApiResponse("Like action processed", true, movie.getLikeSize());
     }
+
 
     public List<Movie> getLikedMovies(UUID userId) {
         Users user = authRepository.findById(userId)

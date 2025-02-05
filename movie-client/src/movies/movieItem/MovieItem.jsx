@@ -49,8 +49,10 @@ export const MovieItem = ({ userId }) => {
     // **Foydalanuvchi ushbu kinoga like bosganmi yoki yoʻq?**
     const checkLikeStatus = async () => {
         try {
+            // Serverdan like holatini olish
             const res = await GetAuto(`${APP_API.likeStatus}/${id}?userId=${userId}`);
-            setLiked(res.data);
+            setLiked(res.data); // like holatini yangilash
+            localStorage.setItem(`like_${id}_${userId}`, JSON.stringify(res.data)); // localStorage'da saqlash
         } catch (err) {
             console.error("Error fetching like status:", err);
         }
@@ -61,12 +63,14 @@ export const MovieItem = ({ userId }) => {
         try {
             const action = liked ? "unlike" : "like";
             await BASE_CONFIG_CLIENT.doPost(`${APP_API.likeSendMovie}/${id}/${action}?userId=${userId}`, '');
-            setLiked(!liked);
-            fetchMovie();
+            setLiked(!liked); // Like holatini yangilash
+            localStorage.setItem(`like_${id}_${userId}`, JSON.stringify(!liked)); // localStorage'ga yangilangan like holatini saqlash
+            fetchMovie(); // Kinoni yangilash
         } catch (err) {
             toast.error("Like bosish uchun royxatdan oting");
         }
     };
+
 
     // **Koʻrish sonini oshirish**
     const handleVideoPlay = async () => {
@@ -77,7 +81,6 @@ export const MovieItem = ({ userId }) => {
             console.error("Error updating seeSize:", err);
         }
     };
-
     return (
         <div>
             <Header />
