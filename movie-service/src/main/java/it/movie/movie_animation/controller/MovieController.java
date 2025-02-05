@@ -135,20 +135,18 @@ public class MovieController implements MovieControllerImpl {
     }
 
     @PostMapping("like-send/{id}/{action}")
-    public HttpEntity<?> toggleLike(@PathVariable UUID id, @PathVariable String action, @RequestParam UUID userId) {
-        ApiResponse apiResponse = movieService.sendLike(id, userId, action);
-        return ResponseEntity.status(apiResponse.isSuccess() ? HttpStatus.OK : HttpStatus.CONFLICT).body(apiResponse);
+    public ResponseEntity<ApiResponse> toggleLike(@PathVariable UUID id, @PathVariable String action, @RequestParam UUID userId) {
+        ApiResponse response = movieService.sendLike(id, userId, action);
+        return ResponseEntity.status(response.isSuccess() ? HttpStatus.OK : HttpStatus.CONFLICT).body(response);
     }
 
     @GetMapping("/liked/{userId}")
-    public List<Movie> getLikedMovies(@PathVariable UUID userId) {
-        return movieService.getLikedMovies(userId);  // Foydalanuvchining like qilgan kinolarini olish
+    public ResponseEntity<List<Movie>> getLikedMovies(@PathVariable UUID userId) {
+        return ResponseEntity.ok(movieService.getLikedMovies(userId));
     }
 
     @GetMapping("/{movieId}/status")
-    public ResponseEntity<Boolean> isMovieLiked(
-            @PathVariable UUID movieId,
-            @RequestParam UUID userId) {
+    public ResponseEntity<Boolean> isMovieLiked(@PathVariable UUID movieId, @RequestParam UUID userId) {
         boolean movieLiked = movieService.isMovieLiked(movieId, userId);
         return ResponseEntity.ok(movieLiked);
     }

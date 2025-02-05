@@ -212,62 +212,55 @@ public class MovieService implements MovieServiceImpl {
         }
     }
 
+
     public ApiResponse sendLike(UUID movieId, UUID userId, String action) {
-        // Foydalanuvchi va kino topish
         Users user = authRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
         Movie movie = movieRepository.findById(movieId)
                 .orElseThrow(() -> new RuntimeException("Movie not found"));
 
-        // Foydalanuvchi avval like bosganmi?
         Optional<LikeMovie> existingLike = likeRepository.findByUserAndMovie(user, movie);
 
         if ("like".equalsIgnoreCase(action)) {
             if (existingLike.isPresent()) {
                 LikeMovie likeMovie = existingLike.get();
                 if (!likeMovie.isActiveLike()) {
-                    likeMovie.setActiveLike(true); // Like holatini yangilash
-                    movie.setLikeSize(movie.getLikeSize() + 1); // Kinoning like miqdorini oshirish
+                    likeMovie.setActiveLike(true);
+                    movie.setLikeSize(movie.getLikeSize() + 1);
                     likeRepository.save(likeMovie);
                 }
             } else {
                 LikeMovie newLike = new LikeMovie(user, movie, true);
-                likeRepository.save(newLike); // Yangi like qo'shish
-                movie.setLikeSize(movie.getLikeSize() + 1); // Kinoning like miqdorini oshirish
+                likeRepository.save(newLike);
+                movie.setLikeSize(movie.getLikeSize() + 1);
             }
         } else if ("unlike".equalsIgnoreCase(action)) {
             if (existingLike.isPresent()) {
                 LikeMovie likeMovie = existingLike.get();
                 if (likeMovie.isActiveLike()) {
-                    likeMovie.setActiveLike(false); // Like holatini o'zgartirish
-                    movie.setLikeSize(Math.max(0, movie.getLikeSize() - 1)); // Kinoning like miqdorini kamaytirish
-                    likeRepository.save(likeMovie); // Yangi like holatini saqlash
+                    likeMovie.setActiveLike(false);
+                    movie.setLikeSize(Math.max(0, movie.getLikeSize() - 1));
+                    likeRepository.save(likeMovie);
                 }
             }
         }
 
-        // Kino obyektini saqlash
         movieRepository.save(movie);
-
-        return new ApiResponse("Like action processed", true, movie.getLikeSize()); // Return likeSize bilan
+        return new ApiResponse("Like action processed", true, movie.getLikeSize());
     }
 
-    // Ushbu metod frontendda userning like bosgan filmlarini olish uchun ishlatiladi
     public List<Movie> getLikedMovies(UUID userId) {
         Users user = authRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
-
         return likeRepository.findLikedMoviesByUser(user);
     }
 
-    // Foydalanuvchi ma'lum bir kinoga like bosgan yoki yo'qligini tekshirish
     public boolean isMovieLiked(UUID movieId, UUID userId) {
-        Users user = authRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
-        Movie movie = movieRepository.findById(movieId)
-                .orElseThrow(() -> new RuntimeException("Movie not found"));
-
-        return likeRepository.existsByUserAndMovieAndActiveLike(user, movie, true);
+        return likeRepository.existsByUserAndMovieAndActiveLike(
+                authRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found")),
+                movieRepository.findById(movieId).orElseThrow(() -> new RuntimeException("Movie not found")),
+                true
+        );
     }
 
 
