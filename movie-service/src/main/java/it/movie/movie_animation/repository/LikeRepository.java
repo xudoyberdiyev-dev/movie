@@ -14,7 +14,11 @@ import java.util.UUID;
 
 public interface LikeRepository extends JpaRepository<LikeMovie, UUID> {
     Optional<LikeMovie> findByUserAndMovie(Users user, Movie movie);
-    List<Movie> findLikedMoviesByUser(Users user);
-    boolean existsByUserAndMovieAndActiveLike(Users user, Movie movie, boolean activeLike);
+    @Query("SELECT lm.movie FROM LikeMovie lm WHERE lm.user = :user AND lm.activeLike = true")
+    List<Movie> findLikedMoviesByUser(@Param("user") Users user);
+
+
+    @Query("SELECT CASE WHEN COUNT(l) > 0 THEN TRUE ELSE FALSE END FROM LikeMovie l WHERE l.user = :user AND l.movie = :movie AND l.activeLike = :activeLike")
+    boolean existsByUserAndMovieAndActiveLike(@Param("user") Users user, @Param("movie") Movie movie, @Param("activeLike") Boolean activeLike);
 
 }
