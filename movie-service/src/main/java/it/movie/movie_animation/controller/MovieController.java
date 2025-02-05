@@ -64,11 +64,6 @@ public class MovieController implements MovieControllerImpl {
         return ResponseEntity.ok(movies);
     }
 
-    @GetMapping("/search")
-    private HttpEntity<?> searchMovie(@RequestParam(required = false) String search) {
-        List<Movie> movies = movieService.searchMovies(search);
-        return ResponseEntity.ok(movies);
-    }
 
     @PostMapping("/{id}/see-size") //faqat kinoni ichiga kirib kinoni ustiga bosib kora see size oshadi
     private HttpEntity<?> playSeeSize(@PathVariable UUID id) {
@@ -149,6 +144,11 @@ public class MovieController implements MovieControllerImpl {
     public ResponseEntity<Boolean> isMovieLiked(@PathVariable UUID movieId, @RequestParam UUID userId) {
         boolean movieLiked = movieService.isMovieLiked(movieId, userId);
         return ResponseEntity.ok(movieLiked);
+    }
+
+    @GetMapping("/search")
+    public List<Movie> searchMovies(@RequestParam String query) {
+        return movieRepository.findByNameContainingIgnoreCase(query);
     }
 
 }

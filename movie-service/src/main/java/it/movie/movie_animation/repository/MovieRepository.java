@@ -25,9 +25,7 @@ public interface MovieRepository extends JpaRepository<Movie, UUID> {
     boolean existsByNameAndIdNot(String name, UUID id);
 
 
-    @Query("SELECT m FROM Movie m WHERE LOWER(m.name) LIKE LOWER(CONCAT('%', :name, '%'))")
-    List<Movie> searchByNameIgnoreCase(@Param("name") String name); // Kino nom
-
+    List<Movie> findByNameContainingIgnoreCase(String name);
 
 }
 
