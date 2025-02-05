@@ -1,100 +1,113 @@
-import { Header } from "../../components/Header.jsx";
-import { Genre } from "../../genre/Genre.jsx";
-import { useEffect, useState, useRef } from "react";
-import { useParams } from "react-router-dom";
-import { GetAuto, GetOneMovie } from "../../service/userService/AppService.js";
-import { BASE_URL } from "../../service/BaseUrl.js";
-import { APP_API } from "../../service/AppApi.js";
-import { Loading } from "../../components/Loading.jsx";
-import { RandomMovie } from "../randomMovie/RandomMovie.jsx";
-import { BASE_CONFIG_CLIENT, BASE_CONFIG } from "../../service/BaseConfig.js";
+import {Header} from "../../components/Header.jsx";
+import {Genre} from "../../genre/Genre.jsx";
+import {useEffect, useState, useRef} from "react";
+import {useParams} from "react-router-dom";
+import {GetAuto, GetOneMovie} from "../../service/userService/AppService.js";
+import {BASE_URL} from "../../service/BaseUrl.js";
+import {APP_API} from "../../service/AppApi.js";
+import {Loading} from "../../components/Loading.jsx";
+import {RandomMovie} from "../randomMovie/RandomMovie.jsx";
+import {BASE_CONFIG_CLIENT, BASE_CONFIG} from "../../service/BaseConfig.js";
 import toast from "react-hot-toast";
 
-export const MovieItem = ({ userId }) => {
-    const [liked, setLiked] = useState(false);
-    const [loading, setLoading] = useState(true);
-    const [movie, setMovie] = useState({});
-    const [videos, setVideos] = useState([]);
-    const { id } = useParams();
+export const MovieItem = ({userId}) => {
+    const [liked, setLiked] = useState(false); // Like holatini saqlash
+    const [loading, setLoading] = useState(true); // Loading holati
+    const [movie, setMovie] = useState({}); // Film ma'lumotlari
+    const [videos, setVideos] = useState([]); // Video ro'yxati
+    const {id} = useParams(); // URL'dan film ID'sini olish
     const videoRef = useRef(null);
 
-    useEffect(() => {
-        fetchMovie();
-        fetchVideos();
-        checkLikeStatus();
-    }, [id]);
 
     // **Bitta filmni olish**
     const fetchMovie = async () => {
         try {
-            const res = await GetOneMovie(id);
-            setMovie(res);
+            const res = await GetOneMovie(id); // Film ma'lumotlarini olish
+            setMovie(res); // Filmni state'ga saqlash
         } catch (err) {
-            console.error("Error fetching movie:", err);
+            console.error("Filmni olishda xato:", err);
         } finally {
-            setLoading(false);
+            setLoading(false); // Loading holatini o'zgartirish
         }
     };
 
     // **Videolarni olish**
     const fetchVideos = async () => {
         try {
-            const res = await GetAuto(`${APP_API.newSerial}/${id}`);
-            setVideos(res.data);
+            const res = await GetAuto(`${APP_API.newSerial}/${id}`); // Video ma'lumotlarini olish
+            setVideos(res.data); // Videolarni state'ga saqlash
         } catch (err) {
-            console.error("Error fetching videos:", err);
+            console.error("Videolarni olishda xato:", err);
         }
     };
 
-    // **Foydalanuvchi ushbu kinoga like bosganmi yoki yoʻq?**
+    // **Foydalanuvchi ushbu kinoga like bosganmi yoki yo'q?**
     const checkLikeStatus = async () => {
         try {
-            // Serverdan like holatini olish
-            const res = await GetAuto(`${APP_API.likeStatus}/${id}?userId=${userId}`);
-            setLiked(res.data); // like holatini yangilash
-            localStorage.setItem(`like_${id}_${userId}`, JSON.stringify(res.data)); // localStorage'da saqlash
+            const storedLike = localStorage.getItem(`like_${id}_${userId}`);
+            console.log('Stored like from localStorage:', storedLike); // LocalStorage ma'lumotini ko'rsatish
+            if (storedLike !== null) {
+                setLiked(JSON.parse(storedLike));
+            } else {
+                const res = await GetAuto(`${APP_API.likeStatus}/${id}?userId=${userId}`);
+                console.log('Server like status:', res.data); // Serverdan olingan like holatini ko'rsatish
+                setLiked(res.data);
+                localStorage.setItem(`like_${id}_${userId}`, JSON.stringify(res.data));
+            }
         } catch (err) {
-            console.error("Error fetching like status:", err);
+            console.error("Like holatini tekshirishda xato:", err);
         }
     };
 
-    // **Like yoki Unlike qilish**
+
+// **Like yoki Unlike qilish funksiyasi**
     const handleLike = async () => {
         try {
-            const action = liked ? "unlike" : "like";
-            await BASE_CONFIG_CLIENT.doPost(`${APP_API.likeSendMovie}/${id}/${action}?userId=${userId}`, '');
-            setLiked(!liked); // Like holatini yangilash
-            localStorage.setItem(`like_${id}_${userId}`, JSON.stringify(!liked)); // localStorage'ga yangilangan like holatini saqlash
+            const action = liked ? "unlike" : "like"; // Agar like bo'lsa, unlike qilish
+            await BASE_CONFIG.doPost(`${APP_API.likeSendMovie}/${id}/${action}?userId=${userId}`, ''); // Like yoki unlike qilish
+            setLiked(prevLiked => {
+                const newLikedStatus = !prevLiked; // Yangi like holatini hisoblash
+                localStorage.setItem(`like_${id}_${userId}`, JSON.stringify(newLikedStatus)); // LocalStorage'ga yangilangan like holatini saqlash
+                return newLikedStatus; // Yangi holatni qaytarish
+            });
             fetchMovie(); // Kinoni yangilash
         } catch (err) {
-            toast.error("Like bosish uchun royxatdan oting");
+            toast.error("Like bosish uchun ro'yxatdan o'ting");
         }
     };
 
 
-    // **Koʻrish sonini oshirish**
+    // **Ko'rish sonini oshirish**
     const handleVideoPlay = async () => {
         try {
-            await BASE_CONFIG.doPost(`${APP_API.movie}/${id}/see-size`);
-            setMovie(prevMovie => ({ ...prevMovie, seeSize: prevMovie.seeSize + 0.5 }));
+            await BASE_CONFIG.doPost(`${APP_API.movie}/${id}/see-size`); // Ko'rish sonini oshirish
+            setMovie(prevMovie => ({...prevMovie, seeSize: prevMovie.seeSize + 0.5})); // Movie'dagi seeSize ni yangilash
         } catch (err) {
-            console.error("Error updating seeSize:", err);
+            console.error("Ko'rish sonini oshirishda xato:", err);
         }
     };
+
+    useEffect(() => {
+        fetchMovie(); // Filmni olish
+        fetchVideos(); // Videolarni olish
+        checkLikeStatus(); // Like holatini tekshirish
+    }, [id, userId]);
+
     return (
         <div>
-            <Header />
+            <Header/>
             <main>
-                <Genre />
+                <Genre/>
                 <div className="overlay"></div>
 
                 <article className="container">
-                    <img src="../../assets/images/shape-3.png" className="shape-1 shape-detail" alt="shape" />
-                    <img src="../../assets/images/shape-1.png" className="mob-shape-1 mob-shape-detail-1" alt="" />
-                    <img src="../../assets/images/shape-2.png" className="mob-shape-1 mob-shape-2 mob-shape-detail-2" alt="" />
+                    <img src="../../assets/images/shape-3.png" className="shape-1 shape-detail" alt="shape"/>
+                    <img src="../../assets/images/shape-1.png" className="mob-shape-1 mob-shape-detail-1" alt=""/>
+                    <img src="../../assets/images/shape-2.png" className="mob-shape-1 mob-shape-2 mob-shape-detail-2"
+                         alt=""/>
 
                     {loading ? (
-                        <Loading />
+                        <Loading/>
                     ) : Object.keys(movie).length > 0 ? (
                         <div className="movie-detail">
                             <div className="backdrop-image"
@@ -106,7 +119,8 @@ export const MovieItem = ({ userId }) => {
                             </div>
 
                             <figure className="poster-box movie-poster">
-                                <img src={`${BASE_URL}${APP_API.downloadImage}${movie.img}`} alt={movie.name} className="img-cover"/>
+                                <img src={`${BASE_URL}${APP_API.downloadImage}${movie.img}`} alt={movie.name}
+                                     className="img-cover"/>
                             </figure>
 
                             <div className="detail-box">
@@ -117,35 +131,50 @@ export const MovieItem = ({ userId }) => {
                                         <div className="meta-item">
                                             <button onClick={handleLike}>
                                                 <i className={`${liked ? 'fa-solid' : 'fa-regular'} fa-heart fa-xl`}
-                                                   style={{ color: liked ? '#ff0000' : '#fff' }}></i>
+                                                   style={{color: liked ? '#ff0000' : '#fff'}}></i>
                                             </button>
+                                            <div></div>
+                                            <div></div>
                                             <span className="span">{movie.likeSize}</span>
                                         </div>
 
                                         <div className="separator"></div>
-                                        <div className="meta-item"><i className="fa-regular fa-hourglass-half"></i> {movie.movieTime}m</div>
+                                        <div className="meta-item"><i
+                                            className="fa-regular fa-hourglass-half"></i> {movie.movieTime}m
+                                        </div>
                                         <div className="separator"></div>
-                                        <div className="meta-item"><i className="fa-solid fa-calendar-days"></i> {movie.movieYear}</div>
+                                        <div className="meta-item"><i
+                                            className="fa-solid fa-calendar-days"></i> {movie.movieYear}</div>
                                         <div className="separator"></div>
-                                        <div className="meta-item card-badge">{movie.age ? movie.age.substring(1, 3) : ''}+</div>
+                                        <div
+                                            className="meta-item card-badge">{movie.age ? movie.age.substring(1, 3) : ''}+
+                                        </div>
                                     </div>
 
-                                    <p className="genre" style={{ color: "wheat" }}>{movie.genres?.slice(0, 8).join(' ')}</p>
+                                    <p className="genre"
+                                       style={{color: "wheat"}}>{movie.genres?.slice(0, 8).join(' ')}</p>
 
                                     <ul className="detail-list">
-                                        <div className="list-item"><p className="list-name">Kino Vaqti</p> <p className="detail-para">{movie.movieTime} m</p></div>
-                                        <div className="list-item"><p className="list-name">Kino Yili</p> <p className="detail-para">{movie.movieYear}</p></div>
-                                        <div className="list-item"><p className="list-name">Kino Davlati</p> <p className="detail-para">{movie.movieCountry}</p></div>
-                                        <div className="list-item"><p className="list-name">Kino Tili</p> <p className="detail-para">{movie.language} tilida</p></div>
-                                        <div className="list-item"><p className="list-name">Kino Haqida</p> <p className="detail-para">{movie.description}</p></div>
+                                        <div className="list-item"><p className="list-name">Kino Vaqti</p> <p
+                                            className="detail-para">{movie.movieTime} m</p></div>
+                                        <div className="list-item"><p className="list-name">Kino Yili</p> <p
+                                            className="detail-para">{movie.movieYear}</p></div>
+                                        <div className="list-item"><p className="list-name">Kino Davlati</p> <p
+                                            className="detail-para">{movie.movieCountry}</p></div>
+                                        <div className="list-item"><p className="list-name">Kino Tili</p> <p
+                                            className="detail-para">{movie.language} tilida</p></div>
+                                        <div className="list-item"><p className="list-name">Kino Haqida</p> <p
+                                            className="detail-para">{movie.description}</p></div>
                                     </ul>
                                 </div>
 
                                 <div className="slider-list">
                                     {movie.subCategoryType === "SERIAL" && videos.length > 0 && videos.map((item) => (
                                         <div key={item.id} className="video-card">
-                                            <video onPlay={handleVideoPlay} ref={videoRef} controls width="294" height="294">
-                                                <source src={`${BASE_URL}${APP_API.downloadVideo}${item.video}`} type="video/mp4"/>
+                                            <video onPlay={handleVideoPlay} ref={videoRef} controls width="294"
+                                                   height="294">
+                                                <source src={`${BASE_URL}${APP_API.downloadVideo}${item.video}`}
+                                                        type="video/mp4"/>
                                             </video>
                                         </div>
                                     ))}
@@ -155,7 +184,7 @@ export const MovieItem = ({ userId }) => {
                     ) : (
                         <p>Ma'lumot topilmadi</p>
                     )}
-                    <RandomMovie />
+                    <RandomMovie/>
                 </article>
             </main>
         </div>
