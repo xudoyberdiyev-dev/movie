@@ -487,7 +487,7 @@ body {
 
 .search-wrapper .loading-icon {
   position: absolute;
-  top: 50%;
+  top: 40%;
   transform: translateY(-50%);
   left: 12px;
   opacity: 0.5;

@@ -1,9 +1,8 @@
-import React, { useState } from "react";
+import React, {useState} from "react";
 import searchIcon from "../assets/images/search.png"; // search rasm
 import closeIcon from "../assets/images/close.png";  // close rasm
-import { GetAuto } from "../service/userService/AppService.js";
-import { APP_API } from "../service/AppApi.js";
-import "./search.css";
+import {GetAuto} from "../service/userService/AppService.js";
+import {APP_API} from "../service/AppApi.js";
 
 export const Search = () => {
     const [isModalOpen, setIsModalOpen] = useState(false); // Modal holatini boshqarish
@@ -12,6 +11,7 @@ export const Search = () => {
 
     // Ovozli qidiruvni boshlash
     const startVoiceSearch = () => {
+        // SpeechRecognition funksiyasini tekshirish
         const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 
         if (!SpeechRecognition) {
@@ -38,6 +38,7 @@ export const Search = () => {
         recognition.start();
     };
 
+
     // Qidiruvni amalga oshirish
     const performSearch = async (query) => {
         if (query.trim() !== '') {
@@ -63,9 +64,7 @@ export const Search = () => {
     };
 
     // Modalni yopish
-    const closeModal = () => {
-        setIsModalOpen(false);
-    };
+
 
     return (
         <div>
@@ -78,8 +77,9 @@ export const Search = () => {
                         name="search"
                         aria-label="search movies"
                         className="search-field"
-                        placeholder="Search any movies..."
+                        placeholder="Kino nomi bilan qidiring..."
                         autoComplete="off"
+
                     />
                     <img
                         src={searchIcon}
@@ -89,33 +89,13 @@ export const Search = () => {
                         className="loading-icon"
                     />
                 </div>
-                <button onClick={() => performSearch(searchQuery)}>Qidirish</button>
-                <button onClick={startVoiceSearch}>Ovoz bn</button>
+                {/*<button onClick={() => performSearch(searchQuery)}>Qidirish</button>*/}
+                {/*<button onClick={startVoiceSearch}>Ovoz bn</button>*/}
+                {/*<button onClick={() => setIsModalOpen(true)}>d</button>*/}
                 <button className="search-btn">
                     <img src={closeIcon} width="24" height="24" alt="close search box"/>
                 </button>
             </div>
-
-            {/* Modal yoki natijalarni ko'rsatish */}
-            {isModalOpen && (
-                <div className="movie-results">
-                    <button onClick={closeModal}>Yopish</button>
-                    <h3>Natijalar:</h3>
-                    <div className="movie-list">
-                        {movies.length > 0 ? (
-                            movies.map((movie) => (
-                                <div key={movie.id} className="movie-item">
-                                    <h4>{movie.name}</h4>
-                                    <p>{movie.description}</p>
-                                    {/* Agar kinoning boshqa tafsilotlari kerak bo'lsa, ularni ham qo'shish mumkin */}
-                                </div>
-                            ))
-                        ) : (
-                            <p>Hech narsa topilmadi.</p>
-                        )}
-                    </div>
-                </div>
-            )}
         </div>
     );
 };
