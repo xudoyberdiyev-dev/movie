@@ -70,25 +70,27 @@ export const Search = () => {
         <div>
             <div className="search-box">
                 <div className="search-wrapper">
-                    <input
-                        value={searchQuery}
-                        onChange={handleSearchChange}
-                        type="text"
-                        name="search"
-                        aria-label="search movies"
-                        className="search-field"
-                        placeholder="Kino nomi bilan qidiring..."
-                        autoComplete="off"
 
-                    />
-                    <img
-                        src={searchIcon}
-                        alt="search"
-                        width="24"
-                        height="24"
-                        className="loading-icon"
-                    />
-                </div>
+                        <input
+                            value={searchQuery}
+                            onChange={handleSearchChange}
+                            type="text"
+                            name="search"
+                            aria-label="search movies"
+                            className="search-field"
+                            placeholder="Kino nomi bilan qidiring..."
+                            autoComplete="off"
+
+                        />
+                        <img
+                            src={searchIcon}
+                            alt="search"
+                            width="24"
+                            height="24"
+                            className="loading-icon"
+                        />
+                    </div>
+
                 {/*<button onClick={() => performSearch(searchQuery)}>Qidirish</button>*/}
                 {/*<button onClick={startVoiceSearch}>Ovoz bn</button>*/}
                 {/*<button onClick={() => setIsModalOpen(true)}>d</button>*/}
