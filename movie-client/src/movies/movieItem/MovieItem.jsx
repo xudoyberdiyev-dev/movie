@@ -34,7 +34,7 @@ export const MovieItem = ({userId}) => {
     // Videolarni olish
     const getVedio = async () => {
         try {
-            const res = await GetAuto(${APP_API.newSerial}/${id}); // Video ma'lumotlarini olish
+            const res = await GetAuto(`${APP_API.newSerial}/${id}`); // Video ma'lumotlarini olish
             setVideos(res.data); // Videolarni state'ga saqlash
         } catch (err) {
             console.error("Videolarni olishda xato:", err);
@@ -44,15 +44,15 @@ export const MovieItem = ({userId}) => {
     // Foydalanuvchi ushbu kinoga like bosganmi yoki yo'q?
     const getLikeAndMovie = async () => {
         try {
-            const storedLike = localStorage.getItem(like_${id}_${userId});
+            const storedLike = localStorage.getItem(`like_${id}_${userId}`);
             console.log('Stored like from localStorage:', storedLike); // LocalStorage ma'lumotini ko'rsatish
             if (storedLike !== null) {
                 setLiked(JSON.parse(storedLike));
             } else {
-                const res = await GetAuto(${APP_API.likeStatus}/${id}?userId=${userId});
+                const res = await GetAuto(`${APP_API.likeStatus}/${id}?userId=${userId}`);
                 console.log('Server like status:', res.data); // Serverdan olingan like holatini ko'rsatish
                 setLiked(res.data);
-                localStorage.setItem(like_${id}_${userId}, JSON.stringify(res.data));
+                localStorage.setItem(`like_${id}_${userId}`, JSON.stringify(res.data));
             }
         } catch (err) {
             console.error("Like holatini tekshirishda xato:", err);
@@ -64,10 +64,10 @@ export const MovieItem = ({userId}) => {
     const sendLike = async () => {
         try {
             const action = liked ? "unlike" : "like"; // Agar like bo'lsa, unlike qilish
-            await BASE_CONFIG_CLIENT.doPost(${APP_API.likeSendMovie}/${id}/${action}?userId=${userId}, ''); // Like yoki unlike qilish
+            await BASE_CONFIG_CLIENT.doPost(`${APP_API.likeSendMovie}/${id}/${action}?userId=${userId}`, ''); // Like yoki unlike qilish
             setLiked(prevLiked => {
                 const newLikedStatus = !prevLiked; // Yangi like holatini hisoblash
-                localStorage.setItem(like_${id}_${userId}, JSON.stringify(newLikedStatus)); // LocalStorage'ga yangilangan like holatini saqlash
+                localStorage.setItem(`like_${id}_${userId}`, JSON.stringify(newLikedStatus)); // LocalStorage'ga yangilangan like holatini saqlash
                 return newLikedStatus; // Yangi holatni qaytarish
             });
             getOneMovie(); // Kinoni yangilash
@@ -80,7 +80,7 @@ export const MovieItem = ({userId}) => {
     // Ko'rish sonini oshirish
     const playVideoAndSeeSize = async () => {
         try {
-            await BASE_CONFIG.doPost(${APP_API.movie}/${id}/see-size); // Ko'rish sonini oshirish
+            await BASE_CONFIG.doPost(`${APP_API.movie}/${id}/see-size`); // Ko'rish sonini oshirish
             setMovie(prevMovie => ({...prevMovie, seeSize: prevMovie.seeSize + 0.5})); // Movie'dagi seeSize ni yangilash
         } catch (err) {
             console.error("Ko'rish sonini oshirishda xato:", err);
