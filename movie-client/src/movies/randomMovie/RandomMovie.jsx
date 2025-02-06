@@ -47,14 +47,10 @@ export const RandomMovie = () => {
 
                             <div className="meta-list">
                                 <div className="meta-item">
-                                    <img src="../../assets/images/star.png" width="20" height="20"
-                                         alt="rating"/>
-
-
-                                    <span className="span">7.6</span>
+                                    <span className="span">{item.seeSize}</span>
                                 </div>
 
-                                <div className="card-badge">{item.name}</div>
+                                <div className="card-badge">{item.age.substring(1,3)}+</div>
                             </div>
 
                             <a href="./detail.html" className="card-btn" title="Bad Boys: Ride or Die"

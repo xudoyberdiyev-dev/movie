@@ -7,20 +7,20 @@ import {BASE_URL} from "../../service/BaseUrl.js";
 import {APP_API} from "../../service/AppApi.js";
 import {Loading} from "../../components/Loading.jsx";
 import {RandomMovie} from "../randomMovie/RandomMovie.jsx";
-import {BASE_CONFIG_CLIENT, BASE_CONFIG} from "../../service/BaseConfig.js";
+import {BASE_CONFIG, BASE_CONFIG_CLIENT} from "../../service/BaseConfig.js";
 import toast from "react-hot-toast";
 
 export const MovieItem = ({userId}) => {
     const [liked, setLiked] = useState(false); // Like holatini saqlash
     const [loading, setLoading] = useState(true); // Loading holati
     const [movie, setMovie] = useState({}); // Film ma'lumotlari
-    const [videos, setVideos] = useState([]); // Video ro'yxati
+    const [videos, setVideos] = useState([]); // Seriallar qolgan qismlari  ro'yxati
     const {id} = useParams(); // URL'dan film ID'sini olish
     const videoRef = useRef(null);
 
 
     // **Bitta filmni olish**
-    const fetchMovie = async () => {
+    const getOneMovie = async () => {
         try {
             const res = await GetOneMovie(id); // Film ma'lumotlarini olish
             setMovie(res); // Filmni state'ga saqlash
@@ -32,7 +32,7 @@ export const MovieItem = ({userId}) => {
     };
 
     // **Videolarni olish**
-    const fetchVideos = async () => {
+    const getVedio = async () => {
         try {
             const res = await GetAuto(`${APP_API.newSerial}/${id}`); // Video ma'lumotlarini olish
             setVideos(res.data); // Videolarni state'ga saqlash
@@ -42,7 +42,7 @@ export const MovieItem = ({userId}) => {
     };
 
     // **Foydalanuvchi ushbu kinoga like bosganmi yoki yo'q?**
-    const checkLikeStatus = async () => {
+    const getLikeAndMovie = async () => {
         try {
             const storedLike = localStorage.getItem(`like_${id}_${userId}`);
             console.log('Stored like from localStorage:', storedLike); // LocalStorage ma'lumotini ko'rsatish
@@ -61,16 +61,16 @@ export const MovieItem = ({userId}) => {
 
 
 // **Like yoki Unlike qilish funksiyasi**
-    const handleLike = async () => {
+    const sendLike = async () => {
         try {
             const action = liked ? "unlike" : "like"; // Agar like bo'lsa, unlike qilish
-            await BASE_CONFIG.doPost(`${APP_API.likeSendMovie}/${id}/${action}?userId=${userId}`, ''); // Like yoki unlike qilish
+            await BASE_CONFIG_CLIENT.doPost(`${APP_API.likeSendMovie}/${id}/${action}?userId=${userId}`, ''); // Like yoki unlike qilish
             setLiked(prevLiked => {
                 const newLikedStatus = !prevLiked; // Yangi like holatini hisoblash
                 localStorage.setItem(`like_${id}_${userId}`, JSON.stringify(newLikedStatus)); // LocalStorage'ga yangilangan like holatini saqlash
                 return newLikedStatus; // Yangi holatni qaytarish
             });
-            fetchMovie(); // Kinoni yangilash
+            getOneMovie(); // Kinoni yangilash
         } catch (err) {
             toast.error("Like bosish uchun ro'yxatdan o'ting");
         }
@@ -78,7 +78,7 @@ export const MovieItem = ({userId}) => {
 
 
     // **Ko'rish sonini oshirish**
-    const handleVideoPlay = async () => {
+    const playVideoAndSeeSize = async () => {
         try {
             await BASE_CONFIG.doPost(`${APP_API.movie}/${id}/see-size`); // Ko'rish sonini oshirish
             setMovie(prevMovie => ({...prevMovie, seeSize: prevMovie.seeSize + 0.5})); // Movie'dagi seeSize ni yangilash
@@ -88,9 +88,9 @@ export const MovieItem = ({userId}) => {
     };
 
     useEffect(() => {
-        fetchMovie(); // Filmni olish
-        fetchVideos(); // Videolarni olish
-        checkLikeStatus(); // Like holatini tekshirish
+        getOneMovie(); // Filmni olish
+        getVedio(); // Videolarni olish
+        getLikeAndMovie(); // Like holatini tekshirish
     }, [id, userId]);
 
     return (
@@ -129,7 +129,7 @@ export const MovieItem = ({userId}) => {
 
                                     <div className="meta-list">
                                         <div className="meta-item">
-                                            <button onClick={handleLike}>
+                                            <button onClick={sendLike}>
                                                 <i className={`${liked ? 'fa-solid' : 'fa-regular'} fa-heart fa-xl`}
                                                    style={{color: liked ? '#ff0000' : '#fff'}}></i>
                                             </button>
@@ -171,7 +171,7 @@ export const MovieItem = ({userId}) => {
                                 <div className="slider-list">
                                     {movie.subCategoryType === "SERIAL" && videos.length > 0 && videos.map((item) => (
                                         <div key={item.id} className="video-card">
-                                            <video onPlay={handleVideoPlay} ref={videoRef} controls width="294"
+                                            <video onPlay={playVideoAndSeeSize} ref={videoRef} controls width="294"
                                                    height="294">
                                                 <source src={`${BASE_URL}${APP_API.downloadVideo}${item.video}`}
                                                         type="video/mp4"/>
