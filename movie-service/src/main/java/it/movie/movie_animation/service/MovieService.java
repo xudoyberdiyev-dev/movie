@@ -35,8 +35,6 @@ public class MovieService implements MovieServiceImpl {
         return movieRepository.findByGenresContaining(genre);
     }
 
-
-
     @Override
     public List<ResMovieDto> getMovie() {
         List<ResMovieDto> resMovieDtos = new ArrayList<>();
@@ -257,9 +255,6 @@ public class MovieService implements MovieServiceImpl {
                 true
         );
     }
-
-
-
 
 
 }
