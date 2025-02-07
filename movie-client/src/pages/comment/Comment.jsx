@@ -15,7 +15,7 @@ export const Comment = ({movieId}) => {
     const getComment = async () => {
         try {
             const res = await GetAuto(`${APP_API.comment}/${movieId}`)
-            setComments(res.data);
+            setComments(res.data.reverse());
         } catch (error) {
             console.error("Izohlarni olishda xatolik:", error);
         }
@@ -27,7 +27,6 @@ export const Comment = ({movieId}) => {
             const response = await BASE_CONFIG_CLIENT.doPost(`${APP_API.comment}/${movieId}`, {text});
 
             if (response.data.success) {
-                // 🔥 Yangi izoh API'da saqlanadi, shuning uchun fetchComments chaqiramiz
                 getComment();
                 setText("");
             } else {
