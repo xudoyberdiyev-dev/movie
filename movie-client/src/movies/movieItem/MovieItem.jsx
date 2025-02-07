@@ -168,16 +168,57 @@ export const MovieItem = ({userId}) => {
                                     </ul>
                                 </div>
 
+                                <div className="title-wrapper">
+                                    <h3 className="title-large">Kino va Seriallar</h3>
+                                </div>
+
                                 <div className="slider-list">
-                                    {movie.subCategoryType === "SERIAL" && videos.length > 0 && videos.map((item) => (
-                                        <div key={item.id} className="video-card">
-                                            <video onPlay={playVideoAndSeeSize} ref={videoRef} controls width="294"
-                                                   height="294">
-                                                <source src={`${BASE_URL}${APP_API.downloadVideo}${item.video}`}
+                                    <div className="slider-inner">
+                                        <div className="video-card">
+
+                                            <video onPlay={playVideoAndSeeSize} frameBorder="0" ref={videoRef}
+                                                   allowFullScreen="1" title="Billion with a B" className="img-cover"
+                                                   loading="lazy" width="500" height="294" controls>
+                                                <source src={`${BASE_URL}${APP_API.downloadVideo}${movie.video}`}
                                                         type="video/mp4"/>
+                                                <source src={`${BASE_URL}${APP_API.downloadVideo}${movie.video}`}
+                                                        type="video/webm"/>
+                                                <source src={`${BASE_URL}${APP_API.downloadVideo}${movie.video}`}
+                                                        type="video/ogg"/>
                                             </video>
+
                                         </div>
-                                    ))}
+                                        {movie.subCategoryType === "SERIAL" && videos.length > 0 ? (
+                                            <>
+                                                {videos.map((item, i) => (
+                                                    <div className="video-card" style={{position: 'relative'}}>
+                                                        <div
+                                                            style={{
+                                                                position: 'absolute',
+                                                                margin: '8px'
+                                                            }}>{item.title}</div>
+                                                        <video onPlay={playVideoAndSeeSize} frameBorder="0"
+                                                               ref={videoRef}
+                                                               allowFullScreen="1" title="Billion with a B"
+                                                               className="img-cover" loading="lazy"
+                                                               width="294" height="294" controls>
+                                                            <source
+                                                                src={`${BASE_URL}${APP_API.downloadVideo}${item.video}`}
+                                                                type="video/mp4"/>
+                                                            <source
+                                                                src={`${BASE_URL}${APP_API.downloadVideo}${item.video}`}
+                                                                type="video/webm"/>
+                                                            <source
+                                                                src={`${BASE_URL}${APP_API.downloadVideo}${item.video}`}
+                                                                type="video/ogg"/>
+                                                        </video>
+                                                    </div>
+
+                                                ))}
+                                            </>
+                                        ) : null}
+
+                                    </div>
                                 </div>
                             </div>
                         </div>
