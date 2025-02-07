@@ -14,6 +14,6 @@ export const APP_API = {
     getMe: '/auth/get-me',
     likeSendMovie: '/movie/like-send',
     likeStatus: '/movie/liked',
-    comment:'/comment'
+    comment: '/comment'
 
 }

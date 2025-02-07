@@ -57,7 +57,8 @@ public class CommentService {
         return comments.stream().map(comment -> new ResCommentDto(
                 comment.getText(),
                 comment.getUsers().getName(),
-                comment.getUsers().getSurname()
+                comment.getUsers().getSurname(),
+                comment.getCreatedAt()
         )).collect(Collectors.toList());
     }
 }

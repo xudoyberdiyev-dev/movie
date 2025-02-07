@@ -24,18 +24,20 @@ export const Comment = ({movieId}) => {
     const addComment = async () => {
         if (!text.trim()) return;
         try {
-            const response = await BASE_CONFIG_CLIENT.doPost(`${APP_API.comment}/${movieId}`, text)
+            const response = await BASE_CONFIG_CLIENT.doPost(`${APP_API.comment}/${movieId}`, {text});
 
             if (response.data.success) {
-                setComments([{text: text, name: "Siz", time: "Hozir"}, ...comments]);
-                setComments("");
+                // 🔥 Yangi izoh API'da saqlanadi, shuning uchun fetchComments chaqiramiz
+                getComment();
+                setText("");
             } else {
-                alert(response.data.message);
+                toast.error(response.data.message);
             }
         } catch (error) {
-            toast.error("Izoh qoldirish uchun royxatdan o'ting")
+            toast.error("Izoh qoldirish uchun ro‘yxatdan o‘tish kerak!");
         }
     };
+
 
     useEffect(() => {
         getComment()
@@ -53,7 +55,7 @@ export const Comment = ({movieId}) => {
                     maxLength={maxChars}
                     onChange={(e) => setText(e.target.value)}
                 />
-                <button onClick={addComment} disabled={!text.trim()} className="send-btn">
+                <button onClick={() => addComment()} disabled={!text.trim()} className="send-btn">
                     <FiSend size={18}/> Izoh qoldirish
                 </button>
             </div>
@@ -62,8 +64,8 @@ export const Comment = ({movieId}) => {
                 {comments.map((comment) => (
                     <li key={comment.id} className="comment">
                         <div className="comment-header">
-                            <span className="comment-name">{comment.name}</span>
-                            <span className="comment-time">{comment.time}</span>
+                            <span className="comment-name">{comment.userName} {comment.userSurname}</span>
+                            <span className="comment-time">{comment.createdAt.substring(0, 10)}</span>
                         </div>
                         <p>{comment.text}</p>
                     </li>
