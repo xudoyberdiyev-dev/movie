@@ -13,6 +13,7 @@ export const APP_API = {
     login: '/auth/login',
     getMe: '/auth/get-me',
     likeSendMovie: '/movie/like-send',
-    likeStatus: '/movie/liked'
+    likeStatus: '/movie/liked',
+    comment:'/comment'
 
 }

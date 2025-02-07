@@ -9,6 +9,7 @@ import {Loading} from "../../components/Loading.jsx";
 import {RandomMovie} from "../randomMovie/RandomMovie.jsx";
 import {BASE_CONFIG, BASE_CONFIG_CLIENT} from "../../service/BaseConfig.js";
 import toast from "react-hot-toast";
+import {Comment} from "../../pages/comment/Comment.jsx";
 
 export const MovieItem = ({userId}) => {
     const [liked, setLiked] = useState(false); // Like holatini saqlash
@@ -213,6 +214,7 @@ export const MovieItem = ({userId}) => {
                         <p>Ma'lumot topilmadi</p>
                     )}
                     <RandomMovie/>
+                    <Comment movieId={id}/>
                 </article>
             </main>
         </div>
