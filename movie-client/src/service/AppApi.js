@@ -15,5 +15,4 @@ export const APP_API = {
     likeSendMovie: '/movie/like-send',
     likeStatus: '/movie/liked',
     comment: '/comment'
-
 }

@@ -24,6 +24,7 @@ export const BASE_CONFIG = {
     ), doGetOne: (url, id) => axios.get(
         `${BASE_URL}${url}/${id}`,)
 }
+
 export const BASE_CONFIG_CLIENT = {
     doPost: (url, data) => axios.post(
         `${BASE_URL}${url}`, data, config
