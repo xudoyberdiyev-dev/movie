@@ -63,13 +63,21 @@ export const Comment = ({movieId}) => {
                 {comments.map((comment) => (
                     <li key={comment.id} className="comment">
                         <div className="comment-header">
-                            <span className="comment-name">{comment.userName} {comment.userSurname}</span>
-                            <span className="comment-time">{comment.createdAt.substring(0, 10)}</span>
+                            <img
+                                src={'https://static.vecteezy.com/system/resources/previews/019/879/186/non_2x/user-icon-on-transparent-background-free-png.png'}
+                                alt="User Profile"
+                                className="comment-avatar"
+                            />
+                            <div className="comment-info">
+                                <span className="comment-name">{comment.userName} {comment.userSurname}</span>
+                                <span className="comment-time">{comment.createdAt.substring(0, 10)}</span>
+                            </div>
                         </div>
                         <p>{comment.text}</p>
                     </li>
                 ))}
             </ul>
+
         </div>
     );
 };
