@@ -3,6 +3,8 @@ import searchIcon from "../assets/images/search.png"; // search rasm
 import closeIcon from "../assets/images/close.png";  // close rasm
 import {GetAuto} from "../service/userService/AppService.js";
 import {APP_API} from "../service/AppApi.js";
+import {FaMicrophone, FaSearch} from "react-icons/fa";
+import './search.css'
 
 export const Search = () => {
     const [isModalOpen, setIsModalOpen] = useState(false); // Modal holatini boshqarish
@@ -68,36 +70,28 @@ export const Search = () => {
 
     return (
         <div>
-            <div className="search-box">
-                <div className="search-wrapper">
+            <div className="search-container">
+                <input value={searchQuery}
+                       onChange={handleSearchChange}
+                       type="text"
+                       name="search"
+                       aria-label="search movies"
 
-                        <input
-                            value={searchQuery}
-                            onChange={handleSearchChange}
-                            type="text"
-                            name="search"
-                            aria-label="search movies"
-                            className="search-field"
-                            placeholder="Kino nomi bilan qidiring..."
-                            autoComplete="off"
-
-                        />
-                        <img
-                            src={searchIcon}
-                            alt="search"
-                            width="24"
-                            height="24"
-                            className="loading-icon"
-                        />
-                    </div>
-
-                {/*<button onClick={() => performSearch(searchQuery)}>Qidirish</button>*/}
-                {/*<button onClick={startVoiceSearch}>Ovoz bn</button>*/}
+                       placeholder="Kino nomi bilan qidiring..."
+                       autoComplete="off"/>
+                <div className="search-btn">
+                    <FaSearch className="icon" onClick={() => performSearch(searchQuery)}/>
+                </div>
+                <div className="mic-btn">
+                    <FaMicrophone className="icon" onClick={startVoiceSearch}/>
+                </div>
+                {movies.map((item)=>(
+                    <div>{item.name}</div>
+                ))}
                 {/*<button onClick={() => setIsModalOpen(true)}>d</button>*/}
-                <button className="search-btn">
-                    <img src={closeIcon} width="24" height="24" alt="close search box"/>
-                </button>
             </div>
         </div>
+
+
     );
 };
