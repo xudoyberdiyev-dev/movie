@@ -34,7 +34,7 @@ public class MovieService implements MovieServiceImpl {
     private final AuthRepository authRepository;
 
     public Page<Movie> getMoviesByGenre(Genre genre, Pageable pageable) {
-        return movieRepository.findByGenre(genre, pageable);
+        return movieRepository.findByGenres(genre, pageable);
     }
 
     @Override

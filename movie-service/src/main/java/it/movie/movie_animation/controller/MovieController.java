@@ -62,7 +62,7 @@ public class MovieController implements MovieControllerImpl {
 
     @Override
     @GetMapping("/by-genre")//genre boyicha kino chiqadi
-    public HttpEntity<?> getMoviesByGenre(@RequestParam Genre genre, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "20") int size) {
+    public HttpEntity<?> getMoviesByGenre(@RequestParam Genre genre, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "24") int size) {
         Pageable pageable = PageRequest.of(page, size);
         Page<Movie> moviesByGenre = movieService.getMoviesByGenre(genre, pageable);
         return ResponseEntity.ok(moviesByGenre);

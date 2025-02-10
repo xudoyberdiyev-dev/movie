@@ -1,86 +1,90 @@
-import {Header} from "../components/Header.jsx";
-import {Genre} from "../genre/Genre.jsx";
-import {useEffect, useState} from "react";
-import {GetAuto} from "../service/userService/AppService.js";
-import {APP_API} from "../service/AppApi.js";
-import {useNavigate, useParams} from "react-router-dom";
-import {BASE_URL} from "../service/BaseUrl.js";
-import fon1 from '../assets/images/shape-1.png'
-import fon2 from '../assets/images/shape-2.png'
-import fon3 from '../assets/images/shape-3.png'
+import { Header } from "../components/Header.jsx";
+import { Genre } from "../genre/Genre.jsx";
+import { useEffect, useState } from "react";
+import { GetAuto } from "../service/userService/AppService.js";
+import { APP_API } from "../service/AppApi.js";
+import { useNavigate, useParams } from "react-router-dom";
+import { BASE_URL } from "../service/BaseUrl.js";
+import fon1 from '../assets/images/shape-1.png';
+import fon2 from '../assets/images/shape-2.png';
+import fon3 from '../assets/images/shape-3.png';
 import { MDBSpinner, MDBBtn } from 'mdb-react-ui-kit';
 
 export const GenreByMovie = () => {
     const navigate = useNavigate();
-    const [allMovies, setAllMovies] = useState([]); // Movies related to selected genre
-    const [visibleMovies, setVisibleMovies] = useState([]); // Ko‘rinayotgan kinolar
-    const [visibleCount, setVisibleCount] = useState(2); // Nechta ko‘rsatishni boshqarish
-    const {genre} = useParams();
+    const { genre } = useParams();
 
-    const [loading, setLoading] = useState(false)
+    const [allMovies, setAllMovies] = useState([]); // Barcha kinolar
+    const [page, setPage] = useState(0);
+    const [totalPages, setTotalPages] = useState(1);
+    const [loading, setLoading] = useState(false);
 
-    const getMoviesByGenre = async (genre) => {
+    const getMoviesByGenre = async (currentPage = 0) => {
+        setLoading(true);
         try {
-            const res = await GetAuto(APP_API.getGenreByMovie + `?genre=${genre}`)
+            const res = await GetAuto(APP_API.getGenreByMovie + `?genre=${genre}&page=${currentPage}&size=20`);
             if (res && res.data) {
-                setAllMovies(res.data.reverse()); // Yangi kinolarni birinchi qilish uchun reverse qilish
-                setVisibleMovies(res.data.slice(0, 2)); // Dastlab 2 tasini ko‘rsatamiz
+                const newMovies = res.data.content;
+
+                // 🔥 Takrorlanmasligi uchun `id` bo‘yicha filtrlaymiz
+                setAllMovies(prev => {
+                    const uniqueMovies = [...prev, ...newMovies].filter((movie, index, self) =>
+                        index === self.findIndex(m => m.id === movie.id)
+                    );
+                    return uniqueMovies;
+                });
+
+                setTotalPages(res.data.totalPages);
+                setPage(currentPage);
             } else {
-                console.log("Javobda data yo'q:", res);
+                console.log("Javobda data yo‘q:", res);
             }
         } catch (err) {
-            console.log("Error fetching allMovies by genre:", err);
+            console.log("Xatolik: janr bo‘yicha kinolarni olishda muammo yuz berdi", err);
+        } finally {
+            setLoading(false);
         }
     };
+
     const loadMoreMovies = () => {
-        setLoading(true); // Loadingni yoqish
-
-        setTimeout(() => {
-            const newCount = visibleCount + 2;
-            setVisibleCount(newCount);
-            setVisibleMovies(allMovies.slice(0, newCount)); // Yangi 2 tasini qo‘shish
-            setLoading(false); // 1 sekunddan keyin loading tugaydi
-        }, 1000);
+        if (page + 1 < totalPages) {
+            getMoviesByGenre(page + 1);
+        }
     };
 
-    const oneMovie = (id) => {
-        navigate("/movie-item/" + id);
-    };
+    const oneMovie = (id) => navigate(`/movie-item/${id}`);
+
     useEffect(() => {
         if (genre) {
-            setAllMovies([]); // Yangi janr tanlanganda eski kinolarni tozalaymiz
-            setVisibleMovies([]);
-            setVisibleCount(2);
-            getMoviesByGenre(genre);
+            setAllMovies([]); // Eski malumotlarni tozalash
+            setPage(0);
+            setTotalPages(1);
+            getMoviesByGenre(0);
         }
     }, [genre]);
+
     return (
         <div>
-            <Header/>
+            <Header />
             <main>
-                <Genre selectedGenre={genre} setAllMovies={setAllMovies}/>
-                <div className="overlay " overlay="" menu-toggler=""></div>
+                <Genre selectedGenre={genre} setAllMovies={setAllMovies} />
+                <div className="overlay" overlay="" menu-toggler=""></div>
 
                 <article className="container" page-content="">
-                    <img src={fon3} className="shape-1 shape-list" alt="shape"/>
-                    <img src={fon2} className="shape-1 shape-3" alt="shape"/>
-
-
-                    <img src={fon1} className="mob-shape-1 mob-shape-list-1" alt=""/>
-                    <img src={fon2} className="mob-shape-1 mob-shape-2 mob-shape-list-2"
-                         alt=""/>
+                    <img src={fon3} className="shape-1 shape-list" alt="shape" />
+                    <img src={fon2} className="shape-1 shape-3" alt="shape" />
+                    <img src={fon1} className="mob-shape-1 mob-shape-list-1" alt="" />
+                    <img src={fon2} className="mob-shape-1 mob-shape-2 mob-shape-list-2" alt="" />
 
                     <section className="movie-list genre-list" aria-label="Adventure Movies">
-
                         <div className="title-wrapper contain">
                             <h1 className="heading">{genre}</h1>
-
                             <h1 className="heading">{genre}</h1>
                         </div>
 
                         <div className="grid-list">
-                            {visibleMovies.map((item, i) => (
-                                <div onClick={() => oneMovie(item)} className="movie-card" key={i}>
+                            {allMovies.map((item, i) => (
+                                <div onClick={() => oneMovie(item.id)} className="movie-card" key={item.id}>
                                     <figure className="poster-box card-banner">
                                         <a>
                                             <img
@@ -102,8 +106,6 @@ export const GenreByMovie = () => {
                                     </div>
                                 </div>
                             ))}
-
-
                         </div>
 
                         {loading ? (
@@ -112,18 +114,17 @@ export const GenreByMovie = () => {
                                 Loading...
                             </MDBBtn>
                         ) : (
-                            visibleCount < allMovies.length && (
+                            page + 1 < totalPages && (
                                 <button className="btn load-more" onClick={loadMoreMovies}>
-                                Yana Ko'rish
+                                    Yana Ko'rish
                                 </button>
                             )
                         )}
-
                     </section>
                 </article>
 
                 <div className="search-model"></div>
             </main>
         </div>
-    )
-}
+    );
+};

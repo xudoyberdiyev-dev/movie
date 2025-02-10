@@ -22,7 +22,7 @@ public interface MovieRepository extends JpaRepository<Movie, UUID> {
     @Query(value = "SELECT * FROM movie ORDER BY RANDOM() LIMIT :count", nativeQuery = true)
     List<Movie> findRandomMovies(@Param("count") int count);
 
-    Page<Movie> findByGenre(Genre genre, Pageable pageable);
+    Page<Movie> findByGenres(Genre genre, Pageable pageable);
 
     boolean existsByNameAndIdNot(String name, UUID id);
 
