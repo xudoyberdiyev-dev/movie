@@ -8,29 +8,49 @@ import {BASE_URL} from "../service/BaseUrl.js";
 import fon1 from '../assets/images/shape-1.png'
 import fon2 from '../assets/images/shape-2.png'
 import fon3 from '../assets/images/shape-3.png'
+import { MDBSpinner, MDBBtn } from 'mdb-react-ui-kit';
 
 export const GenreByMovie = () => {
-    const [movies, setMovies] = useState([]); // Movies related to selected genre
-    const {genre} = useParams();  // Ta
+    const navigate = useNavigate();
+    const [allMovies, setAllMovies] = useState([]); // Movies related to selected genre
+    const [visibleMovies, setVisibleMovies] = useState([]); // Ko‘rinayotgan kinolar
+    const [visibleCount, setVisibleCount] = useState(2); // Nechta ko‘rsatishni boshqarish
+    const {genre} = useParams();
+
+    const [loading, setLoading] = useState(false)
 
     const getMoviesByGenre = async (genre) => {
         try {
             const res = await GetAuto(APP_API.getGenreByMovie + `?genre=${genre}`)
             if (res && res.data) {
-                setMovies(res.data.reverse()); // Yangi kinolarni birinchi qilish uchun reverse qilish
+                setAllMovies(res.data.reverse()); // Yangi kinolarni birinchi qilish uchun reverse qilish
+                setVisibleMovies(res.data.slice(0, 2)); // Dastlab 2 tasini ko‘rsatamiz
             } else {
                 console.log("Javobda data yo'q:", res);
             }
         } catch (err) {
-            console.log("Error fetching movies by genre:", err);
+            console.log("Error fetching allMovies by genre:", err);
         }
     };
-    const navigate = useNavigate();
+    const loadMoreMovies = () => {
+        setLoading(true); // Loadingni yoqish
+
+        setTimeout(() => {
+            const newCount = visibleCount + 2;
+            setVisibleCount(newCount);
+            setVisibleMovies(allMovies.slice(0, newCount)); // Yangi 2 tasini qo‘shish
+            setLoading(false); // 1 sekunddan keyin loading tugaydi
+        }, 1000);
+    };
+
     const oneMovie = (id) => {
         navigate("/movie-item/" + id);
     };
     useEffect(() => {
         if (genre) {
+            setAllMovies([]); // Yangi janr tanlanganda eski kinolarni tozalaymiz
+            setVisibleMovies([]);
+            setVisibleCount(2);
             getMoviesByGenre(genre);
         }
     }, [genre]);
@@ -38,7 +58,7 @@ export const GenreByMovie = () => {
         <div>
             <Header/>
             <main>
-                <Genre selectedGenre={genre} setMovies={setMovies}/>
+                <Genre selectedGenre={genre} setAllMovies={setAllMovies}/>
                 <div className="overlay " overlay="" menu-toggler=""></div>
 
                 <article className="container" page-content="">
@@ -59,16 +79,16 @@ export const GenreByMovie = () => {
                         </div>
 
                         <div className="grid-list">
-                            {movies.map((item, i) => (
-                                <div className="movie-card">
-
-                                    <figure className="poster-box card-banner" key={i}
-                                            onClick={() => oneMovie(item.id)}>
+                            {visibleMovies.map((item, i) => (
+                                <div onClick={() => oneMovie(item)} className="movie-card" key={i}>
+                                    <figure className="poster-box card-banner">
                                         <a>
                                             <img
                                                 src={`${BASE_URL}${APP_API.downloadImage}${item.img}`}
-                                                alt="Inside"
-                                                out="" className="img-cover img-zoom" loading="lazy"/>
+                                                alt={item.name}
+                                                className="img-cover img-zoom"
+                                                loading="lazy"
+                                            />
                                         </a>
                                     </figure>
 
@@ -78,20 +98,26 @@ export const GenreByMovie = () => {
                                         <div className="meta-item">
                                             <span className="span">{item.seeSize}</span>
                                         </div>
-
                                         <div className="card-badge">{item.age.substring(1, 3)}+</div>
                                     </div>
-
-                                    <a href="./detail.html" className="card-btn" title="Inside Out 2"
-                                       onClick="getMovieDetail(1022789)"></a>
                                 </div>
-
                             ))}
 
 
                         </div>
 
-                        <button className="btn load-more" load-more="">Load More</button>
+                        {loading ? (
+                            <MDBBtn disabled>
+                                <MDBSpinner size='sm' role='status' tag='span' className='me-2' />
+                                Loading...
+                            </MDBBtn>
+                        ) : (
+                            visibleCount < allMovies.length && (
+                                <button className="btn load-more" onClick={loadMoreMovies}>
+                                Yana Ko'rish
+                                </button>
+                            )
+                        )}
 
                     </section>
                 </article>

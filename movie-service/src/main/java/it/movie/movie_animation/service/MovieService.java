@@ -13,6 +13,8 @@ import it.movie.movie_animation.repository.MovieRepository;
 import it.movie.movie_animation.repository.VideoRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -31,8 +33,8 @@ public class MovieService implements MovieServiceImpl {
     private final LikeRepository likeRepository;
     private final AuthRepository authRepository;
 
-    public List<Movie> getMoviesByGenre(Genre genre) {
-        return movieRepository.findByGenresContaining(genre);
+    public Page<Movie> getMoviesByGenre(Genre genre, Pageable pageable) {
+        return movieRepository.findByGenre(genre, pageable);
     }
 
     @Override

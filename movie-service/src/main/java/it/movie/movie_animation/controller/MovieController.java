@@ -10,6 +10,9 @@ import it.movie.movie_animation.service.MovieService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
@@ -59,9 +62,10 @@ public class MovieController implements MovieControllerImpl {
 
     @Override
     @GetMapping("/by-genre")//genre boyicha kino chiqadi
-    public HttpEntity<?> getMoviesByGenre(@RequestParam Genre genre) {
-        List<Movie> movies = movieService.getMoviesByGenre(genre);
-        return ResponseEntity.ok(movies);
+    public HttpEntity<?> getMoviesByGenre(@RequestParam Genre genre, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "20") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Movie> moviesByGenre = movieService.getMoviesByGenre(genre, pageable);
+        return ResponseEntity.ok(moviesByGenre);
     }
 
 

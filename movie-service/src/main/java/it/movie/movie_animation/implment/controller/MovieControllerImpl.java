@@ -29,7 +29,7 @@ public interface MovieControllerImpl {
 
     HttpEntity<?> getOneMovie(UUID id);
 
-    HttpEntity<?> getMoviesByGenre(Genre genre);
+    HttpEntity<?> getMoviesByGenre(Genre genre, int page, int size);
 
     HttpEntity<?> createSerial(UUID id, ReqVideoDto reqVideoDto);
 

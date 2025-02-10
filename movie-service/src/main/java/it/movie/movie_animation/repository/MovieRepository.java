@@ -3,6 +3,8 @@ package it.movie.movie_animation.repository;
 import it.movie.movie_animation.entity.Movie;
 import it.movie.movie_animation.entity.enums.Genre;
 import it.movie.movie_animation.entity.enums.SubCategoryType;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -20,7 +22,7 @@ public interface MovieRepository extends JpaRepository<Movie, UUID> {
     @Query(value = "SELECT * FROM movie ORDER BY RANDOM() LIMIT :count", nativeQuery = true)
     List<Movie> findRandomMovies(@Param("count") int count);
 
-    List<Movie> findByGenresContaining(Genre genre);
+    Page<Movie> findByGenre(Genre genre, Pageable pageable);
 
     boolean existsByNameAndIdNot(String name, UUID id);
 
