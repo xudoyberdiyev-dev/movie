@@ -1,18 +1,18 @@
-import { Header } from "../components/Header.jsx";
-import { Genre } from "../genre/Genre.jsx";
-import { useEffect, useState } from "react";
-import { GetAuto } from "../service/userService/AppService.js";
-import { APP_API } from "../service/AppApi.js";
-import { useNavigate, useParams } from "react-router-dom";
-import { BASE_URL } from "../service/BaseUrl.js";
+import {Header} from "../components/Header.jsx";
+import {Genre} from "../genre/Genre.jsx";
+import {useEffect, useState} from "react";
+import {GetAuto} from "../service/userService/AppService.js";
+import {APP_API} from "../service/AppApi.js";
+import {useNavigate, useParams} from "react-router-dom";
+import {BASE_URL} from "../service/BaseUrl.js";
 import fon1 from '../assets/images/shape-1.png';
 import fon2 from '../assets/images/shape-2.png';
 import fon3 from '../assets/images/shape-3.png';
-import { MDBSpinner, MDBBtn } from 'mdb-react-ui-kit';
+import {MDBSpinner, MDBBtn} from 'mdb-react-ui-kit';
 
 export const GenreByMovie = () => {
     const navigate = useNavigate();
-    const { genre } = useParams();
+    const {genre} = useParams();
 
     const [allMovies, setAllMovies] = useState([]); // Barcha kinolar
     const [page, setPage] = useState(0);
@@ -65,16 +65,16 @@ export const GenreByMovie = () => {
 
     return (
         <div>
-            <Header />
+            <Header/>
             <main>
-                <Genre selectedGenre={genre} setAllMovies={setAllMovies} />
+                <Genre selectedGenre={genre} setAllMovies={setAllMovies}/>
                 <div className="overlay" overlay="" menu-toggler=""></div>
 
                 <article className="container" page-content="">
-                    <img src={fon3} className="shape-1 shape-list" alt="shape" />
-                    <img src={fon2} className="shape-1 shape-3" alt="shape" />
-                    <img src={fon1} className="mob-shape-1 mob-shape-list-1" alt="" />
-                    <img src={fon2} className="mob-shape-1 mob-shape-2 mob-shape-list-2" alt="" />
+                    <img src={fon3} className="shape-1 shape-list" alt="shape"/>
+                    <img src={fon2} className="shape-1 shape-3" alt="shape"/>
+                    <img src={fon1} className="mob-shape-1 mob-shape-list-1" alt=""/>
+                    <img src={fon2} className="mob-shape-1 mob-shape-2 mob-shape-list-2" alt=""/>
 
                     <section className="movie-list genre-list" aria-label="Adventure Movies">
                         <div className="title-wrapper contain">
@@ -109,10 +109,7 @@ export const GenreByMovie = () => {
                         </div>
 
                         {loading ? (
-                            <MDBBtn disabled>
-                                <MDBSpinner size='sm' role='status' tag='span' className='me-2' />
-                                Loading...
-                            </MDBBtn>
+                            <>Loading...</>
                         ) : (
                             page + 1 < totalPages && (
                                 <button className="btn load-more" onClick={loadMoreMovies}>

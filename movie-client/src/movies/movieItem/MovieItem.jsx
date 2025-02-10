@@ -213,7 +213,7 @@ export const MovieItem = ({userId}) => {
                     ) : (
                         <p>Ma'lumot topilmadi</p>
                     )}
-                    <div style={{marginBottom:"100px"}}>
+                    <div style={{marginBottom: "100px"}}>
                         <RandomMovie/>
                     </div>
                     <Comment movieId={id}/>
