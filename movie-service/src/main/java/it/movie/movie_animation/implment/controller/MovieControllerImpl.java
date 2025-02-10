@@ -29,13 +29,13 @@ public interface MovieControllerImpl {
 
     HttpEntity<?> getOneMovie(UUID id);
 
-    ResponseEntity<List<Movie>> getMoviesByGenre(Genre genre);
+    HttpEntity<?> getMoviesByGenre(Genre genre);
 
     HttpEntity<?> createSerial(UUID id, ReqVideoDto reqVideoDto);
 
     HttpEntity<?> getSerial(UUID id);
 
-    HttpEntity<?> updateSerial(UUID id,UUID videoId, ReqVideoDto reqVideoDto);
+    HttpEntity<?> updateSerial(UUID id, UUID videoId, ReqVideoDto reqVideoDto);
 
-    HttpEntity<?> deleteSerial(UUID id,UUID videoId);
+    HttpEntity<?> deleteSerial(UUID id, UUID videoId);
 }

@@ -59,7 +59,7 @@ public class MovieController implements MovieControllerImpl {
 
     @Override
     @GetMapping("/by-genre")//genre boyicha kino chiqadi
-    public ResponseEntity<List<Movie>> getMoviesByGenre(@RequestParam Genre genre) {
+    public HttpEntity<?> getMoviesByGenre(@RequestParam Genre genre) {
         List<Movie> movies = movieService.getMoviesByGenre(genre);
         return ResponseEntity.ok(movies);
     }
