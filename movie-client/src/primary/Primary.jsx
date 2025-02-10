@@ -15,6 +15,7 @@ import rasm2 from "../assets/images/shape-2.png"
 import rasm3 from "../assets/images/shape-3.png"
 import {Register} from "../auth/Register.jsx";
 import {Login} from "../auth/Login.jsx";
+import {Navbar} from "../components/navbar/Navbar.jsx";
 
 export const Primary = () => {
     return (
