@@ -13,9 +13,7 @@ import {Serial} from "../movies/serial/Serial.jsx";
 import rasm1 from "../assets/images/shape-1.png"
 import rasm2 from "../assets/images/shape-2.png"
 import rasm3 from "../assets/images/shape-3.png"
-import {Register} from "../auth/Register.jsx";
-import {Login} from "../auth/Login.jsx";
-import {Navbar} from "../components/navbar/Navbar.jsx";
+
 
 export const Primary = () => {
     return (
