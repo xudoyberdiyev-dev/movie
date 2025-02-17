@@ -29,5 +29,6 @@ export const BASE_CONFIG_CLIENT = {
     doPost: (url, data) => axios.post(
         `${BASE_URL}${url}`, data, config
     ),
+
 }
 

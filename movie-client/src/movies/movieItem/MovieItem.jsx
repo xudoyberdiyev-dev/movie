@@ -1,16 +1,15 @@
-import {Header} from "../../components/Header.jsx";
 import {Genre} from "../../genre/Genre.jsx";
 import {useEffect, useState, useRef} from "react";
 import {useParams} from "react-router-dom";
 import {GetAuto, GetOneMovie} from "../../service/userService/AppService.js";
 import {BASE_URL} from "../../service/BaseUrl.js";
 import {APP_API} from "../../service/AppApi.js";
-import {Loading} from "../../components/Loading.jsx";
+import {Loading} from "../../components/loading/Loading.jsx";
 import {RandomMovie} from "../randomMovie/RandomMovie.jsx";
 import {BASE_CONFIG, BASE_CONFIG_CLIENT} from "../../service/BaseConfig.js";
 import toast from "react-hot-toast";
 import {Comment} from "../../pages/comment/Comment.jsx";
-
+import {Navbar} from "../../components/navbar/Navbar.jsx";
 export const MovieItem = ({userId}) => {
     const [liked, setLiked] = useState(false); // Like holatini saqlash
     const [loading, setLoading] = useState(true); // Loading holati
@@ -96,7 +95,7 @@ export const MovieItem = ({userId}) => {
 
     return (
         <div>
-            <Header/>
+            <Navbar/>
             <main>
                 <Genre/>
                 <div className="overlay"></div>

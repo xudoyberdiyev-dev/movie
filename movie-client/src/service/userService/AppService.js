@@ -20,11 +20,4 @@ export const GetOneMovie = async (id) => {
         console.log(err.message)
     }
 }
-export const UserGenreGet=async ()=>{
-    try {
-       const res =await BASE_CONFIG.doGet(APP_API.genreAll)
-        return res.data._embedded.list
-    }catch (err){
-        console.log("BU hatolik user dagi genre getda chiqadi" +err)
-    }
-}
+

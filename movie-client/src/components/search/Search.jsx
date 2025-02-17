@@ -1,8 +1,8 @@
 import React, {useState} from "react";
-import searchIcon from "../assets/images/search.png"; // search rasm
-import closeIcon from "../assets/images/close.png";  // close rasm
-import {GetAuto} from "../service/userService/AppService.js";
-import {APP_API} from "../service/AppApi.js";
+import searchIcon from "../../assets/images/search.png"; // search rasm
+import closeIcon from "../../assets/images/close.png";  // close rasm
+import {GetAuto} from "../../service/userService/AppService.js";
+import {APP_API} from "../../service/AppApi.js";
 import {FaMicrophone, FaSearch} from "react-icons/fa";
 import './search.css'
 

@@ -1,14 +1,13 @@
-import {Header} from "../components/Header.jsx";
-import {Genre} from "../genre/Genre.jsx";
+import {Genre} from "../Genre.jsx";
 import {useEffect, useState} from "react";
-import {GetAuto} from "../service/userService/AppService.js";
-import {APP_API} from "../service/AppApi.js";
+import {GetAuto} from "../../service/userService/AppService.js";
+import {APP_API} from "../../service/AppApi.js";
 import {useNavigate, useParams} from "react-router-dom";
-import {BASE_URL} from "../service/BaseUrl.js";
-import fon1 from '../assets/images/shape-1.png';
-import fon2 from '../assets/images/shape-2.png';
-import fon3 from '../assets/images/shape-3.png';
-import {MDBSpinner, MDBBtn} from 'mdb-react-ui-kit';
+import {BASE_URL} from "../../service/BaseUrl.js";
+import fon1 from '../../assets/images/shape-1.png';
+import fon2 from '../../assets/images/shape-2.png';
+import fon3 from '../../assets/images/shape-3.png';
+import {Navbar} from "../../components/navbar/Navbar.jsx";
 
 export const GenreByMovie = () => {
     const navigate = useNavigate();
@@ -65,7 +64,7 @@ export const GenreByMovie = () => {
 
     return (
         <div>
-            <Header/>
+            <Navbar/>
             <main>
                 <Genre selectedGenre={genre} setAllMovies={setAllMovies}/>
                 <div className="overlay" overlay="" menu-toggler=""></div>

@@ -1,7 +1,7 @@
-import '../assets/css/register.css'
+import '../../assets/css/register.css'
 import {useState} from "react";
-import {useNavigate} from "react-router-dom";
-import {RegisterHandler} from "../service/userService/AuthService.js";
+import {Link, useNavigate} from "react-router-dom";
+import {RegisterHandler} from "../../service/userService/AuthService.js";
 
 export const Register = () => {
     const navigate = useNavigate();
@@ -41,11 +41,11 @@ export const Register = () => {
                         Roziman
                         <input type="checkbox"/>
                     </label>
-                    <a href="#">Parolni unuttimi</a>
+                    <a href="#">Parolni unutingizmi</a>
                 </div>
                 <div className="register">
                     <span>Allaqachon akountingiz bormi?</span>
-                    <a href="#">Kirish</a>
+                    <Link to={'/login'}>Kirish</Link>
                 </div>
             </div>
         </div>

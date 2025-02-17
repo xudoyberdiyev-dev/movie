@@ -1,4 +1,3 @@
-import {Header} from "../components/Header.jsx";
 import {Genre} from "../genre/Genre.jsx";
 import {Section} from "../slider/Section.jsx";
 import {Premyera} from "../movies/premyera/Premyera.jsx";
@@ -7,18 +6,18 @@ import {UzbMovie} from "../movies/uzb/UzbMovie.jsx";
 import {Multfilm} from "../movies/multfilm/Multfilm.jsx";
 import {Anime} from "../movies/anime/Anime.jsx";
 import {RetroMovie} from "../movies/retro/RetroMovie.jsx";
-import {Footer} from "../components/Footer.jsx";
+import {Footer} from "../components/footer/Footer.jsx";
 import {Serial} from "../movies/serial/Serial.jsx";
-
 import rasm1 from "../assets/images/shape-1.png"
 import rasm2 from "../assets/images/shape-2.png"
 import rasm3 from "../assets/images/shape-3.png"
+import {Navbar} from "../components/navbar/Navbar.jsx";
 
 
 export const Primary = () => {
     return (
         <div>
-            <Header/>
+            <Navbar/>
             <main>
                 <Genre/>
                 <div className="overlay" overlay="" menu-toggler=""></div>

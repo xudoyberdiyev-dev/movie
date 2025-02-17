@@ -2,7 +2,7 @@ import {useEffect, useState} from "react";
 import {APP_API} from "../service/AppApi.js";
 import {GetAuto} from "../service/userService/AppService.js";
 import {BASE_URL} from "../service/BaseUrl.js";
-import {Loading} from "../components/Loading.jsx";
+import {Loading} from "../components/loading/Loading.jsx";
 import buttonLogo from '../assets/images/play_circle.png'
 import {useNavigate} from "react-router-dom";
 import './slider.css'

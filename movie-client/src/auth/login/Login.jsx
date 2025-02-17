@@ -1,7 +1,7 @@
-import '../assets/css/register.css'
-import {useNavigate} from "react-router-dom";
+import '../../assets/css/register.css'
+import {Link, useNavigate} from "react-router-dom";
 import {useState} from "react";
-import {LoginHandler} from "../service/userService/AuthService.js";
+import {LoginHandler} from "../../service/userService/AuthService.js";
 
 export const Login = () => {
     const navigate = useNavigate()
@@ -25,11 +25,11 @@ export const Login = () => {
                             Roziman
                             <input type="checkbox"/>
                         </label>
-                        <a href="#">Parolni unuttimi</a>
+                        <a href="#">Parolni unutingizmi</a>
                     </div>
                     <div className="register">
                         <span>Royxatdan haliham otmadingizmi?</span>
-                        <a href="#">Ro'yxatdan o'tish</a>
+                        <Link to={'/register'}>Ro'yxatdan o'tish</Link>
                     </div>
                 </form>
                 <button onClick={() => login()} className={"button"}>Kirish</button>

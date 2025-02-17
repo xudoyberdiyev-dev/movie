@@ -1,4 +1,4 @@
-import {SortBySubCategoryMovie} from "../../components/SortBySubCategoryMovie.jsx";
+import {SortBySubCategoryMovie} from "../../sortBySubCategory/SortBySubCategoryMovie.jsx";
 import {getAllMovie} from "../../service/GetAllMovie.jsx";
 
 export const Serial = () => {
