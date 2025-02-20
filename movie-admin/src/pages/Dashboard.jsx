@@ -5,6 +5,9 @@ import {GetAuto} from "../connection/service/AppService.js";
 import {APP_API} from "../connection/AppApi.js";
 import {Chart as ChartJS, Title, Tooltip, Legend, ArcElement, CategoryScale} from 'chart.js';
 import {Pie} from 'react-chartjs-2';
+import {BASE_URL} from "../connection/BaseUrl.js";
+import {BASE_CONFIG} from "../connection/BaseConfig.js";
+import data from "bootstrap/js/src/dom/data.js";
 
 
 ChartJS.register(Title, Tooltip, Legend, ArcElement, CategoryScale);
@@ -38,6 +41,8 @@ export const Dashboard = () => {
     useEffect(() => {
         getStatistics()
     }, []);
+
+
     return (
         <Grid>
             <Card sx={{width: '100%', marginBottom: 2, padding: 2}}>
@@ -74,7 +79,6 @@ export const Dashboard = () => {
             </Grid>
             <div style={{width: "300px", height: "300px"}}>
                 <Pie data={statistikalar}/>
-
             </div>
         </Grid>
 
