@@ -13,17 +13,18 @@
     flex: 1;
     background: none;
     border: none;
+    margin-top: 15px;
     color: white;
     outline: none;
-    font-size: 16px;
-    padding: 5px;
+    font-size: 18px;
+    padding: 8px;
 }
 
 .icon {
     color: gray;
-    font-size: 16px;
     cursor: pointer;
     transition: 0.3s;
+    font-size: 19px;
 }
 
 .icon:hover {

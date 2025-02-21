@@ -31,7 +31,7 @@ export const LoginHandler = async (data, navigator) => {
 
         const us = await GetMe(navigator);
         if (us.data.authorities.length > 1) {
-            toast.success("Hush kelibsiz ADMIN");
+            // toast.success("Hush kelibsiz ADMIN");
             navigator(ADMIN_URLS.dashboard);
             window.location.reload();
         }
