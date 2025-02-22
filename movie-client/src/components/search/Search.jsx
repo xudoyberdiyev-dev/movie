@@ -3,9 +3,12 @@ import {GetAuto} from "../../service/userService/AppService.js";
 import {APP_API} from "../../service/AppApi.js";
 import {FaMicrophone, FaSearch} from "react-icons/fa";
 import './search.css'
+import {SortBySubCategoryMovie} from "../../sortBySubCategory/SortBySubCategoryMovie.jsx";
+import {BASE_URL} from "../../service/BaseUrl.js";
+import {useNavigate} from "react-router-dom";
 
 export const Search = () => {
-    const [isModalOpen, setIsModalOpen] = useState(false); // Modal holatini boshqarish
+    const navigate = useNavigate();
     const [searchQuery, setSearchQuery] = useState('');
     const [movies, setMovies] = useState([]);
 
@@ -48,7 +51,6 @@ export const Search = () => {
                 );
 
                 setMovies(response.data);
-                setIsModalOpen(true); // Modalni ochish
             } catch (error) {
                 console.error('Qidiruvda xatolik yuz berdi', error);
             }
@@ -61,6 +63,10 @@ export const Search = () => {
     const handleSearchChange = (event) => {
         const value = event.target.value;
         setSearchQuery(value);
+    };
+    const oneMovie = (id) => {
+        window.location.reload()
+        navigate("/movie-item/" + id);
     };
     return (
         <div>
@@ -78,6 +84,35 @@ export const Search = () => {
                 <div className="mic-btn">
                     <FaMicrophone className="icon" onClick={startVoiceSearch}/>
                 </div>
+            </div>
+            <div className={'search-result'}>
+                <section className="movie-list" aria-label="Telegu Movies...">
+                    <div className="title-wrapper">
+                        <h3 className="title-large">Qidiruv natijasi...</h3>
+                    </div>
+
+                    <div className="slider-list">
+                        <div className="slider-inner">
+                            {movies.map((item) => (
+                                <div className="movie-card" key={item.id}>
+                                    <figure className="poster-box card-banner" onClick={() => oneMovie(item.id)}>
+                                        <a>
+                                            <img
+                                                src={`${BASE_URL}${APP_API.downloadImage}${item.img}`}
+                                                alt={item.name}
+                                                className="img-cover img-zoom"
+                                                loading="lazy"
+                                            />
+                                        </a>
+                                    </figure>
+
+                                    <h4 className="title">{item.name}</h4>
+                                    <a href="./detail.html" className="card-btn" title={item.name}></a>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </section>
             </div>
         </div>
 
