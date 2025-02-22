@@ -18,7 +18,13 @@
     margin: 0 auto;
 }
 
-.logo {
+.logos {
+    background-image: url("../../assets/images/logo.png");
+    width:66px;
+    height:33px;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
 }
 
 .nav-content ul {
@@ -61,7 +67,7 @@
 }
 
 .contact-btn {
-    font-size: 1 .9rem;
+    font-size: 1.9rem;
     font-weight: 500;
     display: flex;
     align-items: center;

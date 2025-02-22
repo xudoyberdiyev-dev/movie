@@ -2,6 +2,9 @@ import React, {useState} from 'react'
 import './navbar.css'
 import MobileNav from "./MobileNav.jsx";
 import {SearchBar} from "./SearchBar.jsx";
+import {FaSearch} from "react-icons/fa";
+import {Link} from "react-router-dom";
+import logo from '../../assets/images/logo.png'
 
 export const Navbar = () => {
     const [openMenu, setOpenMenu] = useState(false)
@@ -19,16 +22,21 @@ export const Navbar = () => {
             <SearchBar isOpen={openSearchBar} toggleMenu={toggleSearchBar}/>
             <nav className="nav-wrapper">
                 <div className="nav-content">
-                    <h1 className={'logo'}>LOGO</h1>
+                    <div className={'logos'}></div>
                     <ul>
                         <li>
-                            <bytton className="contact-btn" onClick={toggleSearchBar}>h</bytton>
+                            <bytton className="contact-btn" onClick={toggleSearchBar}><FaSearch
+                                style={{fontSize: "25px"}}/></bytton>
                         </li>
                         <li>
-                            <bytton className="contact-btn">Register</bytton>
+                            <Link to={'/register'}>
+                                <bytton className="contact-btn">Register</bytton>
+                            </Link>
                         </li>
 
-                        <bytton className="contact-btn">Login</bytton>
+                        <Link to={'/login'}>
+                            <bytton className="contact-btn">Login</bytton>
+                        </Link>
                     </ul>
                     <button className="menu-btn" onClick={toggleMenu}>
                 <span class={"material-symbils-outlined"}
