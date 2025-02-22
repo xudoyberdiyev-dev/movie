@@ -62,10 +62,6 @@ export const Search = () => {
         const value = event.target.value;
         setSearchQuery(value);
     };
-
-    // Modalni yopish
-
-
     return (
         <div>
             <div className="search-container">
@@ -82,10 +78,6 @@ export const Search = () => {
                 <div className="mic-btn">
                     <FaMicrophone className="icon" onClick={startVoiceSearch}/>
                 </div>
-                {movies.map((item)=>(
-                    <div>{item.name}</div>
-                ))}
-                {/*<button onClick={() => setIsModalOpen(true)}>d</button>*/}
             </div>
         </div>
 

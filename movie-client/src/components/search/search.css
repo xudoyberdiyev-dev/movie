@@ -1,12 +1,16 @@
 .search-container {
     display: flex;
     align-items: center;
-    background: #111;
-    border-radius: 15px;
+    border-radius: 10px;
     padding: 2px 12px;
-    width: 400px;
     height: 50px; /* 🟢 Asosiy height */
-    border: 1px solid #333;
+    width:95%;
+    border: 1px solid #a40d0d;
+    margin:auto;
+    margin-top:30px;
+    background-color: rgba(19, 0, 0, 0.53)
+
+
 }
 
 .search-container input {
@@ -21,7 +25,7 @@
 }
 
 .icon {
-    color: gray;
+    color: #ffffff;
     cursor: pointer;
     transition: 0.3s;
     font-size: 19px;
@@ -36,7 +40,7 @@
 }
 
 .search-btn, .mic-btn {
-    background: #222;
+    background: #1e0404;
     border-radius: 50%;
     padding: 6px;
     margin-left: 5px;
