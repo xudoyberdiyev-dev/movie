@@ -8,7 +8,7 @@
     opacity: 0;
     transition: height 0.3s ease, opacity 0.3s ease;
     overflow: hidden;
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(15px);
 }
 
 .search-container {

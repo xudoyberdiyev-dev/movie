@@ -41,7 +41,7 @@ export const Navbar = () => {
                             </Link>
                         </li>
 
-                        <Link to={isAuthenticated ? "/cabinet" : 'login'}>
+                        <Link to={isAuthenticated ? "/cabinet" : '/login'}>
                             <bytton className="contact-btn">{isAuthenticated ? "Kirish" : "Login"}</bytton>
                         </Link>
                     </ul>
