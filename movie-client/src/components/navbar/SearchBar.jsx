@@ -15,7 +15,7 @@ export const SearchBar = ({isOpen, toggleMenu}) => {
              onClick={handleClickOutside}
         >
             <div className="serach-container">
-               <Search/>
+               <Search toggleMenu={toggleMenu}/>
             </div>
         </div>
     )

@@ -1,13 +1,13 @@
 import React, {useState} from "react";
 import {GetAuto} from "../../service/userService/AppService.js";
 import {APP_API} from "../../service/AppApi.js";
-import {FaMicrophone, FaSearch} from "react-icons/fa";
+import {FaMicrophone, FaSearch, FaTimes} from "react-icons/fa";
 import './search.css'
 import {SortBySubCategoryMovie} from "../../sortBySubCategory/SortBySubCategoryMovie.jsx";
 import {BASE_URL} from "../../service/BaseUrl.js";
 import {useNavigate} from "react-router-dom";
 
-export const Search = () => {
+export const Search = ({toggleMenu}) => {
     const navigate = useNavigate();
     const [searchQuery, setSearchQuery] = useState('');
     const [movies, setMovies] = useState([]);
@@ -83,6 +83,15 @@ export const Search = () => {
                 </div>
                 <div className="mic-btn">
                     <FaMicrophone className="icon" onClick={startVoiceSearch}/>
+                </div>
+                <div style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: 'center',
+                    margin: "5px",
+                    cursor: 'pointer'
+                }} onClick={toggleMenu}>
+                    <FaTimes size={24} color="white"/>
                 </div>
             </div>
             <div className={'search-result'}>
