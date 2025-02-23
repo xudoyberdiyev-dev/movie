@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react'
 import './navbar.css'
-import MobileNav from "./MobileNav.jsx";
+import MobileNav from "./mobilrNav/MobileNav.jsx";
 import {SearchBar} from "./SearchBar.jsx";
 import {FaSearch} from "react-icons/fa";
 import {Link, useNavigate} from "react-router-dom";
@@ -8,7 +8,6 @@ import logo from '../../assets/images/logo.png'
 
 export const Navbar = () => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
-    const navigate = useNavigate();
     const [openMenu, setOpenMenu] = useState(false)
     const [openSearchBar, setOpenSearchBar] = useState(false)
     const toggleMenu = () => {

@@ -13,9 +13,9 @@
     transform: translateX(-100vh);
 }
 .mobile-menu-container{
-    width: 60vw;
+    width: 50vw;
     height: 100vh;
-    background-color: #342864;
+    background-color: #170201;
     padding: 2rem;
 }
 .mobile-menu.active{

@@ -1,5 +1,6 @@
 import React from 'react'
 import './MobileNav.css'
+import {Genre} from "../../../genre/Genre.jsx";
 const MobileNav = ({isOpen,toggleMenu}) => {
     return (
         <>
@@ -7,7 +8,7 @@ const MobileNav = ({isOpen,toggleMenu}) => {
                  onClick={toggleMenu}
             >
                 <div className="mobile-menu-container">
-                    <h1 className={'logo'}>Logo</h1>
+                    <Genre/>
                 </div>
             </div>
         </>
