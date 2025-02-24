@@ -11,7 +11,6 @@ import java.util.Optional;
 import java.util.UUID;
 
 @CrossOrigin
-@Repository
 public interface AuthRepository extends JpaRepository<Users, UUID> {
     UserDetails findByEmail(String email);
 
