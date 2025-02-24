@@ -1,6 +1,4 @@
-import org.springframework.context.annotation.Configuration;
+package it.movie.movie_animation.bot;
 
-@Configuration
-public class BotConfig {
-
+public class BotConfig{
 }
