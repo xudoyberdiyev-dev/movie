@@ -13,7 +13,6 @@ import lombok.*;
 @Entity
 public class Comment extends AbsEntity {
 
-
     @Column(nullable = false, length = 500)
     private String text; // Izoh matni
 

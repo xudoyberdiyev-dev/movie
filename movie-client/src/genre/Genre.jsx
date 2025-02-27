@@ -81,7 +81,9 @@ export const Genre = () => {
                         </p>
 
                     </div>
+                    <a href="https://t.me/xudoyberdiyev_66">
                     <button style={{}} className={'btn-tg'}>Telegram kanal</button>
+                    </a>
                 </div>
             </nav>
         </div>

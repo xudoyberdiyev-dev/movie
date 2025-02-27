@@ -78,8 +78,8 @@ export const Search = ({toggleMenu}) => {
                        aria-label="search movies"
                        placeholder="Kino nomi bilan qidiring..."
                        autoComplete="off"/>
-                <div className="search-btn">
-                    <FaSearch className="icon" onClick={() => performSearch(searchQuery)}/>
+                <div className="search-btn" onClick={() => performSearch(searchQuery)}>
+                    <FaSearch className="icon"/>
                 </div>
                 <div className="mic-btn">
                     <FaMicrophone className="icon" onClick={startVoiceSearch}/>

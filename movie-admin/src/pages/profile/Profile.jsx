@@ -4,7 +4,7 @@ export const Profile = () => {
     const user = {
         name: "Azizbek",
         surname: "Xudoyberdiyev",
-        email: "movie@gmail.com",
+        email: "movie@gmail.com ",
         roles: ["ADMIN", "USER"], // Rollarni massiv sifatida ko'rsatamiz
     };
     return (
