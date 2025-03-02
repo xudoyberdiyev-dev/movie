@@ -34,9 +34,15 @@ public class JwtSecurityFilter extends OncePerRequestFilter {
     }
 
     private String recoverToken(HttpServletRequest request) {
-        var authHeader = request.getHeader("Authorization");
-        if (authHeader == null)
+        try {
+            String authHeader = request.getHeader("Authorization");
+            String tokenReal = authHeader.substring(7);
+            if (authHeader.startsWith("Bearer ") && !tokenReal.isEmpty()) {
+                return tokenReal;
+            }
             return null;
-        return authHeader.replace("Bearer ", "");
+        } catch (NullPointerException e) {
+            return null;
+        }
     }
 }

@@ -1,9 +1,10 @@
 package it.movie.movie_animation.payload;
 
 import it.movie.movie_animation.entity.enums.Age;
+import lombok.Builder;
 
 import java.util.UUID;
-
+@Builder
 public record ResMovieDto(
         UUID id,
         String name,
