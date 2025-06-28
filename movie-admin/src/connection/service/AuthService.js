@@ -20,7 +20,6 @@ export const LoginHandler = async (data, navigator) => {
     if (!data.login.trim()) {
         toast.error("Emilni kiriting")
     }
-
     if (!data.password.trim()) {
         toast.error("Password kiritng")
     }
